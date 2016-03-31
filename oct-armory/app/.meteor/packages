@@ -19,11 +19,9 @@ autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 iron:router
 mquandalle:jade
-grigio:babel
 aldeed:collection2
-ian:accounts-ui-bootstrap-3
 accounts-password
 useraccounts:iron-routing
-bruz:github-api
 standard-minifier-css
 standard-minifier-js
+bruz:github-api
