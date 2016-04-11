@@ -1,4 +1,3 @@
-// import { AccountsTemplates } from 'meteor/useraccounts:core';
 // import { TAPi18n } from 'meteor/tap:i18n';
 
 // AccountsTemplates.configure({
@@ -24,5 +23,6 @@ Meteor.loginWithGithub({
   requestPermissions: ['user', 'public_repo']
 }, function (err) {
   if (err)
-    Session.set('errorMessage', err.reason || 'Unknown error');
+  	console.log(err);
+    //Session.set('errorMessage', err.reason || 'Unknown error');
 });
