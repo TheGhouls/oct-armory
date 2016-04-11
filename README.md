@@ -7,6 +7,8 @@ https://blog.tableflip.io/large-meteor-projects-best-practices/
 
 http://guide.meteor.com/
 
+https://kadira.io/academy/meteor-routing-guide/
+
 
 Le project est realiser avec meteor vous devez
 ----------------------------------------------
@@ -19,14 +21,16 @@ Avoir installer **meteor**
 
 `curl https://install.meteor.com/ | sh`
 
-et **iron-meteor**
-`npm install -g iron-meteor`
 
 
 Cloner le repo.
 
 
-Aller au dossier ou ce trouves les dossier oct-armory/.
+et **faire un npm install via Meteor**
+`meteor npm install`
 
 
-Lancer la commande `iron run`.
+Aller au dossier oct-armory/.
+
+
+Lancer la commande `meteor`.
