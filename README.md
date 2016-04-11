@@ -7,6 +7,8 @@ https://blog.tableflip.io/large-meteor-projects-best-practices/
 
 http://guide.meteor.com/
 
+https://kadira.io/academy/meteor-routing-guide/
+
 
 Le project est realiser avec meteor vous devez
 ----------------------------------------------
