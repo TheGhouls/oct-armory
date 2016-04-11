@@ -1,0 +1,9 @@
+template(name='mainLayout')
+  nav
+    | {{>Template.dynamic template=nav}}
+  header
+    h1 Kadira Blog
+  main
+    | {{>Template.dynamic template=content}}
+  
+  footer We love Meteor
