@@ -1,7 +1,7 @@
 Plans = new Mongo.Collection("plans");
 
-var Schemas = {};
-var mydate = new Date();
+let Schemas = {};
+let mydate = new Date();
 Schemas.Plan = new SimpleSchema({
 	owner: {
 		type: String,

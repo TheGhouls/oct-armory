@@ -21,7 +21,7 @@ FlowRouter.route('/', {
     }
 });
 
-var planSection = FlowRouter.group({
+let planSection = FlowRouter.group({
 	prefix:"/plan"
 });
 
