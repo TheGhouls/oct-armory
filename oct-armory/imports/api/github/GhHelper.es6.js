@@ -18,14 +18,39 @@ export class GhHelper {
 	}
 
 	getName() {
-		
-		
-		const u = Meteor.user().services.github.username;
+		const u = Meteor.user().name;
 		console.log(u);
 		const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+u; 
 		HTTP.call('GET', encodeURI(gh_api_request), (err,res) => {
 			console.dir(res);
 			Session.set("repo", res.data.items[0].full_name);
+			});
+	}
+
+	getUserRepo(user_gh_id) {
+		const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id; 
+		HTTP.call('GET', gh_api_request, (err,res) => {
+			console.dir(res);
+			Session.set("user_repos", res.data.items);
+			return Session.get("user_repos");
+			});
+	}
+
+	getRepoReadme(user_gh_id, repo_id) {
+		const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/readme"; 
+		HTTP.call('GET', gh_api_request, (err,res) => {
+			console.dir(res);
+			Session.set("user_repos", res.data.items);
+			return Session.get("user_repos");
+			});
+	}
+
+	getRepoArmory(user_gh_id, repo_id) {
+		const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/contents/oct_armory.yml "; 
+		HTTP.call('GET', gh_api_request, (err,res) => {
+			console.dir(res);
+			Session.set("user_repos", res.data.items);
+			return Session.get("user_repos");
 			});
 	}
 
