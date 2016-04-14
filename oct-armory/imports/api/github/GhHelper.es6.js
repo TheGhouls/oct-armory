@@ -20,7 +20,7 @@ export class GhHelper {
 				console.log("error:", err);
 				return Session.set("error", err);
 			}
-			Session.set("user_repos", res.data.items);
+			Session.set("getUserRepo", res.data.items);
 			
 			});
 	}
@@ -33,8 +33,8 @@ export class GhHelper {
 				return Session.set("error", err);
 			}
 			console.dir(res);
-			Session.set("repo_readme", res.data.items);
-			return Session.get("repo_readme");
+			Session.set("getRepoReadme", res.data.items);
+			return Session.get("getRepoReadme");
 			});
 	}
 
@@ -46,8 +46,8 @@ export class GhHelper {
 				return Session.set("error", err);
 			}
 			console.dir(res);
-			Session.set("armory_yml", res.data.items);
-			return Session.get("armory_yml");
+			Session.set("getRepoArmory", res.data.items);
+			return Session.get("getRepoArmory");
 			});
 	}
 
@@ -59,8 +59,8 @@ export class GhHelper {
 				return Session.set("error", err);
 			}
 			console.dir(res);
-			Session.set("repo_dl_stats", res.data.items);
-			return Session.get("repo_dl_stats");
+			Session.set("getRepoDlStat", res.data.items);
+			return Session.get("getRepoDlStat");
 			});
 	}
 

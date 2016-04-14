@@ -17,8 +17,8 @@ Template.plan.events({
 /*****************************************************************************/
 Template.plan.helpers({
 	ghRepos () {
-		console.log(Session.get("user_repos"));
-    return Session.get("user_repos");
+		console.log(Session.get("getUserRepo"));
+    return Session.get("getUserRepo");
 	}
 
 });
