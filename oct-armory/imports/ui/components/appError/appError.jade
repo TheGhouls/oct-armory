@@ -1,0 +1,10 @@
+template(name='appError')
+  .col-4
+    .bs-component
+      .alert.alert-dismissible.alert-danger
+        button.close(type='button', data-dismiss='alert') &times;
+        |   
+        strong error: | {{err}}
+        |  
+        strong Change a few things up
+        |  and try submitting again.

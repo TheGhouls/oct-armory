@@ -1,0 +1,22 @@
+template(name='addPlan')
+  p This is the Plan page of armory {{$.Session.get 'user_repos'}}
+  if (getError)
+    | {{> appError err=getError}}
+  if (currentUser)
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th #
+          |       
+          th Name
+          |       
+          th url         
+      tbody
+        each ghRepos
+          tr
+            td
+              button(id=id).addBp add
+            |       
+            td= name
+            |       
+            td= url
