@@ -1,7 +1,7 @@
 template(name='mainLayout')
-  nav
+  nav.navbar.navbar-default.navbar-fixed-top.navbar-layout
     | {{>Template.dynamic template=nav}}
-  header
+  header.main-header
     h1.center Oct Armory
     if (getError)
       | {{> appError err=getError}}
