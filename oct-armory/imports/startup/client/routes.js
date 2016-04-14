@@ -7,6 +7,9 @@ import '../../ui/layouts/mainLayout/mainLayout.js';
 import '../../ui/pages/armoryHome.js';
 import '../../ui/components/nav/nav.es6.js';
 import '../../ui/components/plan/plan.js';
+import '../../ui/components/appError/appError.js'
+import '../../ui/components/addPlan/addPlan.js'
+import '../../ui/components/notFound/notFound.js'
 
 // import '../../ui/pages/app-not-found.js';
 
@@ -14,6 +17,12 @@ import '../../ui/components/plan/plan.js';
 // import '../../ui/accounts/accounts-templates.js';
 // 
 
+// the App_notFound template is used for unknown routes and missing lists
+FlowRouter.notFound = {
+  action() {
+    BlazeLayout.render('mainLayout', { nav: "nav", content: "notFound"});
+  },
+};
 
 FlowRouter.route('/', {
     action: function() {
@@ -31,6 +40,24 @@ planSection.route('/', {
     }
 });
 
+planSection.route('/add:gh_repo_id', {
+    action: function(params, queryParams) {
+      console.log("Params:", params);
+      console.log("Query Params:", queryParams);
+      BlazeLayout.render("mainLayout", {nav: "nav", content: "addPlan"});
+    }
+});
+
+FlowRouter.route('/search:idm', {
+  action: function(params, queryParams) {
+    console.log("Params:", params);
+    console.log("Query Params:", queryParams);
+    BlazeLayout.render("mainLayout", {nav: "nav", content: "plan"});
+  }
+});
+
+
+
 // FlowRouter.route('/lists/:_id', {
 //   name: 'Lists.show',
 //   action() {
@@ -45,12 +72,7 @@ planSection.route('/', {
 //   },
 // });
 
-// // the App_notFound template is used for unknown routes and missing lists
-// FlowRouter.notFound = {
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'App_notFound' });
-//   },
-// };
+
 
 // AccountsTemplates.configureRoute('signIn', {
 //   name: 'signin',

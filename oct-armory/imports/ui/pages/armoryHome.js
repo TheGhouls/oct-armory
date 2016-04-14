@@ -7,6 +7,7 @@ import './armoryHome.jade';
 /* Home: Event Handlers */
 /*****************************************************************************/
 Template.armoryHome.events({
+
 });
 
 /*****************************************************************************/
@@ -14,9 +15,8 @@ Template.armoryHome.events({
 /*****************************************************************************/
 Template.armoryHome.helpers({
 	ghName () {
-		//let gh = new GhHelper();
-
-		return Session.get("repo");;
+		console.log(Session.get("user_repos"));
+		return Session.get("user_repos");
 	}
 
 });
@@ -34,10 +34,17 @@ Template.armoryHome.onCreated(function armoryHomeOnCreated() {
 });
 
 Template.armoryHome.onRendered(function () {
-	let gh = new GhHelper();
-	//name = gh.getName(); 
-	console.log(gh.getName());
 	console.log("onRendered armoryHome");
+	// this.autorun(() => {
+	// 		let gh = new GhHelper();
+	// 		let res = gh.getUserRepo(Meteor.user().services.github.username);
+	// 		let readme = gh.getRepoReadme(Meteor.user().services.github.username,"erp_meteor");
+	// 		console.log(res);
+		
+	// 	console.log(Meteor.user().services.github);
+
+	// });
+		
 });
 
 Template.armoryHome.onDestroyed(function () {

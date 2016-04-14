@@ -2,8 +2,10 @@ template(name='mainLayout')
   nav
     | {{>Template.dynamic template=nav}}
   header
-    h1 Kadira Blog
+    h1.center Oct Armory
+    if (getError)
+      | {{> appError err=getError}}
   main
     | {{>Template.dynamic template=content}}
   
-  footer We love Meteor
+  footer.container We love Meteor
