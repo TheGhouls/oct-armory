@@ -1,11 +1,12 @@
 template(name='mainLayout')
   .content
-    nav.navbar.navbar-default.navbar-fixed-top.navbar-layout
-      | {{>Template.dynamic template=nav}}
+    nav.nav-header
+      .navbar.navbar-default.navbar-fixed-top.navbar-layout
+        | {{> Template.dynamic template=nav }}
     header
       if (getError)
-        | {{> appError err=getError}}
+        | {{> appError err=getError }}
     main
-      | {{>Template.dynamic template=content}}
+      | {{> Template.dynamic template=content }}
 
-  {{> footer }}
+  | {{> footer }}
