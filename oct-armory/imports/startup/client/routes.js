@@ -7,6 +7,7 @@ import '../../ui/layouts/mainLayout/mainLayout.js';
 import '../../ui/pages/armoryHome.js';
 import '../../ui/components/nav/nav.es6.js';
 import '../../ui/components/search/search.js';
+import '../../ui/components/footer/footer.js';
 import '../../ui/components/plan/plan.js';
 import '../../ui/components/appError/appError.js'
 import '../../ui/components/addPlan/addPlan.js'

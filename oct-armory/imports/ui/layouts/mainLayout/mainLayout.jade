@@ -7,5 +7,5 @@ template(name='mainLayout')
         | {{> appError err=getError}}
     main
       | {{>Template.dynamic template=content}}
-  
-  footer.container We love Meteor
+
+  {{> footer }}
