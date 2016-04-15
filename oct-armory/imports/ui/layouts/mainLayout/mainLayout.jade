@@ -1,11 +1,11 @@
 template(name='mainLayout')
-  nav.navbar.navbar-default.navbar-fixed-top.navbar-layout
-    | {{>Template.dynamic template=nav}}
-  header.main-header
-    h1.center Oct Armory
-    if (getError)
-      | {{> appError err=getError}}
-  main
-    | {{>Template.dynamic template=content}}
+  .content
+    nav.navbar.navbar-default.navbar-fixed-top.navbar-layout
+      | {{>Template.dynamic template=nav}}
+    header
+      if (getError)
+        | {{> appError err=getError}}
+    main
+      | {{>Template.dynamic template=content}}
   
   footer.container We love Meteor
