@@ -3,6 +3,7 @@ template(name='addPlan')
   if (getError)
     | {{> appError err=getError}}
   if (currentUser)
+    p {{getUserArmoryRepos}}
     table.table.table-striped.table-hover
       thead
         tr
