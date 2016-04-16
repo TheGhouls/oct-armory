@@ -50,41 +50,41 @@ Template.addPlan.helpers({
   getUserArmoryRepos () {
     console.log("getUserArmoryRepos");
     
-    getUserRepo.call({
-        user_gh_id: 'karec'
-      }, (err, res) => {
-        if (err) {
-          if (err.error === 404) {
-            console.log('404 getUserRepo: ', err)
-            Session.set('error', err.error);
-          } else {
-            console.log('unexpected error getUserRepo: ', err)
-            Session.set('error', err);
-          }
-        } else {
-          console.log('succes getUserRepo', res);
-          Session.set('getUserRepo', res);
-        }
-
-    });
-
-    // getReposArmory.call({
-    //   repo_id: 'armory-sample-project',
-    //   user_gh_id: 'karec'
-    // }, (err, res) => {
-    //   if (err) {
-    //     if (err.error === 404) {
-    //       console.log('404 getReposArmory: ', err)
-    //       Session.set('error', err.error);
+    // getUserRepo.call({
+    //     user_gh_id: 'karec'
+    //   }, (err, res) => {
+    //     if (err) {
+    //       if (err.error === 404) {
+    //         console.log('404 getUserRepo: ', err)
+    //         Session.set('error', err.error);
+    //       } else {
+    //         console.log('unexpected error getUserRepo: ', err)
+    //         Session.set('error', err);
+    //       }
     //     } else {
-    //       console.log('unexpected error: ', err)
-    //       Session.set('error', err);
+    //       console.log('succes getUserRepo', res);
+    //       Session.set('getUserRepo', res);
     //     }
-    //   } else {
-    //     console.log('succes', res);
-    //     Session.set('getReposArmory', res);
-    //   }
+
     // });
+
+    getReposArmory.call({
+      repo_id: 'armory-sample-project',
+      user_gh_id: 'karec'
+    }, (err, res) => {
+      if (err) {
+        if (err.error === 404) {
+          console.log('404 getReposArmory: ', err)
+          Session.set('error', err.error);
+        } else {
+          console.log('unexpected error: ', err)
+          Session.set('error', err);
+        }
+      } else {
+        console.log('succes', res);
+        Session.set('getReposArmory', res);
+      }
+    });
   },
 
 });
