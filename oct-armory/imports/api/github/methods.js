@@ -1,5 +1,4 @@
 import { HTTP } from 'meteor/http';
-//import {Session} from 'meteor/session';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
@@ -85,9 +84,12 @@ export const getReposArmory = new ValidatedMethod({
     const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id;
     try{
       //const userRepos = userReposSync(gh_api_request, {});
-      userRepos = HTTP.get(gh_api_request, {headers:
-        {"User-Agent": "Meteor/1.3"}});
-      console.log("getUserRepo result: ", userRepos.data.total_count);
+      if(Meteor.isServer){
+        userRepos = HTTP.get(gh_api_request, {headers:
+          {"User-Agent": "Meteor/1.3"}});
+        console.log("getUserRepo result: ", userRepos.data.total_count);
+      }
+      
       //return userRepos
     } catch(e) {
       Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
@@ -113,6 +115,8 @@ export const getReposArmory = new ValidatedMethod({
       });
     } else if(!userRepos || res.length == 0) {
       Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found");
+      return false;
     }
+    return res;
   }
 });
