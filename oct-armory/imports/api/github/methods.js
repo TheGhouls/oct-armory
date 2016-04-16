@@ -1,8 +1,10 @@
 import { HTTP } from 'meteor/http';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import {YAML} from 'meteor/udondan:yml';
 
-GH_AUTH = "?client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
+GH_AUTH = "client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
+
 export const getUserRepo = new ValidatedMethod({
   name: 'gh.getUserRepo',
 
@@ -20,7 +22,7 @@ export const getUserRepo = new ValidatedMethod({
       return userRepos
     } catch(e) {
       Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
-      console.log('getUserRepo error: ', e);
+      console.log('getUserRepo error: ');
       const userRepos = false;
       return userRepos;
     }
@@ -80,43 +82,49 @@ export const getReposArmory = new ValidatedMethod({
     console.log(user_gh_id);
     console.log(repo_id);
     let userRepos = 0;
-    //const userReposSync = Meteor.wrapAsync(HTTP.get );
     const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id;
     try{
-      //const userRepos = userReposSync(gh_api_request, {});
       if(Meteor.isServer){
         userRepos = HTTP.get(gh_api_request, {headers:
           {"User-Agent": "Meteor/1.3"}});
         console.log("getUserRepo result: ", userRepos.data.total_count);
       }
-      
-      //return userRepos
     } catch(e) {
       Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
       console.log('getUserRepo error: ', e);
       userRepos = false;
-      //return userRepos;
+      return userRepos;
     }
 
+    res = [];
     if(userRepos) {
-      console.info("in if");
-      res = [];
       _.each(userRepos.data.items, (repo) => {
-        let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml"+GH_AUTH;
+        let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;
         try{
           console.log(repo.name);
           //tmp_res = {};
           const tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
           res.push(tmp_res);
-          console.log(tmp_res);
         } catch(e) {
           console.log("not an Armory repo: ", e.message);
         }
       });
-    } else if(!userRepos || res.length == 0) {
+    }
+
+    if(res.length == 0) {
+      console.log("no Armory repositories found");
       Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found");
       return false;
     }
+    let buf = new Buffer(res[0].data.content, 'Base64')
+    try {
+      var data = YAML.safeLoad(buf.toString());
+      console.log(data.name);
+    } catch (e) {
+      console.log(e);
+    }
+    let tmp = CryptoJS.enc.Base64.parse(res[0].data.content);
+    //console.log(tmp.toString(CryptoJS.enc.Utf8));
     return res;
   }
 });
