@@ -3,7 +3,7 @@ template(name='addPlan')
   if (getError)
     | {{> appError err=getError}}
   if (currentUser)
-    p {{getUserArmoryRepos}}
+    p  current user armory repo
     table.table.table-striped.table-hover
       thead
         tr
@@ -11,13 +11,17 @@ template(name='addPlan')
           |       
           th Name
           |       
-          th url         
+          th url
+          |     
+          th tag
       tbody
-        each ghRepos
+        each getUserArmoryRepos
           tr
             td
               button(id=id).addBp add
             |       
-            td= name
+            td= armory_info.name
             |       
             td= url
+            |       
+            td= armory_info.tags

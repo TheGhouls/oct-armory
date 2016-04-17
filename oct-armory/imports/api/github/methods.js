@@ -2,8 +2,57 @@ import { HTTP } from 'meteor/http';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 import {YAML} from 'meteor/udondan:yml';
+import {Match} from 'meteor/check';
 
 GH_AUTH = "client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
+
+
+ArmoryInfoSchema = new SimpleSchema({
+  name: {
+      type: String,
+      label: "Name",
+      max: 200,
+      optional: true
+    },
+  author: {
+      type: String,
+      label: "Author",
+      optional: true
+    },
+  readme: {
+    type: String,
+    optional: true
+  },
+
+  license: {
+    type: String,
+    optional: true
+  },
+
+  turrets: {
+    type: [String],
+    optional: true
+  },
+  global_configuration: {
+    type: [String],
+    optional: true
+  },
+
+  extra_turret_config: {
+    type: [String],
+    optional: true
+  },
+
+  tags: {
+    type: [String],
+    optional: true
+  },
+
+  dependencies: {
+    type: [String],
+    optional: true
+  }
+});
 
 export const getUserRepo = new ValidatedMethod({
   name: 'gh.getUserRepo',
@@ -21,7 +70,7 @@ export const getUserRepo = new ValidatedMethod({
       console.log("getUserRepo result: ", userRepos.data);
       return userRepos
     } catch(e) {
-      Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
+      throw new Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
       console.log('getUserRepo error: ');
       const userRepos = false;
       return userRepos;
@@ -44,7 +93,7 @@ export const getRepoReadme = new ValidatedMethod({
       const res = HTTP.call('GET', gh_api_request);
       return res;
     } catch(e) {
-      Meteor.Error('gh.getRepoReadme.httperror', "cant process http call error is: "+e);
+      throw new Meteor.Error('gh.getRepoReadme.httperror', "cant process http call error is: "+e);
       return e;
     }
   }
@@ -64,34 +113,32 @@ export const getRepoDlStat = new ValidatedMethod({
       const res = HTTP.call('GET', gh_api_request);
       return res;
     } catch(e) {
-      Meteor.Error('gh.getRepoDlStat.httperror', "cant process http call error is: "+e);
+      throw new Meteor.Error('gh.getRepoDlStat.httperror', "cant process http call error is: "+e);
       return e;
     }
   }
 });
 
+
 export const getReposArmory = new ValidatedMethod({
   name: 'gh.getReposArmory',
 
   validate: new SimpleSchema({
-    user_gh_id: { type: String},
-    repo_id: { type: String}
+    user_gh_id: { type: String}
   }).validator(),
   
-  run({user_gh_id, repo_id }){
-    console.log(user_gh_id);
-    console.log(repo_id);
-    let userRepos = 0;
-    const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id;
+  run({user_gh_id}){
+    let userRepos = null;
+    const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id+"+fork:true&"+GH_AUTH;
     try{
       if(Meteor.isServer){
         userRepos = HTTP.get(gh_api_request, {headers:
           {"User-Agent": "Meteor/1.3"}});
-        console.log("getUserRepo result: ", userRepos.data.total_count);
+        console.log("getReposArmory result: ", userRepos.data.total_count);
       }
     } catch(e) {
-      Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
-      console.log('getUserRepo error: ', e);
+      throw new Meteor.Error('gh.getReposArmory.httperror', "cant process http call error is: $e");
+      console.log('getReposArmory error: ', e);
       userRepos = false;
       return userRepos;
     }
@@ -103,28 +150,40 @@ export const getReposArmory = new ValidatedMethod({
         try{
           console.log(repo.name);
           //tmp_res = {};
-          const tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
-          res.push(tmp_res);
+          let tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
+          /**
+           * Decode yml file from base64 format and convert it to json for armory.yaml validation
+           * Retunr repo obj extended with armory_info (yml converted to json) 
+           */
+          let buf = new Buffer(tmp_res.data.content, 'Base64')
+          try {
+            let armory_info_json = YAML.safeLoad(buf.toString());
+            isValid = Match.test(armory_info_json, ArmoryInfoSchema);
+            if (isValid) {
+              _.extend(repo, {armory_info: armory_info_json});
+              console.log(tmp_res.data.armoryInfo);
+              res.push(repo);
+            } else {
+              throw new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: missing info");
+              console.log('armory.yml is not valid: missing info');
+            }
+          } catch (e) {
+            throw new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: "+e.message);
+            console.log(e);
+          }
         } catch(e) {
-          console.log("not an Armory repo: ", e.message);
+          //console.log("not an Armory repo: ", e.error);
         }
       });
     }
+    if(Meteor.isServer){
+      if(res.length == 0) {
+        console.log("no Armory repositories found");
+        throw new Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found: "+res.length+" plan found for user: "+user_gh_id);
+      } else {
+        return res;
+      }
+    }
 
-    if(res.length == 0) {
-      console.log("no Armory repositories found");
-      Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found");
-      return false;
-    }
-    let buf = new Buffer(res[0].data.content, 'Base64')
-    try {
-      var data = YAML.safeLoad(buf.toString());
-      console.log(data.name);
-    } catch (e) {
-      console.log(e);
-    }
-    let tmp = CryptoJS.enc.Base64.parse(res[0].data.content);
-    //console.log(tmp.toString(CryptoJS.enc.Utf8));
-    return res;
   }
 });

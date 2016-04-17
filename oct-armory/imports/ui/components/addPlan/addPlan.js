@@ -49,28 +49,8 @@ Template.addPlan.helpers({
 
   getUserArmoryRepos () {
     console.log("getUserArmoryRepos");
-    
-    // getUserRepo.call({
-    //     user_gh_id: 'karec'
-    //   }, (err, res) => {
-    //     if (err) {
-    //       if (err.error === 404) {
-    //         console.log('404 getUserRepo: ', err)
-    //         Session.set('error', err.error);
-    //       } else {
-    //         console.log('unexpected error getUserRepo: ', err)
-    //         Session.set('error', err);
-    //       }
-    //     } else {
-    //       console.log('succes getUserRepo', res);
-    //       Session.set('getUserRepo', res);
-    //     }
-
-    // });
-
     getReposArmory.call({
-      repo_id: 'armory-sample-project',
-      user_gh_id: 'karec'
+      user_gh_id: Meteor.user().services.github.username
     }, (err, res) => {
       if (err) {
         if (err.error === 404) {
@@ -85,6 +65,7 @@ Template.addPlan.helpers({
         Session.set('getReposArmory', res);
       }
     });
+    return Session.get('getReposArmory');
   },
 
 });
