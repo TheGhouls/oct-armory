@@ -23,6 +23,10 @@ Meteor.loginWithGithub({
   requestPermissions: ['user', 'public_repo']
 }, function (err) {
   if (err)
-  	console.log(err);
-    //Session.set('errorMessage', err.reason || 'Unknown error');
+    if(err.message === "Login service configuration not yet loaded") {
+      console.warn(err.message);
+    } else {
+      console.error(err.message);
+      Session.set('error', err.message || 'Unknown error');
+    }
 });

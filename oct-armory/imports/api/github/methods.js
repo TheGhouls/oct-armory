@@ -54,26 +54,30 @@ ArmoryInfoSchema = new SimpleSchema({
   }
 });
 
-export const getUserRepo = new ValidatedMethod({
-  name: 'gh.getUserRepo',
+export const getRepo = new ValidatedMethod({
+  name: 'gh.getRepo',
 
   validate: new SimpleSchema({
+    repo_gh_id: { type: String},
     user_gh_id: { type: String}
   }).validator(),
-  run({user_gh_id}){
-    const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id;
+  run({repo_gh_id, user_gh_id}){
+    console.log('user gh id: ', user_gh_id);
+    const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_gh_id+"?"+GH_AUTH;
     //const userReposSync = Meteor.wrapAsync(HTTP.get );
-    try{
-      //const userRepos = userReposSync(gh_api_request, {});
-      const userRepos = HTTP.get(gh_api_request, {headers:
-        {"User-Agent": "Meteor/1.3"}});
-      console.log("getUserRepo result: ", userRepos.data);
-      return userRepos
-    } catch(e) {
-      throw new Meteor.Error('gh.getUserRepo.httperror', "cant process http call error is: $e");
-      console.log('getUserRepo error: ');
-      const userRepos = false;
-      return userRepos;
+    if(Meteor.isServer) {
+      try{
+        //const userRepos = userReposSync(gh_api_request, {});
+        const userRepo = HTTP.get(gh_api_request, {headers:
+          {"User-Agent": "Meteor/1.3"}});
+        console.log("getRepo result: ", userRepo.data);
+        return userRepo
+      } catch(e) {
+        throw new Meteor.Error('gh.getRepo.httperror', "cant process http call error is: "+e.message);
+        console.log('getUserRepo error: '+e.message);
+        const userRepo = false;
+        return userRepo;
+      }
     }
 
   }
