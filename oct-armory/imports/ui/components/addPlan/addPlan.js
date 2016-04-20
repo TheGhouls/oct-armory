@@ -4,6 +4,7 @@ import { GhHelper } from '../../../api/github/GhHelper.es6.js';
 import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
+import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import './addPlan.jade';
 /*****************************************************************************/
 /* Plan: Event Handlers */
@@ -20,9 +21,9 @@ Template.addPlan.events({
 /* Plan: Helpers */
 /*****************************************************************************/
 Template.addPlan.helpers({
-  ghRepos () {
+  isLoading () {
     //console.log(Session.get("getUserRepo"));
-    return Session.get("getUserRepo");
+    return Session.get("loaded");
   },
 
   getReadme () {
@@ -50,6 +51,7 @@ Template.addPlan.helpers({
   },
 
   getUserArmoryRepos () {
+    Session.set('loaded', false);
     let chached_count = 0;
     if (typeof (CachedLocalColection) === 'object'){
       console.log('CachedLocalColection');
@@ -81,13 +83,14 @@ Template.addPlan.helpers({
         }
       } else {
         console.log('succes', res);
-        CachedLocalColection = new Mongo.Collection(null);
-        //CachedLocalColection.remove({});
+        //CachedLocalColection = new Mongo.Collection(null);
+        CachedLocalColection.remove({});
         CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
           //console.log(res);
           console.log(CachedLocalColection.find().count());
         });
         Session.set('getReposArmory', res);
+        Session.set('loaded', true);
       }
     });
     
@@ -112,6 +115,27 @@ Template.addPlan.onRendered(function () {
       let param = FlowRouter.getParam("_id");
         if (param) {        
           console.log("if param", param);
+          if (!Session.get('getReposArmory')) {
+
+            getRepo.call({
+                repo_gh_id: param,
+                user_gh_id: Meteor.user().services.github.username
+              }, (err, res) => {
+                if (err) {
+                  if (err.error === 404) {
+                    console.log('404 getRepo: ', err.message)
+                    Session.set('error', err.message);
+                  } else {
+                    console.log('unexpected error: ', err.message)
+                    Session.set('error', err.message);
+                  }
+                } else {
+                  console.log('succes', res.data);
+                  Session.set('getReposArmory', res.data);
+                }
+              });
+
+          }
 
           addPlan.call({
                 repo_gh_id: param,
@@ -129,26 +153,9 @@ Template.addPlan.onRendered(function () {
                 } else {
                   console.log('succes addPlan', res);
                   Session.set('error', res.data.id);
+                  Session.set('loading', false);
                 }
               });
-
-          // getRepo.call({
-          //     repo_gh_id: param,
-          //     user_gh_id: Meteor.user().services.github.username
-          //   }, (err, res) => {
-          //     if (err) {
-          //       if (err.error === 404) {
-          //         console.log('404 getRepo: ', err.message)
-          //         Session.set('error', err.message);
-          //       } else {
-          //         console.log('unexpected error: ', err.message)
-          //         Session.set('error', err.message);
-          //       }
-          //     } else {
-          //       console.log('succes', res);
-          //       Session.set('error', res.data.id);
-          //     }
-          //   });
         }
       let gh = new GhHelper();
       let res = gh.getUserRepo(Meteor.user().services.github.username);

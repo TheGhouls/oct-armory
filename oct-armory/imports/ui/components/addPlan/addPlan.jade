@@ -25,3 +25,8 @@ template(name='addPlan')
             td= url
             |       
             td= armory_info.tags
+
+    if (isLoading)
+      p loaded
+    else 
+      h3 Loading ...
