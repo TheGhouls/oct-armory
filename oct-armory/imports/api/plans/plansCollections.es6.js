@@ -12,7 +12,8 @@ Schemas.Plan = new SimpleSchema({
 		        return Meteor.userId();
 			}
 		},
-		optional: true
+		optional: true,
+		index: true
 	},
 
 	create: {
@@ -37,7 +38,18 @@ Schemas.Plan = new SimpleSchema({
 		type: String,
 		label: "gh_repo_url",
 		regEx: SimpleSchema.RegEx.Url,
-		optional: true
+		optional: true,
+		index: true,
+    unique: true
+	},
+
+	gh_repo_id: {
+		type: String,
+		label: "gh_repo_id",
+		regEx: SimpleSchema.RegEx.Url,
+		optional: true,
+		index: true,
+    unique: true
 	},
 
 	gh_md_url: {
@@ -75,6 +87,7 @@ Schemas.Plan = new SimpleSchema({
 		      }
 		    },
 		    denyInsert: true,
+		    denyUpdate: true,
 		    optional: true
 	}
 });
