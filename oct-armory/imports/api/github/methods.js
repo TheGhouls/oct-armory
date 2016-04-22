@@ -136,8 +136,7 @@ export const getReposArmory = new ValidatedMethod({
     const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id+"+fork:true&"+GH_AUTH;
     try{
       if(Meteor.isServer){
-        userRepos = HTTP.get(gh_api_request, {headers:
-          {"User-Agent": "Meteor/1.3"}});
+        userRepos = HTTP.get(gh_api_request, {headers:{"User-Agent": "Meteor/1.3"}});
         console.log("getReposArmory result: ", userRepos.data.total_count);
       }
     } catch(e) {
@@ -152,9 +151,11 @@ export const getReposArmory = new ValidatedMethod({
       _.each(userRepos.data.items, (repo) => {
         let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;
         try{
-          console.log(repo.name);
-          //tmp_res = {};
           let tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
+          let readme = HTTP.call('GET', 'https://api.github.com/repos/'+user_gh_id+"/"+repo.name+"/readme?"+GH_AUTH, {headers: {"User-Agent": "Meteor/1.3"}});
+          _.extend(repo, {readme: readme.data});
+
+          console.log('repo readme is: ', repo.readme);
           /**
            * Decode yml file from base64 format and convert it to json for armory.yaml validation
            * Retunr repo obj extended with armory_info (yml converted to json) 
@@ -165,7 +166,6 @@ export const getReposArmory = new ValidatedMethod({
             isValid = Match.test(armory_info_json, ArmoryInfoSchema);
             if (isValid) {
               _.extend(repo, {armory_info: armory_info_json});
-              console.log(tmp_res.data.armoryInfo);
               res.push(repo);
             } else {
               throw new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: missing info");

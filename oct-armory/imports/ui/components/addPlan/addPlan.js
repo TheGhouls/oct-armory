@@ -115,6 +115,29 @@ Template.addPlan.onRendered(function () {
       let param = FlowRouter.getParam("_id");
         if (param) {        
           console.log("if param", param);
+
+          addPlanClosure = function (param, repo) {
+            addPlan.call({
+                  repo_gh_id: param,
+                  user_gh_id: Meteor.user().services.github.username,
+                  repo: repo
+                }, (err, res) => {
+                  if (err) {
+                    if (err.error === 500) {
+                      console.log('500 addPlan: ', err.message)
+                      Session.set('error', err.message);
+                    } else {
+                      console.log('unexpected error addPlan : ', err.message)
+                      console.log(repo);
+                      Session.set('error', err.message);
+                    }
+                  } else {
+                    console.log('succes addPlan', res);
+                    Session.set('loaded', true);
+                  }
+                });
+          }
+
           if (!Session.get('getReposArmory')) {
 
             getRepo.call({
@@ -130,39 +153,23 @@ Template.addPlan.onRendered(function () {
                     Session.set('error', err.message);
                   }
                 } else {
-                  console.log('succes', res.data);
+                  console.log('succes addPlan client', res.data);
                   Session.set('getReposArmory', res.data);
+                  addPlanClosure(param, res.data);
                 }
               });
 
+          } else{
+            addPlanClosure(param, Session.get('getReposArmory'));
           }
 
-          addPlan.call({
-                repo_gh_id: param,
-                user_gh_id: Meteor.user().services.github.username,
-                param: param
-              }, (err, res) => {
-                if (err) {
-                  if (err.error === 404) {
-                    console.log('404 addPlan: ', err.message)
-                    Session.set('error', err.message);
-                  } else {
-                    console.log('unexpected error addPlan : ', err.message)
-                    Session.set('error', err.message);
-                  }
-                } else {
-                  console.log('succes addPlan', res);
-                  Session.set('error', res.data.id);
-                  Session.set('loading', false);
-                }
-              });
         }
-      let gh = new GhHelper();
-      let res = gh.getUserRepo(Meteor.user().services.github.username);
+      // let gh = new GhHelper();
+      // let res = gh.getUserRepo(Meteor.user().services.github.username);
       //let readme = gh.getRepoReadme(Meteor.user().services.github.username,"erp_meteor");
     }
   });
 });
 
-Template.plan.onDestroyed(function () {
+Template.addPlan.onDestroyed(function () {
 });
