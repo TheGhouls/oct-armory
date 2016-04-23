@@ -54,6 +54,7 @@ Schemas.Plan = new SimpleSchema({
 	gh_readme: {
 		type: Object,
 		label: "gh_readme",
+		blackbox: true,
 		optional: true
 	},
 

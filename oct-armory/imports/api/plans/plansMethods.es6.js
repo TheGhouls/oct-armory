@@ -13,8 +13,11 @@ export const addPlan = new ValidatedMethod({
   }).validator(),
 
   run({repo_gh_id, user_gh_id, repo}){
+    if (! Meteor.userId()) {
+      throw new Meteor.Error('not-authorized');
+    }
       let x = _.where(repo, {name: repo_gh_id});
-      console.log('x is: ', x);
+      //console.log('x is: ', x[0].readme);
       if (Meteor.isServer){
         try {
           res = Plans.insert({
@@ -28,6 +31,7 @@ export const addPlan = new ValidatedMethod({
             gh_stargazers_count: x[0].stargazers_count,
             gh_watchers_count: x[0].watchers_count
             });
+          //console.log('res is: ', x[0].readme);
           return res;
         } catch (e) {
           throw new Meteor.Error('plans.addPlan', "can't write the DB error is: "+e.message);

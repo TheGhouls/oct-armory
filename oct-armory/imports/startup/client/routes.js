@@ -42,8 +42,6 @@ planSection.route('/', {
 
 planSection.route('/add/', {
     action: function(params, queryParams) {
-      console.log("Params:", params);
-      console.log("Query Params:", queryParams);
       BlazeLayout.render("mainLayout", {nav: "nav", content: "addPlan"});
     }
 });
@@ -58,8 +56,6 @@ planSection.route('/add/:_id', {
 
 FlowRouter.route('/search:idm', {
   action: function(params, queryParams) {
-    console.log("Params:", params);
-    console.log("Query Params:", queryParams);
     BlazeLayout.render("mainLayout", {nav: "nav", content: "plan"});
   }
 });

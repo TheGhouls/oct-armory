@@ -83,14 +83,14 @@ Template.addPlan.helpers({
         }
       } else {
         console.log('succes', res);
+        Session.set('loaded', true);
         //CachedLocalColection = new Mongo.Collection(null);
         CachedLocalColection.remove({});
-        CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
+        CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 100000}, (err, res) => {
           //console.log(res);
-          console.log(CachedLocalColection.find().count());
+          console.log('chached collection', CachedLocalColection.find().fetch());
         });
         Session.set('getReposArmory', res);
-        Session.set('loaded', true);
       }
     });
     
