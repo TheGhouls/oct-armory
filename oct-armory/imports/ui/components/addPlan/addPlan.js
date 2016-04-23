@@ -65,9 +65,10 @@ Template.addPlan.helpers({
       if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire <= new Date().getTime()) {
         console.log("in cache expire: ", CachedLocalColection.find().fetch()[0].expire)
         console.log("reactive session with mongo cached data");
+        Session.set('loaded', true);
         Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
       }
-      
+      Session.set('loaded', true);
       return Session.get('getReposArmory');
     }
 
@@ -96,7 +97,6 @@ Template.addPlan.helpers({
         Session.set('getReposArmory', res);
       }
     });
-    
     return Session.get('getReposArmory');
   },
 

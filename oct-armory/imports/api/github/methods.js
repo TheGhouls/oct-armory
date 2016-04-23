@@ -164,7 +164,7 @@ export const getReposArmory = new ValidatedMethod({
         }).count();
 
         
-        
+        //if repo is not already in db
         if (is_in_db < 0) {
           console.log('is in db', is_in_db, Meteor.user()._id);
 
