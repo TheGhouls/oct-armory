@@ -3,8 +3,7 @@ template(name='mainLayout')
     | {{>Template.dynamic template=nav}}
   header
     h1.center Oct Armory
-    if (getError)
-      | {{> appError err=getError}}
+    | {{> sAlert}}
   main
     | {{>Template.dynamic template=content}}
   

@@ -6,6 +6,7 @@ import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
 import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import './addPlan.jade';
+import { sAlert } from 'meteor/juliancwirko:s-alert';
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -38,14 +39,14 @@ Template.addPlan.helpers({
           // error, and probably use an i18n library to generate the
           // message from the error code.
           console.log('404 error: ', err)
-          Session.set('error', err);
+          sAlert.error('getReadme 404 error: '+err.message);
         } else {
           console.log('unexpected error: ', err)
-          Session.set('error', err);
+          sAlert.error('getReadme unexpected error: '+err.message);
         }
       } else {
-        console.log('succes', res);
-        Session.set('getRepoReadme', res);
+        console.log('success', res);
+        sAlert.success('getReadme Success: '+res.lenght);
       }
     });
   },
@@ -54,7 +55,7 @@ Template.addPlan.helpers({
     Session.set('loaded', false);
     let chached_count = 0;
     if (typeof (CachedLocalColection) === 'object'){
-      console.log('CachedLocalColection');
+      console.log('CachedLocalColection found');
       chached_count = CachedLocalColection.find().count();
     }
     console.log("getUserArmoryRepos");
@@ -76,10 +77,12 @@ Template.addPlan.helpers({
       if (err) {
         if (err.error === 404) {
           console.log('404 getReposArmory: ', err)
-          Session.set('error', err.error);
+          sAlert.error('404 getReposArmoryerror: '+err.message);
+        } else if (err.error === 'gh.getReposArmory.norepofound') {
+          sAlert.warning('no new battle plans founds');
         } else {
           console.log('unexpected error: ', err)
-          Session.set('error', err);
+          sAlert.error('unexpected getReposArmoryerror: '+err.message);
         }
       } else {
         console.log('succes', res);
@@ -123,17 +126,17 @@ Template.addPlan.onRendered(function () {
                   repo: repo
                 }, (err, res) => {
                   if (err) {
-                    if (err.error === 500) {
-                      console.log('500 addPlan: ', err.message)
-                      Session.set('error', err.message);
+                    if (err.error === 404) {
+                      console.log('404 addPlan: ', err.message)
+                      sAlert.error('404 addPlan: error: '+err.message);
                     } else {
                       console.log('unexpected error addPlan : ', err.message)
                       console.log(repo);
-                      Session.set('error', err.message);
+                      sAlert.error('unexpected addPlan: error: '+err.message);
                     }
                   } else {
                     console.log('succes addPlan', res);
-                    Session.set('loaded', true);
+                    
                   }
                 });
           }
@@ -147,13 +150,13 @@ Template.addPlan.onRendered(function () {
                 if (err) {
                   if (err.error === 404) {
                     console.log('404 getRepo: ', err.message)
-                    Session.set('error', err.message);
+                    sAlert.error('404 getRepo: error: '+err.message);
                   } else {
                     console.log('unexpected error: ', err.message)
-                    Session.set('error', err.message);
+                    sAlert.error('404 getRepo: error: '+err.message);
                   }
                 } else {
-                  console.log('succes addPlan client', res.data);
+                  console.log('succes getRepo client', res.data);
                   Session.set('getReposArmory', res.data);
                   addPlanClosure(param, res.data);
                 }
