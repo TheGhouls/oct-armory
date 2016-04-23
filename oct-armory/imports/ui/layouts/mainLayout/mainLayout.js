@@ -9,9 +9,7 @@ Template.mainLayout.onCreated(function mainLayoutOnCreated() {
 });
 
 Template.mainLayout.helpers({
- getError () {
-    return Session.get("error");
-  }
+ 
 });
 
 

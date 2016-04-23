@@ -4,8 +4,7 @@ template(name='mainLayout')
       .navbar.navbar-default.navbar-fixed-top.navbar-layout
         | {{> Template.dynamic template=nav }}
     header
-      if (getError)
-        | {{> appError err=getError }}
+      | {{> sAlert}}
     main
       | {{> Template.dynamic template=content }}
 
