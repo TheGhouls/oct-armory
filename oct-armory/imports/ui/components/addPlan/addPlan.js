@@ -53,50 +53,50 @@ Template.addPlan.helpers({
 
   getUserArmoryRepos () {
     Session.set('loaded', false);
-    let chached_count = 0;
-    if (typeof (CachedLocalColection) === 'object'){
-      console.log('CachedLocalColection found');
-      chached_count = CachedLocalColection.find().count();
-    }
-    console.log("getUserArmoryRepos");
 
-    if(Session.get('getReposArmory') || chached_count > 0) {
+    console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
+
+    if(Session.get('getReposArmory') || CachedLocalColection.find().count() > 0) {
       
-      if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire <= new Date().getTime()) {
-        console.log("in cache expire: ", CachedLocalColection.find().fetch()[0].expire)
-        console.log("reactive session with mongo cached data");
-        Session.set('loaded', true);
-        Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
+      if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire > new Date().getTime()) {
+        console.log("in cache expire valide: ", CachedLocalColection.find().fetch()[0].expire, new Date().getTime());
+        if(Session.get('getReposArmory') !== 'undefined'){
+          console.log("reactive session with mongo cached data");
+          Session.set('loaded', true);
+          Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
+        }
+        
       }
       Session.set('loaded', true);
       return Session.get('getReposArmory');
-    }
-
-    getReposArmory.call({
-      user_gh_id: Meteor.user().services.github.username
-    }, (err, res) => {
-      if (err) {
-        if (err.error === 404) {
-          console.log('404 getReposArmory: ', err)
-          sAlert.error('404 getReposArmoryerror: '+err.message);
-        } else if (err.error === 'gh.getReposArmory.norepofound') {
-          sAlert.warning('no new battle plans founds');
+    } else {
+      
+      getReposArmory.call({
+        user_gh_id: Meteor.user().services.github.username
+      }, (err, res) => {
+        if (err) {
+          if (err.error === 404) {
+            console.log('404 getReposArmory: ', err);
+            Session.set('loaded', true);
+            sAlert.error('404 getReposArmoryerror: '+err.message);
+          } else if (err.error === 'gh.getReposArmory.norepofound') {
+            Session.set('loaded', true);
+            sAlert.warning('no new battle plans founds');
+          } else {
+            console.log('unexpected error: ', err)
+            sAlert.error('unexpected getReposArmoryerror: '+err.message);
+          }
         } else {
-          console.log('unexpected error: ', err)
-          sAlert.error('unexpected getReposArmoryerror: '+err.message);
+          console.log('succes getReposArmory ', res);
+          Session.set('loaded', true);
+          CachedLocalColection.remove({});
+          CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
+            console.log('chached collection', CachedLocalColection.find().fetch());
+          });
+          Session.set('getReposArmory', res);
         }
-      } else {
-        console.log('succes', res);
-        Session.set('loaded', true);
-        //CachedLocalColection = new Mongo.Collection(null);
-        CachedLocalColection.remove({});
-        CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 100000}, (err, res) => {
-          //console.log(res);
-          console.log('chached collection', CachedLocalColection.find().fetch());
-        });
-        Session.set('getReposArmory', res);
-      }
-    });
+      });
+    }
     return Session.get('getReposArmory');
   },
 

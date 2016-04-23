@@ -165,7 +165,7 @@ export const getReposArmory = new ValidatedMethod({
 
         
         //if repo is not already in db
-        if (is_in_db < 0) {
+        if (true) {
           console.log('is in db', is_in_db, Meteor.user()._id);
 
           let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;

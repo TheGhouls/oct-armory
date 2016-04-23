@@ -9,6 +9,13 @@ Template.mainLayout.onCreated(function mainLayoutOnCreated() {
 });
 
 Template.mainLayout.helpers({
+
+  currentUser (){
+    return {
+      _id: Meteor.userId(),
+      name: Meteor.user().name
+    }
+  }
  
 });
 
