@@ -37,6 +37,6 @@ Accounts.onCreateUser(function (options, user) {
 
   // user.profile = result.data;
   //user.everything = repo
-
+  Roles.addUsersToRoles(aliceUserId, 'user', Roles.GLOBAL_GROUP);
   return user;
 });

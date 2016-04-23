@@ -1,11 +1,8 @@
 //import GitHub from 'github/api/v3.0.0';
 import { HTTP } from 'meteor/http';
 import {Session} from 'meteor/session';
-
-// Setup sync API
-// const getFollowingFromUserFiber =
-//   Meteor.wrapAsync(github.user.getFollowingFromUser, github.user);
-
+import {ValidatedMethod} from 'meteor/mdg:validated-method';
+import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
 export class GhHelper {
 	constructor() {
@@ -13,16 +10,14 @@ export class GhHelper {
 	}
 
 	getUserRepo(user_gh_id) {
-		console.log(user_gh_id);
 		const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id; 
 		HTTP.call('GET', gh_api_request, (err,res) => {
 			if(err){
 				console.log("error:", err);
 				return Session.set("error", err);
 			}
-			Session.set("getUserRepo", res.data.items);
-			
-			});
+			Session.set("getUserRepo", res.data.items);		
+		});
 	}
 
 	getRepoReadme(user_gh_id, repo_id) {
@@ -35,10 +30,11 @@ export class GhHelper {
 			console.dir(res);
 			Session.set("getRepoReadme", res.data.items);
 			return Session.get("getRepoReadme");
-			});
+		});
 	}
 
-	getRepoArmory(user_gh_id, repo_id) {
+	getReposArmory(user_gh_id, repos_id) {
+
 		const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/contents/oct_armory.yml "; 
 		HTTP.call('GET', gh_api_request, (err,res) => {
 			if(err){
@@ -46,9 +42,9 @@ export class GhHelper {
 				return Session.set("error", err);
 			}
 			console.dir(res);
-			Session.set("getRepoArmory", res.data.items);
-			return Session.get("getRepoArmory");
-			});
+			Session.set("getReposArmory", res.data.items);
+			return Session.get("getReposArmory");
+		});
 	}
 
 	getRepoDlStat(user_gh_id, repo_id) {
@@ -65,5 +61,6 @@ export class GhHelper {
 	}
 
 }
+
 
 //export const Gh = new GhHelper();

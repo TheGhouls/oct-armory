@@ -42,10 +42,18 @@ planSection.route('/', {
     }
 });
 
-planSection.route('/add:gh_repo_id', {
+planSection.route('/add/', {
     action: function(params, queryParams) {
       console.log("Params:", params);
       console.log("Query Params:", queryParams);
+      BlazeLayout.render("mainLayout", {nav: "nav", content: "addPlan"});
+    }
+});
+
+planSection.route('/add/:_id', {
+    action: function(params, queryParams) {
+      // console.log("Params:", params);
+      // console.log("Query Params:", queryParams);
       BlazeLayout.render("mainLayout", {nav: "nav", content: "addPlan"});
     }
 });

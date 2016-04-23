@@ -1,4 +1,4 @@
-Plans = new Mongo.Collection("plans");
+export const Plans = new Mongo.Collection("plans");
 
 let Schemas = {};
 let mydate = new Date();
