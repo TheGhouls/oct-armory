@@ -16,9 +16,33 @@ template(name='nav')
           a.navbar-brand(href='#') ARMORY
         div.col-xs-12.col-sm-3
           ul.nav.navbar-nav.pull-right
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false') Login with
-              ul.dropdown-menu(role='menu')
-                li
-                  a(href='#') {{> loginButtons }}
+             li.dropdown
+               a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
+                 unless (currentUser)
+                   | Login 
+                   span.caret
+                 else
+                   | My Account
+               |           
+               ul.dropdown-menu(role='menu')
+                 li
+                   a(href='#') {{> loginButtons}}
+                   |             
+                 if (currentUser)             
+                   li
+                     a(href='/users/') Profile
+                   |             
+                   li
+                     a(href='/plans/{{currentUser}}') My BP
+                   |             
+                   li.divider
+                   |             
+                   li
+                     a(href='/stared') Stared
+                   |             
+                   li.divider
+                   |             
+                   li
+                     a(href='/plan/add') Add Bp
+           |       
 
