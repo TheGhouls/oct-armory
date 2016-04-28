@@ -22,12 +22,18 @@ Template.search.events({
 Template.search.helpers({
 
   getSearchRes () {
-    return PlansSearch.getData({
-          transform: function(matchText, regExp) {
-            return matchText.replace(regExp, "<b>$&</b>")
-          },
+    let res = PlansSearch.getData({
+          // transform: function(matchText, regExp) {
+          //   return matchText.replace(regExp, "<b>$&</b>")
+          // },
           sort: {isoScore: -1}
         });
+    if(res.length >= 1){
+      return res;
+    } else {
+      console.log('not found res: ', res.length);
+      return [];
+    }
   }, 
 
   searchLoading () {
