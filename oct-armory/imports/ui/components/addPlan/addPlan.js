@@ -7,6 +7,7 @@ import { Session } from 'meteor/session';
 import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import './addPlan.jade';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
+import { log } from '../../../api/logger_conf.js';
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -38,9 +39,11 @@ Template.addPlan.helpers({
           // should have some nice UI to display this
           // error, and probably use an i18n library to generate the
           // message from the error code.
+          log.error('404 error: ', err.message, this.userId);
           console.log('404 error: ', err)
           sAlert.error('getReadme 404 error: '+err.message);
         } else {
+          log.error('getReadme unexpected error: ', err.message, this.userId);
           console.log('unexpected error: ', err)
           sAlert.error('getReadme unexpected error: '+err.message);
         }
@@ -76,6 +79,7 @@ Template.addPlan.helpers({
       }, (err, res) => {
         if (err) {
           if (err.error === 404) {
+            log.error('404 getReposArmory: ', err.message, this.userId);
             console.log('404 getReposArmory: ', err);
             Session.set('loaded', true);
             sAlert.error('404 getReposArmoryerror: '+err.message);
@@ -83,6 +87,7 @@ Template.addPlan.helpers({
             Session.set('loaded', true);
             sAlert.warning('no new battle plans founds');
           } else {
+            log.error('unexpected getReposArmoryerror: ', err.message, this.userId);
             console.log('unexpected error: ', err)
             sAlert.error('unexpected getReposArmoryerror: '+err.message);
           }
@@ -127,10 +132,12 @@ Template.addPlan.onRendered(function () {
                 }, (err, res) => {
                   if (err) {
                     if (err.error === 404) {
+                      log.error('404 addPlan: error', err.message, this.userId);
                       console.log('404 addPlan: ', err.message)
                       sAlert.error('404 addPlan: error: '+err.message);
                     } else {
-                      console.log('unexpected error addPlan : ', err.message)
+                      log.error('unexpected error addPlan: ', err.message, this.userId);
+                      console.log('unexpected error addPlan: ', err.message)
                       console.log(repo);
                       sAlert.error('unexpected addPlan: error: '+err.message);
                     }
@@ -149,11 +156,13 @@ Template.addPlan.onRendered(function () {
               }, (err, res) => {
                 if (err) {
                   if (err.error === 404) {
+                    log.error('404 getRepo: error: ', err.message, this.userId);
                     console.log('404 getRepo: ', err.message)
                     sAlert.error('404 getRepo: error: '+err.message);
                   } else {
-                    console.log('unexpected error: ', err.message)
-                    sAlert.error('404 getRepo: error: '+err.message);
+                    log.error('unexpected getRepo: error: ', err.message, this.userId);
+                    console.log('unexpected getRepo: error: ', err.message)
+                    sAlert.error('unexpected getRepo: error: '+err.message);
                   }
                 } else {
                   console.log('succes getRepo client', res.data);

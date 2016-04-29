@@ -8,8 +8,6 @@ template(name='search')
     h4 loading ...
   else if (getSearchRes)
     each (getSearchRes)
-      div
-        h4= name
-        div= short_description
+      | {{> planBox bp=getSearchRes}}
   else
     h2 No Battle Plans match your request

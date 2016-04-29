@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import './search.jade';
+import '../planBox/planBox.js';
 import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import { SearchSource } from 'meteor/meteorhacks:search-source';
 

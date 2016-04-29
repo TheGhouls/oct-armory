@@ -41,3 +41,5 @@ yogiben:spinkit
 meteorhacks:search-source
 check
 ejson
+ostrio:logger
+ostrio:loggerfile
