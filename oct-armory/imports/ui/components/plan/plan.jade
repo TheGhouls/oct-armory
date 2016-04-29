@@ -1,22 +1,5 @@
 template(name='plan')
-  p This is the Add Plan to Armory
-  if (getError)
-    | {{> appError err=getError}}
-  if (currentUser)
-    table.table.table-striped.table-hover
-      thead
-        tr
-          th #
-          |       
-          th Name
-          |       
-          th url         
-      tbody
-        each ghRepos
-          tr
-            td
-              button(id=id).addBp add
-            |       
-            td= name
-            |       
-            td= url
+  if (planInfos)
+    h4 plan info
+  else 
+    h4 no plan found

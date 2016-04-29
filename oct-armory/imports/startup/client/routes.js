@@ -36,8 +36,8 @@ let planSection = FlowRouter.group({
 	prefix:"/plan"
 });
 
-planSection.route('/', {
-    action: function() {
+planSection.route('/:_name', {
+    action: function(params, queryParams) {
       BlazeLayout.render("mainLayout", {nav: "nav", content: "plan"});
     }
 });
