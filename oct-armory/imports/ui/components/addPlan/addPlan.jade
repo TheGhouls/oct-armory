@@ -1,8 +1,8 @@
 template(name='addPlan')
-  h4 Add a Battle Plan Form your GitHub Repos
+  h4.text-center Add a Battle Plan Form your GitHub Repos
   if (currentUser)
-    h5  Click add to add one of your repos
     if (getUserArmoryRepos)
+      h5  Click add to add one of your repos
       table.table.table-striped.table-hover
         thead
           tr

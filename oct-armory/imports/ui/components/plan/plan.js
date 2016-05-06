@@ -1,8 +1,15 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import {GhHelper} from '../../../api/github/GhHelper.es6.js';
-import {Session} from 'meteor/session';
+import { GhHelper } from '../../../api/github/GhHelper.es6.js';
+import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
+import { addPlan } from '../../../api/plans/plansMethods.es6.js';
+import { Session } from 'meteor/session';
+import { Plans } from '../../../api/plans/plansCollections.es6.js';
+import { sAlert } from 'meteor/juliancwirko:s-alert';
+import { log } from '../../../api/logger_conf.js';
 import './plan.jade';
+
+
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -16,10 +23,15 @@ Template.plan.events({
 /* Plan: Helpers */
 /*****************************************************************************/
 Template.plan.helpers({
-	ghRepos () {
-		console.log(Session.get("getUserRepo"));
-    return Session.get("getUserRepo");
-	}
+	getPlan () {
+		console.log(Session.get("getPlan"));
+    //Session.set('loaded', true);
+    return Session.get("getPlan");
+	},
+
+  isLoaded () {
+    return Session.get('loaded');
+  }
 
 });
 
@@ -33,13 +45,31 @@ Template.plan.onCreated(function armoryPlanOnCreated() {
 Template.plan.onRendered(function () {
 	console.log("onRendered plan");
   this.autorun(() => {
-    if (Meteor.user()) {
-      let gh = new GhHelper();
-      let res = gh.getUserRepo(Meteor.user().services.github.username);
-      let readme = gh.getRepoReadme(Meteor.user().services.github.username,"erp_meteor");
-      console.log(res);
-      console.log(readme);
+    let param = FlowRouter.getParam("_name");
+    console.log('param is: ', param);
+    try{
+      let res = Plans.findOne({
+        name: param
+        /*
+        sort: Sort specifier,
+        skip: Number,
+        fields: Field specifier,
+        reactive: Boolean,
+        transform: Function
+        */
+      });
+      console.log('getPlan success: ', res);
+      Session.set('getPlan', res);
+      Session.set('loaded', true);
+
+    } catch(err) {
+      log.error('getPlan error: ', err.message, this.userId);
+      console.log('getPlan error: ', err.message);
+      sAlert.error('getPlan error: '+err.message);
+      Session.set('loaded', true);
+
     }
+    
   });
 });
 

@@ -51,6 +51,15 @@ Schemas.Plan = new SimpleSchema({
     unique: true
 	},
 
+	gh_clone_url: {
+		type: String,
+		label: "gh_clone_url",
+		regEx: SimpleSchema.RegEx.Url,
+		optional: false,
+		index: true,
+    unique: true
+	},
+
 	gh_repo_id: {
 		type: String,
 		label: "gh_repo_id",

@@ -152,20 +152,12 @@ export const getReposArmory = new ValidatedMethod({
 
       _.each(userRepos.data.items, (repo) => {
         let is_in_db = Plans.find({gh_repo_id: String(repo.id), owner: Meteor.user()._id}, {
-          /*
-          sort: Sort specifier,
-          skip: Number,
-          limit: Number,
-          fields: Field specifier,
-          reactive: Boolean,
-          transform: Function
-          */
-         limit: 2
+         limit: 1
         }).count();
 
         
         //if repo is not already in db
-        if (true) {
+        if (is_in_db <= 0) {
           console.log('is in db', is_in_db, Meteor.user()._id);
 
           let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;

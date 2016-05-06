@@ -23,7 +23,8 @@ export const addPlan = new ValidatedMethod({
           res = Plans.insert({
             name: x[0].name, 
             armory_info: x[0].armory_info,
-            gh_repo_url: x[0].url,
+            gh_repo_url: x[0].html_url,
+            gh_clone_url: x[0].clone_url,
             gh_repo_id: x[0].id,
             gh_readme: x[0].readme,
             gh_zip_url: x[0].archive_url.replace('{archive_format}{/ref}', 'zipball'),
