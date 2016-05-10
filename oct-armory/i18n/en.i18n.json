@@ -1,0 +1,47 @@
+{
+  "search": {
+    "title": "Search for OCT battle plan",
+    "not_found": "No battle plan found",
+    "loading": "loading…",
+    "search": "Type a Battle plan name here"
+  },
+
+  "add_plan" : {
+    "title": "Add a battle plan form your github repository",
+    "add_repo": "Click on add to link one of your GitHub repository",
+    "name": "Name",
+    "url": "Url",
+    "tag": "Tags"
+  },
+
+  "app_error": {
+    "error_subtitle": "Quelque chose ne s'est pas bien passé, veuillez ré-essayer"
+  },
+
+  "nav": {
+    "title": "ARMORY",
+    "toogle": "Toogle navigation",
+    "login": "Login",
+    "account": "My account",
+    "profile": "Profile",
+    "bp": "My Battle Plan",
+    "stared": "Stared",
+    "add": "Add a Battle plan"
+  },
+
+  "not_found": {
+    "none": "Not found"
+  },
+
+  "plan": {
+    "infos": "Battle plan info",
+    "name": "Name",
+    "repo_url": "Repository url :",
+    "none": "No battle plan found"
+  },
+
+  "planBox": {
+    "name": "Name",
+    "description": "Short Description"
+  }
+}

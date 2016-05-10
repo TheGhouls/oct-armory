@@ -1,33 +1,28 @@
 template(name='addPlan')
-  h4.text-center Add a Battle Plan Form your GitHub Repos
+  h4.text-center
+    {{_ "add_plan.title"}}
   if (currentUser)
     if (getUserArmoryRepos)
-      h5  Click add to add one of your repos
+      h5  {{_ "add_plan.add_repo"}}
       table.table.table-striped.table-hover
         thead
           tr
             th #
-            |       
-            th Name
-            |       
-            th url
-            |     
-            th tag
+            th {{_ "add_plan.name"}}
+            th {{_ "add_plan.url"}}
+            th {{_ "add_plan.tag"}}
         tbody
           each getUserArmoryRepos
             tr
               td
                 button(id=name).addBp add
-              |       
-              td= armory_info.name
-              |       
-              td= url
-              |       
-              td= armory_info.tags
+              td armory_info.name
+              td {{_ "add_plan.url"}}
+              td armory_info.tags
 
     if (isLoading)
       p .
-    else 
+    else
       .sk-spinner.sk-spinner-cube-grid
         .sk-cube
         .sk-cube

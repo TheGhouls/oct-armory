@@ -1,0 +1,47 @@
+{
+  "search": {
+    "title": "Recherche un Battle Plan OCT",
+    "not_found": "Aucun batlle plan trouvé",
+    "loading": "recherche…",
+    "search": "Saisissez un nom de battle plan"
+  },
+
+  "add_plan" : {
+    "title": "Ajouter un battle plan from you github repository",
+    "add_repo": "Cliquez sur ajouter pour lier un de vos depot Github",
+    "name": "Nom",
+    "url": "Url",
+    "tag": "Categories"
+  },
+
+  "app_error": {
+    "error_subtitle": "Change a few things up and try submitting again"
+  },
+
+  "nav": {
+    "title": "ARMORY",
+    "toogle": "Afficher navigation",
+    "login": "Connection",
+    "account": "Mon compte",
+    "profile": "Profile",
+    "bp": "Mes Battle Plans",
+    "stared": "Favoris",
+    "add": "Ajouter un Battle Plan"
+  },
+
+  "not_found": {
+    "none": "Non trouvé"
+  },
+
+  "plan": {
+    "infos": "Battle plan info",
+    "name": "Nom",
+    "repo_url": "Depot url :",
+    "none": "Aucun battle plan trouvé"
+  },
+
+  "planBox": {
+    "name": "Nom",
+    "description": "Description courte"
+  }
+}

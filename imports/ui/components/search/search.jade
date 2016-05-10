@@ -1,9 +1,9 @@
 template(name='search')
   .search
-    h1.title Search for OCT Battle Plans
+    h1.title {{_ "search.title"}}
     form.center-block(role='search')
       div.form-group
-        input.form-control(type='text', placeholder='Search', id='search_input')
+        input.form-control(type='text', placeholder='TODO HERE', id='search_input')
   if (searchLoading)
     div.text-center
       .sk-spinner.sk-spinner-cube-grid.my-spinner
@@ -16,9 +16,10 @@ template(name='search')
         .sk-cube
         .sk-cube
         .sk-cube
+    h4 {{_ "search.loading"}}
   else if (getSearchRes)
     div.text-center
     each (getSearchRes)
       | {{> planBox bp=getSearchRes}}
   else
-    h2.text-center No Battle Plans match your request
+    h2 {{_ "search.not_found"}}

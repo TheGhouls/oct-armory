@@ -3,8 +3,5 @@ template(name='appError')
     .bs-component
       .alert.alert-dismissible.alert-danger
         button.close(type='button', data-dismiss='alert') &times;
-        |   
         strong error: | {{err}}
-        |  
-        strong Change a few things up
-        |  and try submitting again.
+        strong {{_ "app_error.error_subtitle"}}
