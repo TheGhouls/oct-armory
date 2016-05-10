@@ -26,6 +26,7 @@ callback-hook@1.0.9
 check@1.2.3
 coffeescript@1.1.1
 d3js:d3@3.5.8
+cfs:http-methods@0.0.32
 ddp@1.2.5
 ddp-client@1.2.8
 ddp-common@1.2.6
@@ -123,6 +124,7 @@ spacebars-compiler@1.0.12
 standard-minifier-css@1.0.7
 standard-minifier-js@1.0.7
 templating@1.1.11
+tap:i18n@1.8.0
 templating-tools@1.0.4
 tracker@1.0.14
 udondan:yml@3.2.2_1
