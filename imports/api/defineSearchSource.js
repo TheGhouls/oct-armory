@@ -51,7 +51,7 @@ SearchSource.defineSource('plans', function(searchText, options) {
         },
         limit: 20
       }
-    );
+    ).fetch();
   } else {
     return ['No Battle Plans match your request'];
   }
