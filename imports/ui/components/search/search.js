@@ -6,14 +6,14 @@ import { SearchSource } from 'meteor/meteorhacks:search-source';
 
 let options = {
   keepHistory: 1000 * 60 * 5,
-  localSearch: true
+  localSearch: false
 };
 let fields = ['name', 'short_description', 'readme'];
 
 let PlansSearch = new SearchSource('plans', fields, options);
 
 Template.search.events({
-  'keyup #search_input': _.throttle((e) => {
+  'keyup #search_input': _.debounce((e) => {
     var text = $(e.target).val().trim();
     if(text.length >= 1){
       PlansSearch.search(text);
@@ -21,7 +21,7 @@ Template.search.events({
       console.log(PlansSearch.getCurrentQuery());
     }
     
-  }, 200)
+  }, 300)
 });
 
 Template.search.helpers({
