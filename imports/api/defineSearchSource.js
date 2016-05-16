@@ -5,34 +5,6 @@ SearchSource.defineSource('plans', function(searchText, options) {
   var options = {sort: {isoScore: -1}, limit: 20};
   
   if(searchText) {
-    var regExp = searchText;
-    var selector = {$or: [
-      {name: regExp},
-      {short_description: regExp}
-    ]};
-    
-    //return Plans.find(selector, options).fetch();
-    res = Plans.find(
-      { $text: {
-          $search: searchText
-        }
-      },
-      {
-        fields: {
-          score: {
-            $meta: 'textScore'
-          }
-        },
-        sort: {
-          score: {
-            $meta: 'textScore'
-          }
-        },
-        limit: 20
-      }
-    ).count();
-
-    console.log('search res is: ', res);
     return Plans.find(
       { $text: {
           $search: searchText
