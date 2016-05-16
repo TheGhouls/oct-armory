@@ -17,8 +17,8 @@ Template.search.events({
     var text = $(e.target).val().trim();
     if(text.length >= 1){
       PlansSearch.search(text);
-      console.log(PlansSearch.getData());
-      console.log(PlansSearch.getCurrentQuery());
+      // console.log(PlansSearch.getData());
+      // console.log(PlansSearch.getCurrentQuery());
     }
     
   }, 300)
@@ -28,9 +28,6 @@ Template.search.helpers({
 
   getSearchRes () {
     let res = PlansSearch.getData({
-          // transform: function(matchText, regExp) {
-          //   return matchText.replace(regExp, "<b>$&</b>")
-          // },
           sort: {isoScore: -1}
         });
     if(res.length >= 1){
@@ -42,7 +39,6 @@ Template.search.helpers({
   }, 
 
   searchLoading () {
-    console.log(PlansSearch.getStatus());
     return PlansSearch.getStatus().loading;
   }
   
