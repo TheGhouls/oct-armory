@@ -17,7 +17,7 @@ export const addPlan = new ValidatedMethod({
       throw new Meteor.Error('not-authorized');
     }
       let x = _.where(repo, {name: repo_gh_id});
-      //console.log('x is: ', x[0].readme);
+      console.log('x is: ', x[0].id);
       if (Meteor.isServer){
         try {
           res = Plans.insert({
@@ -25,7 +25,7 @@ export const addPlan = new ValidatedMethod({
             armory_info: x[0].armory_info,
             gh_repo_url: x[0].html_url,
             gh_clone_url: x[0].clone_url,
-            gh_repo_id: x[0].id,
+            gh_repo_id: String(x[0].id),
             gh_readme: x[0].readme,
             gh_zip_url: x[0].archive_url.replace('{archive_format}{/ref}', 'zipball'),
             gh_tar_url: x[0].archive_url.replace('{archive_format}{/ref}', 'tarball'),

@@ -36,8 +36,8 @@ Schemas.Plan = new SimpleSchema({
 
 	short_description: {
 		type: String,
-		label: "gh_repo_id",
-		optional: false,
+		label: "short_description",
+		optional: true,
 		index: true,
     unique: true
 	},
