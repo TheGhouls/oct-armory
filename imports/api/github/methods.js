@@ -147,51 +147,7 @@ export const getReposArmory = new ValidatedMethod({
       userRepos = false;
       return userRepos;
     }
-
-    res = [];
-    if(userRepos) {
-
-      _.each(userRepos.data.items, (repo) => {
-        let is_in_db = Plans.find({gh_repo_id: String(repo.id), owner: Meteor.user()._id}, {
-         limit: 1
-        }).count();
-      
-        //if repo is not already in db
-        if (is_in_db <= 0) {
-          console.log('is in db', is_in_db, Meteor.user()._id);
-          let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;
-          try{
-            let tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
-            let readme = HTTP.call('GET', 'https://api.github.com/repos/'+user_gh_id+"/"+repo.name+"/readme?"+GH_AUTH, {headers: {"User-Agent": "Meteor/1.3"}});
-            /**
-             * Decode yml file from base64 format and convert it to json for armory.yaml validation
-             * Retunr repo obj extended with armory_info (yml converted to json) 
-             */
-            let buf = new Buffer(tmp_res.data.content, 'Base64')
-            let readme_decode = new Buffer(readme.data.content, 'Base64');
-            try {
-              let armory_info_json = YAML.safeLoad(buf.toString());
-              isValid = Match.test(armory_info_json, ArmoryInfoSchema);
-              if (isValid) {
-                _.extend(repo, {readme: readme_decode.toString()});
-                _.extend(repo, {armory_info: armory_info_json});
-                res.push(repo);
-              } else {
-                let err = new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: missing info");
-                log.error('armory.yml is not valid: missing info ', err.message, this.userId)
-                console.log('armory.yml is not valid: missing info');
-              }
-            } catch (e) {
-              let err = new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: "+e.message);
-              log.error('armory.yml is not valid: ', e.message, this.userId)
-              console.log(e);
-            }
-          } catch(e) {
-            //console.log("not an Armory repo: ", e.error);
-          }
-        }
-      });
-    }
+    let res = getRepoHelper(user_gh_id, userRepos);
     if(Meteor.isServer){
       if(res.length == 0) {
         console.log("no Armory repositories found");
@@ -203,3 +159,51 @@ export const getReposArmory = new ValidatedMethod({
 
   }
 });
+
+function getRepoHelper (user_gh_id, userRepos) {
+  res = [];
+  if(userRepos) {
+    _.each(userRepos.data.items, (repo) => {
+      let is_in_db = Plans.find({gh_repo_id: String(repo.id), owner: Meteor.user()._id}, {
+       limit: 1
+      }).count();
+    
+      //if repo is not already in db
+      if (is_in_db <= 0) {
+        console.log('is in db', is_in_db, Meteor.user()._id);
+        let gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo.name+"/contents/.armory.yaml?"+GH_AUTH;
+        try{
+          let tmp_res = HTTP.call('GET', gh_api_request, {headers: {"User-Agent": "Meteor/1.3"}});
+          let readme = HTTP.call('GET', 'https://api.github.com/repos/'+user_gh_id+"/"+repo.name+"/readme?"+GH_AUTH, {headers: {"User-Agent": "Meteor/1.3"}});
+          /**
+           * Decode yml file from base64 format and convert it to json for armory.yaml validation
+           * Retunr repo obj extended with armory_info (yml converted to json) 
+           */
+          let buf = new Buffer(tmp_res.data.content, 'Base64')
+          let readme_decode = new Buffer(readme.data.content, 'Base64');
+          try {
+            let armory_info_json = YAML.safeLoad(buf.toString());
+            isValid = Match.test(armory_info_json, ArmoryInfoSchema);
+            if (isValid) {
+              _.extend(repo, {readme: readme_decode.toString()});
+              _.extend(repo, {armory_info: armory_info_json});
+              res.push(repo);
+            } else {
+              let err = new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: missing info");
+              log.error('armory.yml is not valid: missing info ', err.message, this.userId)
+              console.log('armory.yml is not valid: missing info');
+            }
+          } catch (e) {
+            let err = new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: "+e.message);
+            log.error('armory.yml is not valid: ', e.message, this.userId)
+            console.log(e);
+          }
+        } catch(e) {
+          //console.log("not an Armory repo: ", e.error);
+        }
+      }
+    });
+    return res;
+  }
+
+}
