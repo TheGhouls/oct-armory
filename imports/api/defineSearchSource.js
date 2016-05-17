@@ -35,9 +35,9 @@ function buildRegExp(searchText) {
   return new RegExp("(" + parts.join('|') + ")", "ig");
 }
 
-search_index_name = 'repo'
+// search_index_name = 'plans_text_index'
 
-Plans._dropIndex(search_index_name);
+// Plans._dropIndex(search_index_name);
 
 Plans._ensureIndex({
         name: 'text',
@@ -45,5 +45,5 @@ Plans._ensureIndex({
         gh_readme: 'text',
 
     }, {
-        name: 'repo'
+        name: 'plans_text_index'
     });

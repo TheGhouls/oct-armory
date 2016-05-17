@@ -169,11 +169,13 @@ export const getReposArmory = new ValidatedMethod({
              * Retunr repo obj extended with armory_info (yml converted to json) 
              */
             let buf = new Buffer(tmp_res.data.content, 'Base64')
+            let readme_decode = new Buffer(readme.data.content, 'Base64');
+            console.log(readme_decode.toString());
             try {
               let armory_info_json = YAML.safeLoad(buf.toString());
               isValid = Match.test(armory_info_json, ArmoryInfoSchema);
               if (isValid) {
-                _.extend(repo, {readme: readme.data});
+                _.extend(repo, {readme: readme_decode.toString()});
                 _.extend(repo, {armory_info: armory_info_json});
                 res.push(repo);
               } else {

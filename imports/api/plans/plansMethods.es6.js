@@ -17,11 +17,12 @@ export const addPlan = new ValidatedMethod({
       throw new Meteor.Error('not-authorized');
     }
       let x = _.where(repo, {name: repo_gh_id});
-      console.log('x is: ', x[0].id);
+      console.log('x is: ', x[0].full_name);
       if (Meteor.isServer){
         try {
           res = Plans.insert({
             name: x[0].name, 
+            short_description: x[0].description || x[0].full_name,
             armory_info: x[0].armory_info,
             gh_repo_url: x[0].html_url,
             gh_clone_url: x[0].clone_url,

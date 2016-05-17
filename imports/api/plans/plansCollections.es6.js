@@ -69,7 +69,7 @@ Schemas.Plan = new SimpleSchema({
 	},
 
 	gh_readme: {
-		type: Object,
+		type: String,
 		label: "gh_readme",
 		blackbox: true,
 		optional: true
