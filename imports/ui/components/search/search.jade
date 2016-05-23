@@ -5,9 +5,20 @@ template(name='search')
       div.form-group
         input.form-control(type='text', placeholder='Search', id='search_input')
   if (searchLoading)
-    h4 loading ...
+    div.text-center
+      .sk-spinner.sk-spinner-cube-grid.my-spinner
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
+        .sk-cube
   else if (getSearchRes)
+    div.text-center
     each (getSearchRes)
       | {{> planBox bp=getSearchRes}}
   else
-    h2 No Battle Plans match your request
+    h2.text-center No Battle Plans match your request
