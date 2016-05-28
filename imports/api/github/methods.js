@@ -5,56 +5,12 @@ import {YAML} from 'meteor/udondan:yml';
 import {Match} from 'meteor/check';
 import { Plans } from '../plans/plansCollections.es6.js';
 import { log } from '../logger_conf.js';
+import { ArmoryInfoSchema } from './ArmoryInfoSchema.js';
 
 GH_AUTH = "client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
 
 
-ArmoryInfoSchema = new SimpleSchema({
-  name: {
-      type: String,
-      label: "Name",
-      max: 200,
-      optional: true
-    },
-  author: {
-      type: String,
-      label: "Author",
-      optional: true
-    },
-  readme: {
-    type: String,
-    optional: true
-  },
 
-  license: {
-    type: String,
-    optional: true
-  },
-
-  turrets: {
-    type: [String],
-    optional: true
-  },
-  global_configuration: {
-    type: [String],
-    optional: true
-  },
-
-  extra_turret_config: {
-    type: [String],
-    optional: true
-  },
-
-  tags: {
-    type: [String],
-    optional: true
-  },
-
-  dependencies: {
-    type: [String],
-    optional: true
-  }
-});
 
 export const getRepo = new ValidatedMethod({
   name: 'gh.getRepo',
@@ -92,7 +48,7 @@ export const getRepoReadme = new ValidatedMethod({
     user_gh_id: { type: String},
     repo_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id, repo_id }){
     const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/readme";
     try{
@@ -112,7 +68,7 @@ export const getRepoDlStat = new ValidatedMethod({
     user_gh_id: { type: String},
     repo_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id, repo_id }){
     const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/downloads";
     try{
@@ -132,7 +88,7 @@ export const getReposArmory = new ValidatedMethod({
   validate: new SimpleSchema({
     user_gh_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id}){
     let userRepos = null;
     const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id+"+fork:true&"+GH_AUTH;
@@ -147,6 +103,7 @@ export const getReposArmory = new ValidatedMethod({
       userRepos = false;
       return userRepos;
     }
+
     let res = getRepoHelper(user_gh_id, userRepos);
     if(Meteor.isServer){
       if(res.length == 0) {
@@ -160,6 +117,12 @@ export const getReposArmory = new ValidatedMethod({
   }
 });
 
+/**
+ * [getRepoHelper Check and return GitHub repository]
+ * @param  {[String]} user_gh_id [User github id]
+ * @param  {[Object]} userRepos  [user github repository list]
+ * @return {[Array]}            [Return all valid armory repo]
+ */
 function getRepoHelper (user_gh_id, userRepos) {
   res = [];
   if(userRepos) {
@@ -167,7 +130,7 @@ function getRepoHelper (user_gh_id, userRepos) {
       let is_in_db = Plans.find({gh_repo_id: String(repo.id), owner: Meteor.user()._id}, {
        limit: 1
       }).count();
-    
+
       //if repo is not already in db
       if (is_in_db <= 0) {
         console.log('is in db', is_in_db, Meteor.user()._id);
@@ -177,7 +140,7 @@ function getRepoHelper (user_gh_id, userRepos) {
           let readme = HTTP.call('GET', 'https://api.github.com/repos/'+user_gh_id+"/"+repo.name+"/readme?"+GH_AUTH, {headers: {"User-Agent": "Meteor/1.3"}});
           /**
            * Decode yml file from base64 format and convert it to json for armory.yaml validation
-           * Retunr repo obj extended with armory_info (yml converted to json) 
+           * Retunr repo obj extended with armory_info (yml converted to json)
            */
           let buf = new Buffer(tmp_res.data.content, 'Base64')
           let readme_decode = new Buffer(readme.data.content, 'Base64');
