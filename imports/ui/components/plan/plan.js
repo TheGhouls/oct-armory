@@ -4,12 +4,12 @@ import { GhHelper } from '../../../api/github/GhHelper.es6.js';
 import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
-import { Plans } from '../../../api/plans/plansCollections.es6.js';
+//import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
 import { log } from '../../../api/logger_conf.js';
 import './plan.jade';
 
-
+//const Plans = Meteor.subscribe('plans');
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -69,7 +69,7 @@ Template.plan.onRendered(function () {
       Session.set('loaded', true);
 
     }
-    
+
   });
 });
 

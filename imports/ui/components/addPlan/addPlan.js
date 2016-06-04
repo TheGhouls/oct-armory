@@ -4,10 +4,12 @@ import { GhHelper } from '../../../api/github/GhHelper.es6.js';
 import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
-import { Plans } from '../../../api/plans/plansCollections.es6.js';
+//import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import './addPlan.jade';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
 import { log } from '../../../api/logger_conf.js';
+
+
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -56,11 +58,8 @@ Template.addPlan.helpers({
 
   getUserArmoryRepos () {
     Session.set('loaded', false);
-
     console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
-
     if(Session.get('getReposArmory') || CachedLocalColection.find().count() > 0) {
-      
       if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire > new Date().getTime()) {
         console.log("in cache expire valide: ", CachedLocalColection.find().fetch()[0].expire, new Date().getTime());
         if(Session.get('getReposArmory') !== 'undefined'){
@@ -68,12 +67,10 @@ Template.addPlan.helpers({
           Session.set('loaded', true);
           Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
         }
-        
       }
       Session.set('loaded', true);
       return Session.get('getReposArmory');
     } else {
-      
       getReposArmory.call({
         user_gh_id: Meteor.user().services.github.username
       }, (err, res) => {
@@ -104,7 +101,6 @@ Template.addPlan.helpers({
     }
     return Session.get('getReposArmory');
   },
-
 });
 
 /*****************************************************************************/
@@ -112,18 +108,22 @@ Template.addPlan.helpers({
 /*****************************************************************************/
 Template.addPlan.onCreated(function armoryAddPlanOnCreated() {
   console.log("onCreated plan");
+  const Plans = Meteor.subscribe('plans');
+  Meteor.subscribe('userData');
+  Meteor.subscribe('getUserData');
+  Tracker.autorun(() => {
+    const isReady = Plans.ready();
+    console.log(`Plans is ${isReady ? 'ready' : 'not ready'}`);
+  });
+
 
 });
 
 Template.addPlan.onRendered(function () {
-  console.log("onRendered plan");
-
   this.autorun(() => {
     if (Meteor.user()) {
       let param = FlowRouter.getParam("_id");
-        if (param) {        
-          console.log("if param", param);
-
+        if (param) {
           addPlanClosure = function (param, repo) {
             addPlan.call({
                   repo_gh_id: param,
@@ -143,13 +143,12 @@ Template.addPlan.onRendered(function () {
                     }
                   } else {
                     console.log('succes addPlan', res);
-                    
+
                   }
                 });
           }
 
           if (!Session.get('getReposArmory')) {
-
             getRepo.call({
                 repo_gh_id: param,
                 user_gh_id: Meteor.user().services.github.username
@@ -170,15 +169,11 @@ Template.addPlan.onRendered(function () {
                   addPlanClosure(param, res.data);
                 }
               });
-
           } else{
             addPlanClosure(param, Session.get('getReposArmory'));
           }
 
         }
-      // let gh = new GhHelper();
-      // let res = gh.getUserRepo(Meteor.user().services.github.username);
-      //let readme = gh.getRepoReadme(Meteor.user().services.github.username,"erp_meteor");
     }
   });
 });

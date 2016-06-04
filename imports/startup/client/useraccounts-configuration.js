@@ -17,7 +17,7 @@
 //   defaultContentRegion: 'main',
 //   defaultLayoutRegions: {},
 // });
-// 
+
 
 Meteor.loginWithGithub({
   requestPermissions: ['user', 'public_repo']

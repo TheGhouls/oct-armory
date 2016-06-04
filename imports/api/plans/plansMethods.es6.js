@@ -1,4 +1,3 @@
-//import {Session} from 'meteor/session';
 import { Plans } from './plansCollections.es6.js';
 
 
@@ -9,7 +8,6 @@ export const addPlan = new ValidatedMethod({
     repo_gh_id: { type: String},
     user_gh_id: { type: String},
     repo: { type: [Object], blackbox: true}
-
   }).validator(),
 
   run({repo_gh_id, user_gh_id, repo}){
@@ -21,7 +19,7 @@ export const addPlan = new ValidatedMethod({
       if (Meteor.isServer){
         try {
           res = Plans.insert({
-            name: x[0].name, 
+            name: x[0].name,
             short_description: x[0].description || x[0].full_name,
             armory_info: x[0].armory_info,
             gh_repo_url: x[0].html_url,
@@ -33,11 +31,10 @@ export const addPlan = new ValidatedMethod({
             gh_stargazers_count: x[0].stargazers_count,
             gh_watchers_count: x[0].watchers_count
             });
-          //console.log('res is: ', x[0].readme);
           return res;
         } catch (e) {
           throw new Meteor.Error('plans.addPlan', "can't write the DB error is: "+e.message);
-         }  
+         }
       }
   }
 });

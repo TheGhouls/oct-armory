@@ -1,5 +1,4 @@
 import { HTTP } from 'meteor/http';
-//import {Session} from 'meteor/session';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
@@ -36,7 +35,7 @@ export const getRepoReadme = new ValidatedMethod({
     user_gh_id: { type: String},
     repo_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id, repo_id }){
     const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/readme";
     try{
@@ -56,7 +55,7 @@ export const getRepoDlStat = new ValidatedMethod({
     user_gh_id: { type: String},
     repo_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id, repo_id }){
     const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id+"/downloads";
     try{
@@ -76,7 +75,7 @@ export const getReposArmory = new ValidatedMethod({
     user_gh_id: { type: String},
     repo_id: { type: String}
   }).validator(),
-  
+
   run({user_gh_id, repo_id }){
     console.log(user_gh_id);
     console.log(repo_id);
