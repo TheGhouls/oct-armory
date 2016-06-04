@@ -3,7 +3,7 @@ import { Plans } from './plans/plansCollections.es6.js';
 
 SearchSource.defineSource('plans', function(searchText, options) {
   var options = {sort: {isoScore: -1}, limit: 20};
-  
+
   if(searchText) {
     return Plans.find(
       { $text: {
@@ -35,9 +35,13 @@ function buildRegExp(searchText) {
   return new RegExp("(" + parts.join('|') + ")", "ig");
 }
 
-// search_index_name = 'plans_text_index'
+search_index_name = 'plans_text_index';
 
-// Plans._dropIndex(search_index_name);
+try{
+  Plans._dropIndex(search_index_name);
+} catch (e) {
+  console.log("_dropIndex Exception :", e);
+}
 
 Plans._ensureIndex({
         name: 'text',
@@ -47,3 +51,4 @@ Plans._ensureIndex({
     }, {
         name: 'plans_text_index'
     });
+
