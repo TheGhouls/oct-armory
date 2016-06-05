@@ -1,5 +1,5 @@
 import { SearchSource } from 'meteor/meteorhacks:search-source';
-import { Plans } from './plans/plansCollections.es6.js';
+import { Plans } from '../../plans/plansCollections.es6.js';
 
 SearchSource.defineSource('plans', function(searchText, options) {
   var options = {sort: {isoScore: -1}, limit: 20};
