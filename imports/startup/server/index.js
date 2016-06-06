@@ -11,4 +11,7 @@
 // // as an API to the client.
 import './register-api.js';
 import './accounts.js';
+import zmq from 'zmq';
+
+ZMQ = zmq;
 

@@ -42,3 +42,4 @@ ejson
 ostrio:logger
 ostrio:loggerfile
 meteorhacks:kadira
+kadira:debug
