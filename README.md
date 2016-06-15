@@ -1,7 +1,7 @@
 Oct Armory Install instruction
 ==============================
 
-Un peux de lecture sur les bonnes pratiques sur Meteor
+Un peu de lecture sur les bonnes pratiques de Meteor
 
 https://blog.tableflip.io/large-meteor-projects-best-practices/
 
@@ -10,13 +10,13 @@ http://guide.meteor.com/
 https://kadira.io/academy/meteor-routing-guide/
 
 
-Le project est realiser avec meteor vous devez
+Le projet est realisé avec meteor, pour l'utiliser vous devez
 ----------------------------------------------
 
-Avoir un environement node a jour.
+Avoir un environnement node à jour.
 
 
-Avoir installer **meteor**
+Avoir installé **meteor**
 
 
 `curl https://install.meteor.com/ | sh`
@@ -30,7 +30,7 @@ et **faire un npm install via Meteor**
 `meteor npm install`
 
 
-Aller au dossier oct-armory/.
+Aller au dossier `oct-armory/`.
 
 
 Lancer la commande `meteor`.
