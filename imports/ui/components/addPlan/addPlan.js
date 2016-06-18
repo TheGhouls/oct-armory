@@ -107,9 +107,9 @@ Template.addPlan.helpers({
 /*****************************************************************************/
 Template.addPlan.onCreated(function armoryAddPlanOnCreated() {
   console.log("onCreated plan");
-  const Plans = Meteor.subscribe('plans');
-  Meteor.subscribe('userData');
-  Meteor.subscribe('getUserData');
+  const Plans = this.subscribe('plans');
+  this.subscribe('userData');
+  this.subscribe('getUserData');
   Tracker.autorun(() => {
     const isReady = Plans.ready();
     console.log(`Plans is ${isReady ? 'ready' : 'not ready'}`);
