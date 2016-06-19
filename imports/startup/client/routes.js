@@ -9,15 +9,16 @@ import '../../ui/components/nav/nav.es6.js';
 import '../../ui/components/search/search.js';
 import '../../ui/components/footer/footer.js';
 import '../../ui/components/plan/plan.js';
-import '../../ui/components/appError/appError.js'
-import '../../ui/components/addPlan/addPlan.js'
-import '../../ui/components/notFound/notFound.js'
+import '../../ui/components/appError/appError.js';
+import '../../ui/components/addPlan/addPlan.js';
+import '../../ui/components/notFound/notFound.js';
+import '../../ui/components/saas/saas.js';
 
 // import '../../ui/pages/app-not-found.js';
 
 // // Import to override accounts templates
 // import '../../ui/accounts/accounts-templates.js';
-// 
+//
 
 // the App_notFound template is used for unknown routes and missing lists
 FlowRouter.notFound = {
@@ -63,6 +64,16 @@ FlowRouter.route('/search:idm', {
   }
 });
 
+let saasSection = FlowRouter.group({
+  prefix:"/saas"
+});
+
+
+saasSection.route('/test', {
+  action: function(params, queryParams){
+    BlazeLayout.render("mainLayout", {nav: "nav", content: "saas"})
+  }
+});
 
 
 // FlowRouter.route('/lists/:_id', {
@@ -97,4 +108,4 @@ FlowRouter.route('/search:idm', {
 //   name: 'resetPwd',
 //   path: '/reset-password',
 // });
-// 
+//

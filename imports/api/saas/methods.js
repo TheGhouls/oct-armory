@@ -24,11 +24,9 @@ export const getZmqSub = new ValidatedMethod({
             console.log("saas db error " + e);
           }
       }
-
       bound_handle_message = Meteor.bindEnvironment(handle_message, function(e) {
           console.log("exception! " + e);
       });
-
       try{
         const sock = ZMQ.socket('sub');
         try{
