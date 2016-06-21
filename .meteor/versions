@@ -23,6 +23,7 @@ bootswatch:paper@3.3.4_2
 caching-compiler@1.0.5
 caching-html-compiler@1.0.6
 callback-hook@1.0.9
+cfs:http-methods@0.0.32
 check@1.2.3
 coffeescript@1.1.1
 d3js:d3@3.5.8
@@ -68,6 +69,7 @@ meteorhacks:kadira@2.28.7
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
 meteorhacks:search-source@1.4.2
+meteorspark:util@0.2.0
 meteortoys:allthings@3.0.0
 meteortoys:authenticate@3.0.0
 meteortoys:autopub@3.0.0
@@ -122,6 +124,7 @@ spacebars@1.0.12
 spacebars-compiler@1.0.12
 standard-minifier-css@1.0.7
 standard-minifier-js@1.0.7
+tap:i18n@1.8.0
 templating@1.1.11
 templating-tools@1.0.4
 tracker@1.0.14
