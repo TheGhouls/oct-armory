@@ -27,7 +27,7 @@
     },
 
     "warning": {
-      "no_new_repo_found": "No new battle plans found"
+      "no_new_battle_plan_found": "No new battle plans found"
     }
   },
 

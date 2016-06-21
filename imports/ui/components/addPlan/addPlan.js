@@ -14,7 +14,7 @@ import { log } from '../../../api/logger_conf.js';
 /*****************************************************************************/
 Template.addPlan.events({
   'click .addBp': (e) => {
-    FlowRouter.go('/plan/add/'+e.currentTarget.attributes.id.value);
+    FlowRouter.go('/plan/add/' + e.currentTarget.attributes.id.value);
   }
 });
 
@@ -126,7 +126,7 @@ Template.addPlan.onRendered(function () {
                       sAlert.error(TAPi18n.__("add_plan.errors.plan_not_found"));
                     } else {
                       log.error('unexpected error addPlan: ', err.message, this.userId);
-                      sAlert.error(TAPi18n.__("add_plan.errors.unexpected_error_finding_plan {ERROR}", ERROR=err.message));
+                      sAlert.error(TAPi18n.__("add_plan.errors.unexpected_error_plan_finding", err.message));
                     }
                   } else {
                     sAlert.success(TAPi18n.__("add_plan.success.success_add: {res}", RES=res));

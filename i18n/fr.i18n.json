@@ -16,7 +16,7 @@
     "errors": {
       "readme_no_found": "Nous n'avons pas trouver de lisez-moi sur votre répertoire GitHub",
       "unexpected_readme_error": "Un erreur inconnue est survenue: %s",
-      "no_repo_found": "Aucun repertoire Github n'a était trouvé",
+      "no_repo_found": "Aucun repertoire Github n'a été trouvé",
       "unexpected_found_repo_error": "Un erreur inconnue est suvenue lors de la recherche d'un repo armory: %s",
       "plan_not_found": "Votre Battle plan n'a pas été trouvé",
       "unexpected_error_plan_finding": "Une erreur inconnue est survenue lors de la recherche d'un battle plan: %s"
@@ -27,7 +27,7 @@
     },
 
     "warning": {
-      "no_new_repo_found": "Aucun nouveau battle plan n'a était trouvé"
+      "no_new_battle_plan_found": "Aucun nouveau battle plan n'a été trouvé"
     }
   },
 

@@ -9,6 +9,4 @@ Meteor.startup(() => {
 // }
 // console.log(Plans.findOne({name: "test"}));
 // console.log(Plans.find().fetch());
-
-  
 });

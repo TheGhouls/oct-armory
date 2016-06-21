@@ -4,7 +4,7 @@ Accounts.onCreateUser(function (options, user) {
       profile;
 
   result = Meteor.http.get("https://api.github.com/user", {
-		headers: {"User-Agent": "Meteor/1.0"},
+		headers: { "User-Agent": "Meteor/1.0" },
 
     params: {
       access_token: accessToken
@@ -12,7 +12,7 @@ Accounts.onCreateUser(function (options, user) {
   });
 
   repo = Meteor.http.get("https://api.github.com/user/repos", {
-    headers: {"User-Agent": "Meteor/1.0"},
+    headers: { "User-Agent": "Meteor/1.0" },
 
     params: {
       access_token: accessToken
@@ -23,7 +23,7 @@ Accounts.onCreateUser(function (options, user) {
     throw result.error;
 
   profile = _.pick(result.data,
-    "name",  
+    "name",
 	  "login",
     "avatar_url",
     "url",

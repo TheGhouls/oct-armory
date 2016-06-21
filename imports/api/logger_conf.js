@@ -12,7 +12,7 @@ var LogFile = new LoggerFile(log, {
     /* Omit Date and hours from messages */
     return "[" + level + "] | " + (time.getMinutes()) + ":" + (time.getSeconds()) + " | \"" + message + "\" | User: " + userId + "\r\n";
   },
-  path: '/var/log/' /* Use absolute storage path */
+  path: Meteor.absolutePath /* Use absolute storage path */
 });
 
 LogFile.enable();

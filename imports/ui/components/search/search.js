@@ -8,27 +8,24 @@ let options = {
   keepHistory: 1000 * 60 * 5,
   localSearch: false
 };
-let fields = ['name', 'short_description', 'readme'];
 
+let fields = ['name', 'short_description', 'readme'];
 let PlansSearch = new SearchSource('plans', fields, options);
 
 Template.search.events({
   'keyup #search_input': _.debounce((e) => {
     var text = $(e.target).val().trim();
-    if(text.length >= 1){
+    if(text.length >= 3){
       PlansSearch.search(text);
-      // console.log(PlansSearch.getData());
-      // console.log(PlansSearch.getCurrentQuery());
     }
 
   }, 300)
 });
 
 Template.search.helpers({
-
   getSearchRes () {
     let res = PlansSearch.getData({
-          sort: {isoScore: -1}
+          sort: { isoScore: -1 }
         });
     if(res.length >= 1){
       return res;
