@@ -14,8 +14,6 @@ import { log } from '../../../api/logger_conf.js';
 /*****************************************************************************/
 Template.addPlan.events({
   'click .addBp': (e) => {
-    console.log(e.currentTarget.attributes.id);
-    //console.log(this);
     FlowRouter.go('/plan/add/'+e.currentTarget.attributes.id.value);
   }
 });
@@ -37,20 +35,13 @@ Template.addPlan.helpers({
     }, (err, res) => {
       if (err) {
         if (err.error === 404) {
-          // should have some nice UI to display this
-          // error, and probably use an i18n library to generate the
-          // message from the error code.
-          log.error('404 error: ', err.message, this.userId);
-          console.log('404 error: ', err)
-          sAlert.error('getReadme 404 error: '+err.message);
+          sAlert.error(TAPi18n.__("add_plan.errors.readme_not_found"));
         } else {
-          log.error('getReadme unexpected error: ', err.message, this.userId);
-          console.log('unexpected error: ', err)
-          sAlert.error('getReadme unexpected error: '+err.message);
+          log.error(TAPi18n.__("add_plan.errors.unexpected_readme_error {ERROR}", ERROR = err.message));
+          sAlert.error(TAPi18n.__("add_plan.errors.unexpected_readme_error {ERROR}", ERROR = err.message));
         }
       } else {
-        console.log('success', res);
-        sAlert.success('getReadme Success: '+res.lenght);
+        sAlert.success(TAPi18n.__("add_plan.success.success_add"));
       }
     });
   },
@@ -60,9 +51,7 @@ Template.addPlan.helpers({
     console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
     if(Session.get('getReposArmory') || CachedLocalColection.find().count() > 0) {
       if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire > new Date().getTime()) {
-        console.log("in cache expire valide: ", CachedLocalColection.find().fetch()[0].expire, new Date().getTime());
         if(Session.get('getReposArmory') !== 'undefined'){
-          console.log("reactive session with mongo cached data");
           Session.set('loaded', true);
           Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
         }
@@ -76,23 +65,21 @@ Template.addPlan.helpers({
         if (err) {
           if (err.error === 404) {
             log.error('404 getReposArmory: ', err.message, this.userId);
-            console.log('404 getReposArmory: ', err);
             Session.set('loaded', true);
-            sAlert.error('404 getReposArmoryerror: '+err.message);
+            sAlert.error(TAPi18n.__("add_plan.errors.no_repo_found"));
           } else if (err.error === 'gh.getReposArmory.norepofound') {
             Session.set('loaded', true);
-            sAlert.warning('no new battle plans founds');
+            sAlert.warning(TAPi18n.__("add_plan.warning.no_new_repo_found"));
           } else {
             log.error('unexpected getReposArmoryerror: ', err.message, this.userId);
-            console.log('unexpected error: ', err)
-            sAlert.error('unexpected getReposArmoryerror: '+err.message);
+            sAlert.error(TAPi18n.__("add_plan.errors.unexpected_found_repo_error {ERROR}", ERROR=err.message));
           }
         } else {
           console.log('succes getReposArmory ', res);
           Session.set('loaded', true);
           CachedLocalColection.remove({});
           CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
-            console.log('chached collection', CachedLocalColection.find().fetch());
+            console.log('cached collection', CachedLocalColection.find().fetch());
           });
           Session.set('getReposArmory', res);
         }
@@ -131,18 +118,13 @@ Template.addPlan.onRendered(function () {
                 }, (err, res) => {
                   if (err) {
                     if (err.error === 404) {
-                      log.error('404 addPlan: error', err.message, this.userId);
-                      console.log('404 addPlan: ', err.message)
-                      sAlert.error('404 addPlan: error: '+err.message);
+                      sAlert.error(TAPi18n.__("add_plan.errors.plan_not_found"));
                     } else {
                       log.error('unexpected error addPlan: ', err.message, this.userId);
-                      console.log('unexpected error addPlan: ', err.message)
-                      console.log(repo);
-                      sAlert.error('unexpected addPlan: error: '+err.message);
+                      sAlert.error(TAPi18n.__("add_plan.errors.unexpected_error_finding_plan {ERROR}", ERROR=err.message));
                     }
                   } else {
-                    sAlert.success('you plans was added successfully: '+res);
-                    console.log('succes addPlan', res);
+                    sAlert.success(TAPi18n.__("add_plan.success.success_add: {res}", RES=res));
                   }
                 });
           }
@@ -155,15 +137,12 @@ Template.addPlan.onRendered(function () {
                 if (err) {
                   if (err.error === 404) {
                     log.error('404 getRepo: error: ', err.message, this.userId);
-                    console.log('404 getRepo: ', err.message)
-                    sAlert.error('404 getRepo: error: '+err.message);
+                    sAlert.error(TAPi18n.__("add_plan.errors.no_repo_found"));
                   } else {
                     log.error('unexpected getRepo: error: ', err.message, this.userId);
-                    console.log('unexpected getRepo: error: ', err.message)
-                    sAlert.error('unexpected getRepo: error: '+err.message);
+                    sAlert.error(TAPi18n.__("add_plan.errors.unexpected_found_repo_error {ERROR}", ERROR=err.message));
                   }
                 } else {
-                  console.log('succes getRepo client', res.data);
                   Session.set('getReposArmory', res.data);
                   addPlanClosure(param, res.data);
                 }

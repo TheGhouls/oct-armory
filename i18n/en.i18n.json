@@ -11,7 +11,30 @@
     "add_repo": "Click on add to link one of your GitHub repository",
     "name": "Name",
     "url": "Url",
-    "tag": "Tags"
+    "tag": "Tags",
+
+    "errors": {
+      "readme_no_found": "We don't have found any readme on your GitHub repository",
+      "unexpected_readme_error": "An unknow error was raised: %s",
+      "no_repo_found": "No gitHub repository found",
+      "unexpected_found_repo_error": "An unexpected error was raised while looking for an armory repo: %s",
+      "plan_not_found": "Your plan was not found",
+      "unexpected_error_plan_finding": "An unexpected error was raised while looking for a battle plan: %s"
+    },
+
+    "success": {
+      "success_add": "The battle plan was successfully added %s"
+    },
+
+    "warning": {
+      "no_new_repo_found": "No new battle plans found"
+    }
+  },
+
+  "get_plan": {
+    "errors": {
+      "get": "Error while retrieving the battle plan"
+    }
   },
 
   "app_error": {
@@ -43,5 +66,11 @@
   "planBox": {
     "name": "Name",
     "description": "Short Description"
+  },
+
+  "footer": {
+    "title": "Discover Open Charge Tester",
+    "subtitle": "You can use Oct today it's very easy you will see.",
+    "more_infos": "More infos on the Ghouls!"
   }
 }
