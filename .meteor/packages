@@ -44,4 +44,5 @@ ostrio:loggerfile
 meteorhacks:kadira
 kadira:debug
 meteortoys:allthings
-nvd3:nvd3
+#d3js:d3
+#nvd3:nvd3
