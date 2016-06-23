@@ -2,7 +2,7 @@ template(name='nav')
   div.container
     div.navbar-header
       button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='true')
-        span.sr-only Toggle navigation
+        span.sr-only {{_ "nav.toogle"}}
         span.icon-bar
         span.icon-bar
         span.icon-bar
@@ -13,36 +13,28 @@ template(name='nav')
             div.form-group
               input.form-control(type='text', placeholder='Search')
         div.col-xs-12.col-sm-6
-          a.navbar-brand(href='/') ARMORY
+          a.navbar-brand(href='#') {{_ "nav.title"}}
         div.col-xs-12.col-sm-3
           ul.nav.navbar-nav.pull-right
              li.dropdown
                a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
                  unless (currentUser)
-                   | Login 
+                   | {{_ "nav.login"}}
                    span.caret
                  else
-                   | My Account
-               |           
+                   | {{_ "nav.account"}}
                ul.dropdown-menu(role='menu')
                  li
                    a(href='#') {{> loginButtons}}
-                   |             
-                 if (currentUser)             
+                 if (currentUser)
                    li
-                     a(href='/users/') Profile
-                   |             
+                     a(href='/users/') {{_ "nav.profile"}}
                    li
-                     a(href='/plans/{{currentUser}}') My BP
-                   |             
+                     a(href='/plans/{{currentUser}}') {{_ "nav.bp"}}
                    li.divider
-                   |             
                    li
-                     a(href='/stared') Stared
-                   |             
+                     a(href='/stared') {{_ "nav.stared"}}
                    li.divider
-                   |             
                    li
-                     a(href='/plan/add') Add Bp
-           |       
+                     a(href='/plan/add') {{_ "nav.add"}}
 

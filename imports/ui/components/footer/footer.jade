@@ -4,8 +4,8 @@ template(name='footer')
       .container
         .row
           .col-xs-12.col-sm-6
-            h5 Discover Open Charge Tester
-            p You can use Oct today it's very easy you will see.
+            h5 {{_ "footer.title" }}
+            p {{_ "footer.subtitle" }}
           .col-xs-12.col-sm-4
             ul.list-group
               li.list-group-item
@@ -19,4 +19,4 @@ template(name='footer')
       div
         .container
           | © 2016 Copyright The Ghouls
-          a(classname='grey-text text-darken-4 right', href='#!') More about the Ghouls
+          a(classname='grey-text text-darken-4 right', href='http://theghouls.io/') {{_ "footer.more_infos"}}

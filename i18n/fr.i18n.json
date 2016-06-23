@@ -1,0 +1,76 @@
+{
+  "search": {
+    "title": "Recherche un Battle Plan OCT",
+    "not_found": "Aucun batlle plan trouvé",
+    "loading": "recherche…",
+    "search": "Saisissez un nom de battle plan"
+  },
+
+  "add_plan" : {
+    "title": "Ajouter un battle plan from you github repository",
+    "add_repo": "Cliquez sur ajouter pour lier un de vos depot Github",
+    "name": "Nom",
+    "url": "Url",
+    "tag": "Categories",
+
+    "errors": {
+      "readme_no_found": "Nous n'avons pas trouver de lisez-moi sur votre répertoire GitHub",
+      "unexpected_readme_error": "Un erreur inconnue est survenue: %s",
+      "no_repo_found": "Aucun repertoire Github n'a était trouvé",
+      "unexpected_found_repo_error": "Un erreur inconnue est suvenue lors de la recherche d'un repo armory: %s",
+      "plan_not_found": "Votre Battle plan n'a pas été trouvé",
+      "unexpected_error_plan_finding": "Une erreur inconnue est survenue lors de la recherche d'un battle plan: %s"
+    },
+
+    "success": {
+      "success_add": "Le Battle plan a bien été ajouté"
+    },
+
+    "warning": {
+      "no_new_repo_found": "Aucun nouveau battle plan n'a était trouvé"
+    }
+  },
+
+  "get_plan": {
+    "errors": {
+      "get": "Une erreur est survenue lors de le récupération du Battle Plan"
+    }
+  },
+
+  "app_error": {
+    "error_subtitle": "Change a few things up and try submitting again"
+  },
+
+  "nav": {
+    "title": "ARMORY",
+    "toogle": "Afficher navigation",
+    "login": "Connection",
+    "account": "Mon compte",
+    "profile": "Profile",
+    "bp": "Mes Battle Plans",
+    "stared": "Favoris",
+    "add": "Ajouter un Battle Plan"
+  },
+
+  "not_found": {
+    "none": "Non trouvé"
+  },
+
+  "plan": {
+    "infos": "Battle plan info",
+    "name": "Nom",
+    "repo_url": "Depot url :",
+    "none": "Aucun battle plan trouvé"
+  },
+
+  "planBox": {
+    "name": "Nom",
+    "description": "Description courte"
+  },
+
+  "footer": {
+    "title": "Decouvrez Open Charge Tester",
+    "subtitle": "Vous pouvez utiliser OCT dès maintenant, il est très facile d'utilisation",
+    "more_infos": "Plus d'informations on The Ghouls !"
+  }
+}

@@ -1,13 +1,13 @@
 template(name='plan')
   if (isLoaded)
     if (getPlan)
-      h2.text-center Plan infos
+      h2.text-center {{_ "plan.infos"}}
       h4 Name: {{getPlan.name}}
-      h4 Repo Url: 
+      h4 {{_ "plan.repo_url"}}
         a(href= getPlan.gh_repo_url) {{getPlan.gh_repo_url}}
-    else 
-      h4 no plan found
-  else 
+    else
+      h4 {{_ "plan.none"}}
+  else
     .sk-spinner.sk-spinner-cube-grid
         .sk-cube
         .sk-cube

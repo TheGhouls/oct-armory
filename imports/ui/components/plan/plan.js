@@ -58,14 +58,12 @@ Template.plan.onRendered(function () {
         transform: Function
         */
       });
-      console.log('getPlan success: ', res);
       Session.set('getPlan', res);
       Session.set('loaded', true);
 
     } catch(err) {
       log.error('getPlan error: ', err.message, this.userId);
-      console.log('getPlan error: ', err.message);
-      sAlert.error('getPlan error: '+err.message);
+      sAlert.error(TAPi18n.__("get_plan.errors.get"));
       Session.set('loaded', true);
 
     }
