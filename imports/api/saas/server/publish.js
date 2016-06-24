@@ -1,10 +1,5 @@
 import { Saas } from '../saasCollections.js';
 
-// Meteor.publish('saas', function() {
-//   return Saas.find({},
-//   {limit:1}
-//   );
-// });
 
 Meteor.publish('saas', function() {
   return Saas.find({
@@ -15,6 +10,5 @@ Meteor.publish('saas', function() {
     fields: Saas.message,
     sort: {create:-1},
     limit:1
-  }
-  );
+  });
 });

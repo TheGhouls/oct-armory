@@ -7,45 +7,46 @@ import { log } from '../../../api/logger_conf.js';
 
 Template.saas.onCreated(function onCreatedSaas(){
     let self = this;
+    // define data source for charts
     let dataD3 = [
-  {
-    key: "Cumulative Return",
-    values: [
-      // {
-      //   "label" : "A" ,
-      //   "value" : -29.765957771107
-      // } ,
-      // {
-      //   "label" : "B" ,
-      //   "value" : 0
-      // } ,
-      // {
-      //   "label" : "C" ,
-      //   "value" : 32.807804682612
-      // } ,
-      // {
-      //   "label" : "D" ,
-      //   "value" : 196.45946739256
-      // } ,
-      // {
-      //   "label" : "E" ,
-      //   "value" : 0.19434030906893
-      // } ,
-      // {
-      //   "label" : "F" ,
-      //   "value" : -98.079782601442
-      // } ,
-      // {
-      //   "label" : "G" ,
-      //   "value" : -13.925743130903
-      // } ,
-      // {
-      //   "label" : "H" ,
-      //   "value" : -5.1387322875705
-      // }
-    ]
-  }
-];
+      {
+        key: "Cumulative Return",
+        values: [
+          // {
+          //   "label" : "A" ,
+          //   "value" : -29.765957771107
+          // } ,
+          // {
+          //   "label" : "B" ,
+          //   "value" : 0
+          // } ,
+          // {
+          //   "label" : "C" ,
+          //   "value" : 32.807804682612
+          // } ,
+          // {
+          //   "label" : "D" ,
+          //   "value" : 196.45946739256
+          // } ,
+          // {
+          //   "label" : "E" ,
+          //   "value" : 0.19434030906893
+          // } ,
+          // {
+          //   "label" : "F" ,
+          //   "value" : -98.079782601442
+          // } ,
+          // {
+          //   "label" : "G" ,
+          //   "value" : -13.925743130903
+          // } ,
+          // {
+          //   "label" : "H" ,
+          //   "value" : -5.1387322875705
+          // }
+        ]
+      }
+    ];
 
   /**
    * Uncomment for use local zmq server on port 4000
@@ -90,18 +91,24 @@ Template.saas.onCreated(function onCreatedSaas(){
     jsonRes = reactiveRes.get('res');
     try{
       jsonRes = JSON.parse(jsonRes[0].message);
-      reactiveRes.set('jsonRes', jsonRes.elapsed);
+      reactiveRes.set('jsonRes', {
+        scriptrun_time: jsonRes.scriptrun_time,
+        elapsed: jsonRes.elapsed,
+        custom_timers: jsonRes.custom_timers,
+        epoch: jsonRes.epoch
+      });
       console.log('reactiveDict res:', reactiveRes.get('jsonRes'));
     } catch(e){
       console.warn("JSON parse error", e);
     }
+    let tmpObj = reactiveRes.get('jsonRes')
     dataD3[0].values.push({
-        "label" : reactiveRes.get('jsonRes'),
-        "value" : -5.1387322875705
+        "label" : parseFloat(tmpObj.scriptrun_time)*23.5 ,
+        "value" : tmpObj.elapsed
       });
 
       nv.addGraph(function() {
-    var chart = nv.models.discreteBarChart()
+      let chart = nv.models.discreteBarChart()
       .x(function(d) { return d.label })
       .y(function(d) { return d.value })
       .staggerLabels(true)
@@ -116,7 +123,7 @@ Template.saas.onCreated(function onCreatedSaas(){
     nv.utils.windowResize(chart.update);
 
     return chart;
-  });
+    });
     // d3.select('#chart svg').datum(
     //         [{ values: reactiveRes.get('jsonRes'), key: 'Age' }]
     //       ).call(chart);
@@ -203,7 +210,8 @@ Template.saas.onCreated(function onCreatedSaas(){
 
 Template.saas.helpers({
   getRes (){
-    return reactiveRes.get('jsonRes');
+    let res = reactiveRes.get('jsonRes');
+    return res.elapsed;
   }
 });
 
