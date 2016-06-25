@@ -77,6 +77,7 @@ Template.saas.onCreated(function onCreatedSaas(){
         custom_timers: jsonRes.custom_timers,
         epoch: jsonRes.epoch
       });
+      // try to build nvd3 chart
       try{
         let tmpObj = reactiveRes.get('jsonRes');
 
