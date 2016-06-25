@@ -3,7 +3,7 @@ template(name='search')
     h1.title {{_ "search.title"}}
     form.center-block(role='search')
       div.form-group
-        input.form-control(type='text', placeholder="Pour là, j'ai pas de solution", id='search_input')
+        input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
   if (searchLoading)
     div.text-center
       .sk-spinner.sk-spinner-cube-grid.my-spinner

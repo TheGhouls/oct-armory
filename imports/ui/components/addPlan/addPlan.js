@@ -59,31 +59,36 @@ Template.addPlan.helpers({
       Session.set('loaded', true);
       return Session.get('getReposArmory');
     } else {
-      getReposArmory.call({
-        user_gh_id: Meteor.user().services.github.username
-      }, (err, res) => {
-        if (err) {
-          if (err.error === 404) {
-            log.error('404 getReposArmory: ', err.message, this.userId);
-            Session.set('loaded', true);
-            sAlert.error(TAPi18n.__("add_plan.errors.no_repo_found"));
-          } else if (err.error === 'gh.getReposArmory.norepofound') {
-            Session.set('loaded', true);
-            sAlert.warning(TAPi18n.__("add_plan.warning.no_new_repo_found"));
+      try{
+        getReposArmory.call({
+          user_gh_id: Meteor.user().services.github.username
+        }, (err, res) => {
+          if (err) {
+            if (err.error === 404) {
+              log.error('404 getReposArmory: ', err.message, this.userId);
+              Session.set('loaded', true);
+              sAlert.error(TAPi18n.__("add_plan.errors.no_repo_found"));
+            } else if (err.error === 'gh.getReposArmory.norepofound') {
+              Session.set('loaded', true);
+              sAlert.warning(TAPi18n.__("add_plan.warning.no_new_repo_found"));
+            } else {
+              log.error('unexpected getReposArmoryerror: ', err.message, this.userId);
+              sAlert.error(TAPi18n.__("add_plan.errors.unexpected_found_repo_error {ERROR}", ERROR=err.message));
+            }
           } else {
-            log.error('unexpected getReposArmoryerror: ', err.message, this.userId);
-            sAlert.error(TAPi18n.__("add_plan.errors.unexpected_found_repo_error {ERROR}", ERROR=err.message));
+            console.log('succes getReposArmory ', res);
+            Session.set('loaded', true);
+            CachedLocalColection.remove({});
+            CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
+              console.log('cached collection', CachedLocalColection.find().fetch());
+            });
+            Session.set('getReposArmory', res);
           }
-        } else {
-          console.log('succes getReposArmory ', res);
-          Session.set('loaded', true);
-          CachedLocalColection.remove({});
-          CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
-            console.log('cached collection', CachedLocalColection.find().fetch());
-          });
-          Session.set('getReposArmory', res);
-        }
-      });
+        });
+      } catch (e){
+        console.info("service not ready", e);
+      }
+
     }
     return Session.get('getReposArmory');
   },

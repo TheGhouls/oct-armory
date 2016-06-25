@@ -8,7 +8,6 @@ import '/imports/startup/client';
 
 getUserLanguage = function() {
   var localeFromBrowser = window.navigator.userLanguage || window.navigator.language;
-  console.log(localeFromBrowser);
   return localeFromBrowser;
 };
 

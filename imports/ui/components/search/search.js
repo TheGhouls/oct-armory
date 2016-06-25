@@ -20,7 +20,7 @@ Template.search.events({
       // console.log(PlansSearch.getData());
       // console.log(PlansSearch.getCurrentQuery());
     }
-    
+
   }, 300)
 });
 
@@ -36,12 +36,16 @@ Template.search.helpers({
       console.log('not found res: ', res.length);
       return [];
     }
-  }, 
+  },
 
   searchLoading () {
     return PlansSearch.getStatus().loading;
+  },
+
+  getSearchPlaceholder () {
+    return TAPi18n.__("search.title");
   }
-  
+
 });
 
 // Template.search.onCreated({
