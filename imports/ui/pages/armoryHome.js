@@ -15,7 +15,7 @@ Template.armoryHome.events({
 /*****************************************************************************/
 Template.armoryHome.helpers({
 	ghName () {
-		console.log(Session.get("user_repos"));
+		//console.log(Session.get("user_repos"));
 		return Session.get("user_repos");
 	}
 
@@ -30,21 +30,21 @@ Template.armoryHome.onCreated(function armoryHomeOnCreated() {
 
 	//     console.log(gh.getName());
 	//   });
-	console.log("onCreated armoryHome");
+	//console.log("onCreated armoryHome");
 });
 
 Template.armoryHome.onRendered(function () {
-	console.log("onRendered armoryHome");
+	//console.log("onRendered armoryHome");
 	// this.autorun(() => {
 	// 		let gh = new GhHelper();
 	// 		let res = gh.getUserRepo(Meteor.user().services.github.username);
 	// 		let readme = gh.getRepoReadme(Meteor.user().services.github.username,"erp_meteor");
 	// 		console.log(res);
-		
+
 	// 	console.log(Meteor.user().services.github);
 
 	// });
-		
+
 });
 
 Template.armoryHome.onDestroyed(function () {

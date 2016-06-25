@@ -6,16 +6,7 @@ template(name='search')
         input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
   if (searchLoading)
     div.text-center
-      .sk-spinner.sk-spinner-cube-grid.my-spinner
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
+      {{> loader}}
     h4 {{_ "search.loading"}}
   else if (getSearchRes)
     div.text-center
