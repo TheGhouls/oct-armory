@@ -49,10 +49,8 @@ Template.saas.onCreated(function onCreatedSaas(){
   let sin = [],
       cos = [];
   let data = function(obj) {
-
     //let obj =  reactiveRes.get('jsonRes');
     sin.push({x: obj.elapsed, y: obj.scriptrun_time});
-
     return [
       {
         values: sin,

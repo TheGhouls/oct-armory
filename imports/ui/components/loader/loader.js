@@ -2,14 +2,14 @@ import "./loader.jade";
 import "./loader.less";
 
 
-Template.loader.onCreated({
+Template.loader.onCreated(function(){
 
 });
 
-Template.loader.onRendered({
+Template.loader.onRendered(function(){
 
 });
 
-Template.loader.onDestroyed({
+Template.loader.onDestroyed(function(){
 
 });
