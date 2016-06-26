@@ -7,9 +7,8 @@ import { Plans } from '../plans/plansCollections.es6.js';
 import { log } from '../logger_conf.js';
 import { ArmoryInfoSchema } from './ArmoryInfoSchema.js';
 
-GH_AUTH = "client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
-
-
+//GH_AUTH = "client_id=75d49ee4c41e3460be5a"+"&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710";
+GH_AUTH = Meteor.settings.public.githubApiKey;
 
 
 export const getRepo = new ValidatedMethod({

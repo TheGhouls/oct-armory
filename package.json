@@ -2,7 +2,7 @@
   "name": "oct-armory",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --settings settings.json"
   },
   "dependencies": {
     "fiber": "^1.0.4",
