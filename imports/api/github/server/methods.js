@@ -1,6 +1,6 @@
 import { HTTP } from 'meteor/http';
-import {ValidatedMethod} from 'meteor/mdg:validated-method';
-import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 
 export const getUserRepo = new ValidatedMethod({
@@ -9,10 +9,11 @@ export const getUserRepo = new ValidatedMethod({
   validate: new SimpleSchema({
     user_gh_id: { type: String}
   }).validator(),
-  run({user_gh_id}){
-    const gh_api_request = "https://api.github.com/search/repositories?q=+user:"+user_gh_id;
+  run({ user_gh_id }){
+    const gh_api_request = "https://api.github.com/search/repositories?q=+user:" + user_gh_id;
+
     const userReposSync = Meteor.wrapAsync(HTTP.get );
-    try{
+    try {
       //const userRepos = userReposSync(gh_api_request, {});
       if(isSimulation){const userRepos = HTTP.get(gh_api_request);}
       //const userRepos = HTTP.get(gh_api_request);

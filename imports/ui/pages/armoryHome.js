@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import {GhHelper} from '../../api/github/GhHelper.es6.js';
-import {Session} from 'meteor/session';
+import { GhHelper } from '../../api/github/GhHelper.es6.js';
+import { Session } from 'meteor/session';
 import './armoryHome.jade';
 /*****************************************************************************/
 /* Home: Event Handlers */

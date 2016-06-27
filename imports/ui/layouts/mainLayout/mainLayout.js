@@ -5,7 +5,6 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 
 Template.mainLayout.onCreated(function mainLayoutOnCreated() {
  let self = this;
-
 });
 
 Template.mainLayout.helpers({

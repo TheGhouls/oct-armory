@@ -15,7 +15,6 @@ import './plan.jade';
 /*****************************************************************************/
 Template.plan.events({
   'click .addBp': (id = this) => {
-    console.log(id.currentTarget.attributes.id.value);
     Session.set('error', id.currentTarget.attributes.id.value);
   }
 });
@@ -39,15 +38,12 @@ Template.plan.helpers({
 /* Plan: Lifecycle Hooks */
 /*****************************************************************************/
 Template.plan.onCreated(function armoryPlanOnCreated() {
-	console.log("onCreated plan");
 });
 
 Template.plan.onRendered(function () {
-	console.log("onRendered plan");
   this.autorun(() => {
     let param = FlowRouter.getParam("_name");
-    console.log('param is: ', param);
-    try{
+    try {
       let res = Plans.findOne({
         name: param
         /*

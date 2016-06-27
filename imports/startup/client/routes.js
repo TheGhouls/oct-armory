@@ -23,13 +23,17 @@ import '../../ui/components/saas/saas.js';
 // the App_notFound template is used for unknown routes and missing lists
 FlowRouter.notFound = {
   action() {
-    BlazeLayout.render('mainLayout', { nav: "nav", content: "notFound"});
+    BlazeLayout.render('mainLayout', { nav: "nav", content: "notFound" });
   },
 };
 
+//////////////////////////
+// PLAN SECTION ROUTE  //
+////////////////////////
+
 FlowRouter.route('/', {
     action: function() {
-      BlazeLayout.render("mainLayout", {nav: "nav", content: "armoryHome"});
+      BlazeLayout.render("mainLayout", { nav: "nav", content: "armoryHome" });
     }
 });
 
@@ -40,7 +44,7 @@ let planSection = FlowRouter.group({
 planSection.route('/show/:_name', {
     action: function(params, queryParams) {
       console.log("Params:", params);
-      BlazeLayout.render("mainLayout", {nav: "nav", content: "plan"});
+      BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
     }
 });
 
@@ -64,6 +68,11 @@ FlowRouter.route('/search:idm', {
   }
 });
 
+/////////////////////////
+//      SASS ROUTE    //
+///////////////////////
+
+
 let saasSection = FlowRouter.group({
   prefix:"/saas"
 });
@@ -74,38 +83,3 @@ saasSection.route('/test', {
     BlazeLayout.render("mainLayout", {nav: "nav", content: "saas"})
   }
 });
-
-
-// FlowRouter.route('/lists/:_id', {
-//   name: 'Lists.show',
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'Lists_show_page' });
-//   },
-// });
-
-// FlowRouter.route('/', {
-//   name: 'App.home',
-//   action() {
-//     BlazeLayout.render('App_body', { main: 'app_rootRedirector' });
-//   },
-// });
-
-
-
-// AccountsTemplates.configureRoute('signIn', {
-//   name: 'signin',
-//   path: '/signin',
-// });
-
-// AccountsTemplates.configureRoute('signUp', {
-//   name: 'join',
-//   path: '/join',
-// });
-
-// AccountsTemplates.configureRoute('forgotPwd');
-
-// AccountsTemplates.configureRoute('resetPwd', {
-//   name: 'resetPwd',
-//   path: '/reset-password',
-// });
-//
