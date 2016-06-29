@@ -9,16 +9,14 @@ template(name='addPlan')
           tr
             th #
             th {{_ "add_plan.name"}}
-            th {{_ "add_plan.url"}}
             th {{_ "add_plan.tag"}}
         tbody
           each getUserArmoryRepos
             tr
               td
                 button(id=name).addBp add
-              td armory_info.name
-              td {{_ "add_plan.url"}}
-              td armory_info.tags
+              td= armory_info.name
+              td= armory_info.tags
 
     if (isLoading)
       p .

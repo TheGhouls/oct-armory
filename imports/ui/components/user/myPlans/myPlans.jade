@@ -1,0 +1,16 @@
+template(name='myPlans')
+  if displayPlans
+    table(class='table table-condensed')
+      thead
+        tr
+          th name
+          th description
+          th delete
+      tbody
+        each (plans)
+          tr
+            td= name
+            td= short_description
+            button(class='delete') &times;
+  else
+    p(class='center') No plans found

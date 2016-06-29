@@ -1,8 +1,6 @@
 template(name='mainLayout')
   .content
-    nav.nav-header
-      .navbar.navbar-default.navbar-fixed-top.navbar-layout
-        | {{> Template.dynamic template=nav }}
+    | {{> Template.dynamic template=nav }}
     header
       | {{> sAlert}}
     main
