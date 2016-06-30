@@ -38,3 +38,10 @@ export const addPlan = new ValidatedMethod({
       }
   }
 });
+
+//PLAN RULES// // Must be CHanged I guess //
+Plans.allow({
+  insert: function () { return true; },
+  update: function () { return true; },
+  remove: function () { return true; }
+});

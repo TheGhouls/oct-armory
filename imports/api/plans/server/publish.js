@@ -1,6 +1,5 @@
 import { Plans } from '../plansCollections.es6.js';
 
-
 Meteor.publish('plans', function() {
   return Plans.find({
     userId: { $exists: false }

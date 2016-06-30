@@ -1,40 +1,43 @@
 template(name='nav')
-  div.container
-    div.navbar-header
-      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='true')
-        span.sr-only {{_ "nav.toogle"}}
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-    #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      div.row
-        div.col-xs-12.col-sm-3
-          form.navbar-form(role='search')
-            div.form-group
-              input.form-control(type='text', placeholder='Search')
-        div.col-xs-12.col-sm-6
-          a.navbar-brand(href='#') {{_ "nav.title"}}
-        div.col-xs-12.col-sm-3
-          ul.nav.navbar-nav.pull-right
-             li.dropdown
-               a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
-                 unless (currentUser)
-                   | {{_ "nav.login"}}
-                   span.caret
-                 else
-                   | {{_ "nav.account"}}
-               ul.dropdown-menu(role='menu')
-                 li
-                   a(href='#') {{> loginButtons}}
-                 if (currentUser)
-                   li
-                     a(href='/users/') {{_ "nav.profile"}}
-                   li
-                     a(href='/plans/{{currentUser}}') {{_ "nav.bp"}}
-                   li.divider
-                   li
-                     a(href='/stared') {{_ "nav.stared"}}
-                   li.divider
-                   li
-                     a(href='/plan/add') {{_ "nav.add"}}
+  nav.nav-header
+    .navbar.navbar-default.navbar-fixed-top.navbar-layout
+      div.container
+        div.navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='true')
+            span.sr-only {{_ "nav.toogle"}}
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          div.row
+            div.col-xs-12.col-sm-3
+              form.navbar-form(role='search')
+                div.form-group
+                  input.form-control(type='text', placeholder='Search')
+            div.col-xs-12.col-sm-6
+              a.navbar-brand(href='/') {{_ "nav.title"}}
+            div.col-xs-12.col-sm-3
+              ul.nav.navbar-nav.pull-right
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
+                    if (currentUser)
+                      | {{_ "nav.account"}}
+                    else
+                      | {{_ "nav.login"}}
+                      span.caret
+
+                  ul.dropdown-menu(role='menu')
+                    li
+                      a(href='#') {{> loginButtons}}
+                    if (currentUser)
+                      li
+                        a(href='/users/') {{_ "nav.profile"}}
+                      li
+                        a(href='/user/plans/') {{_ "nav.my_bp"}}
+                      li.divider
+                      li
+                        a(href=myStarredPlanPath) {{_ "nav.stared"}}
+                      li.divider
+                      li
+                        a(href='/plan/add') {{_ "nav.add"}}
 
