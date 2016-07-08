@@ -11,6 +11,6 @@ template(name='search')
   else if (getSearchRes)
     div.text-center
     each (getSearchRes)
-      | { {> planBox bp=getSearchRes } }
+      {{> planBox bp=getSearchRes }}
   else
     h2.text-center {{_ "search.not_found"}}
