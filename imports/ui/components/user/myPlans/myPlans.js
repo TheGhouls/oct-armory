@@ -9,7 +9,7 @@ Template.myPlans.onCreated(function onCreatedmyPlans(){
   if(!Meteor.userId()) {
     return FlowRouter.go('/');
   }
-  Meteor.subscribe('plans');
+  Meteor.subscribe('myPlans');
 });
 
 Template.myPlans.helpers({

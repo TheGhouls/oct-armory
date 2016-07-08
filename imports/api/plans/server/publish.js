@@ -15,3 +15,9 @@ Meteor.publish('plans', function() {
     fields: Plans.last_modif
   });
 });
+
+Meteor.publish('myPlans', function(){
+  return Plans.find({
+    owner: this.userId
+  });
+});
