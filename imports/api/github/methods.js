@@ -8,7 +8,7 @@ import { log, logRaven } from '../logger_conf.js';
 import { ArmoryInfoSchema } from './ArmoryInfoSchema.js';
 
 GH_AUTH = Meteor.settings.public.githubApiKey;
-gitHubUrl = 'https://api.github.com/repos/'
+gitHubUrl = 'https://api.github.com/repos/';
 
 export const getRepo = new ValidatedMethod({
   name: 'gh.getRepo',
@@ -27,15 +27,15 @@ export const getRepo = new ValidatedMethod({
         const userRepo = HTTP.get(gh_api_request, { headers:
           { "User-Agent": "Meteor/1.3" } });
         console.log("getRepo result: ", userRepo.data);
-        return userRepo
-      } catch(e) {
-        throw new Meteor.Error('gh.getRepo.httperror', "cant process http call error is: " + e.message);
-        console.log('getUserRepo error: ' + e.message);
-        const userRepo = false;
         return userRepo;
+      } catch(e) {
+          console.log('getUserRepo error: ' + e.message);
+          throw new Meteor.Error('gh.getRepo.httperror', "cant process http call error is: " + e.message);
+          // lines below are never reached ! (throw stop execution)
+          /*const userRepo = false;
+          return userRepo;*/
       }
     }
-
   }
 });
 
@@ -54,7 +54,7 @@ export const getRepoReadme = new ValidatedMethod({
       return res;
     } catch(e) {
       throw new Meteor.Error('gh.getRepoReadme.httperror', "cant process http call error is: "+e);
-      return e;
+      return e; // returning after throw ?
     }
   }
 });
@@ -74,7 +74,7 @@ export const getRepoDlStat = new ValidatedMethod({
       return res;
     } catch(e) {
       throw new Meteor.Error('gh.getRepoDlStat.httperror', "cant process http call error is: "+e);
-      return e;
+      return e; // here again, return after throwing ?
     }
   }
 });
@@ -141,7 +141,7 @@ function getRepoHelper (user_gh_id, userRepos) {
            * Decode yml file from base64 format and convert it to json for armory.yaml validation
            * Retunr repo obj extended with armory_info (yml converted to json)
            */
-          let buf = new Buffer(tmp_res.data.content, 'Base64')
+            let buf = new Buffer(tmp_res.data.content, 'Base64');
           let readme_decode = new Buffer(readme.data.content, 'Base64');
           try {
             let armory_info_json = YAML.safeLoad(buf.toString());

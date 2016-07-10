@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { GhHelper } from '../../../api/github/GhHelper.es6.js';
-import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
+import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js';
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
 import { Plans } from '../../../api/plans/plansCollections.es6.js';
@@ -10,7 +10,7 @@ import { log } from '../../../api/logger_conf.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import './plan.jade';
 
-//const Plans = Meteor.subscribe('plans');
+const PlansSub = Meteor.subscribe('plans');
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
@@ -24,14 +24,29 @@ Template.plan.events({
 /*****************************************************************************/
 Template.plan.helpers({
 	getPlan () {
-		console.log(Session.get("getPlan"));
-    //Session.set('loaded', true);
-    try{
-      return Session.get("getPlan");
-    } catch(err){
-      console.info(err);
+    let plan = null;
+    if (!Session.get('plan')) {
+      plan = Plans.findOne({name: FlowRouter.getParam('_name')});
+      Session.set('plan', plan);
+    } else {
+      plan = Session.get('plan');
     }
+    return plan;
 	},
+
+  getReadMe () {
+    console.log("In getreadme");
+    const plan = Session.get('plan');
+    if (!plan) {
+      console.log("plan not set");
+      return null;
+    }
+    console.log(getRepoReadme.call({
+      repo_id: plan.gh_repo_id,
+      user_gh_id: plan.armory_info.author
+    }));
+    return null;
+  },
 
   isLoaded () {
     return Session.get('loaded');
@@ -39,37 +54,6 @@ Template.plan.helpers({
 
 });
 
-/*****************************************************************************/
-/* Plan: Lifecycle Hooks */
-/*****************************************************************************/
-Template.plan.onCreated(function armoryPlanOnCreated() {
-  this.reactive = new ReactiveVar();
-  console.log("ROOT_URL ", process.env.ROOT_URL);
-});
-
-Template.plan.onRendered(function () {
-  this.autorun(() => {
-    let param = FlowRouter.getParam("_name");
-    console.log("param is: ", param);
-    this.subscribe('showPlan', param);
-    try {
-      let res = Plans.findOne({
-        name: param
-      });
-      console.log("res is: ", res);
-      Session.set('getPlan', res);
-      Session.set('loaded', true);
-
-    } catch(err) {
-      console.log(err);
-      log.error('getPlan error: ', err.message, this.userId);
-      sAlert.error(TAPi18n.__("get_plan.errors.get"));
-      Session.set('loaded', true);
-
-    }
-
-  });
-});
-
-Template.plan.onDestroyed(function () {
+Template.plan.onRendered(() => {
+  Session.set('loaded', true);
 });
