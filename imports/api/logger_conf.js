@@ -57,6 +57,7 @@ function initialize_server() {
 }
 
 if (Meteor.isClient) {
+	
   Meteor.startup(function() {
     initialize_client();
   });
