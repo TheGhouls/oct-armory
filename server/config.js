@@ -1,10 +1,10 @@
 ServiceConfiguration.configurations.upsert(
   {service: "github"},
-  
+
   {
   	$set: {
-  		clientId: "75d49ee4c41e3460be5a",
-  		secret: "0119f2cccacf11d39cf9452ffd830021dfafe710"
+  		clientId: "4823fb242e1a91f2df11",
+  		secret: "33d3bdc955e819f5f1900a9398bcb8a004f83787"
   	}
   }
 );

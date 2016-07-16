@@ -4,9 +4,10 @@ import { GhHelper } from '../../../api/github/GhHelper.es6.js';
 import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
-//import { Plans } from '../../../api/plans/plansCollections.es6.js';
+import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
 import { log } from '../../../api/logger_conf.js';
+import { ReactiveVar } from 'meteor/reactive-var';
 import './plan.jade';
 
 //const Plans = Meteor.subscribe('plans');
@@ -25,7 +26,11 @@ Template.plan.helpers({
 	getPlan () {
 		console.log(Session.get("getPlan"));
     //Session.set('loaded', true);
-    return Session.get("getPlan");
+    try{
+      return Session.get("getPlan");
+    } catch(err){
+      console.info(err);
+    }
 	},
 
   isLoaded () {
@@ -38,26 +43,25 @@ Template.plan.helpers({
 /* Plan: Lifecycle Hooks */
 /*****************************************************************************/
 Template.plan.onCreated(function armoryPlanOnCreated() {
+  this.reactive = new ReactiveVar();
+  console.log("ROOT_URL ", process.env.ROOT_URL);
 });
 
 Template.plan.onRendered(function () {
   this.autorun(() => {
     let param = FlowRouter.getParam("_name");
+    console.log("param is: ", param);
+    this.subscribe('showPlan', param);
     try {
       let res = Plans.findOne({
         name: param
-        /*
-        sort: Sort specifier,
-        skip: Number,
-        fields: Field specifier,
-        reactive: Boolean,
-        transform: Function
-        */
       });
+      console.log("res is: ", res);
       Session.set('getPlan', res);
       Session.set('loaded', true);
 
     } catch(err) {
+      console.log(err);
       log.error('getPlan error: ', err.message, this.userId);
       sAlert.error(TAPi18n.__("get_plan.errors.get"));
       Session.set('loaded', true);

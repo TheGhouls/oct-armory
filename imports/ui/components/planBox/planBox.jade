@@ -1,5 +1,10 @@
 template(name='planBox')
-  each (bp)
-    div
-      h4= name
-      div= short_description
+  .row
+    +momentum plugin='fade'
+      each (bp)
+        .col-md-3
+          a(href="http://localhost:3000/plan/show/#{name}")
+            div.panel.panel-default.span3
+              div.panel-body
+                h4= name
+                p= short_description

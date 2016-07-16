@@ -13,11 +13,18 @@ Meteor.publish('plans', function() {
     fields: Plans.gh_stargazers_count,
     fields: Plans.gh_watchers_count,
     fields: Plans.last_modif
-  });
+  },
+  {limit: 25, sort: {create: 1}});
 });
 
 Meteor.publish('myPlans', function(){
   return Plans.find({
     owner: this.userId
-  });
+  }, {limit: 25, sort: {create: 1}});
+});
+
+Meteor.publish('showPlan', function(name){
+  return Plans.find({
+    name: name
+  }, {limit: 1, sort: {create: 1}});
 });

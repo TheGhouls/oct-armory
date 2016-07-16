@@ -1,10 +1,8 @@
-template(name='mainLayout')
-  .content
+template(name='searchLayout')
+  .search.content
     | {{> Template.dynamic template=nav }}
     header
       | {{> sAlert}}
     main
       | {{> Template.dynamic template=content }}
       #push
-
-  | {{> footer }}

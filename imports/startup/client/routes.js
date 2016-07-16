@@ -4,6 +4,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 // // Import to load these templates
 import '../../ui/layouts/mainLayout/mainLayout.js';
+import '../../ui/layouts/searchLayout/searchLayout.js';
 import '../../ui/pages/armoryHome.js';
 import '../../ui/components/nav/nav.js';
 import '../../ui/components/search/search.js';
@@ -28,15 +29,15 @@ FlowRouter.notFound = {
   }
 };
 
-//////////////////////////
-// PLAN SECTION ROUTE  //
-////////////////////////
-
 FlowRouter.route('/', {
     action: function() {
       BlazeLayout.render("mainLayout", { nav: "nav", content: "armoryHome" });
     },
 });
+
+//////////////////////////
+// PLAN SECTION ROUTE  //
+////////////////////////
 
 let userSection = FlowRouter.group({
   prefix:"/user"
@@ -89,5 +90,26 @@ let saasSection = FlowRouter.group({
 saasSection.route('/test', {
   action: function(params, queryParams){
     BlazeLayout.render("mainLayout", { nav: "nav", content: "saas" })
+  }
+});
+
+/////////////////////////
+//      SEARCH ROUTE    //
+///////////////////////
+
+
+let searchSection = FlowRouter.group({
+  prefix:"/search"
+});
+
+searchSection.route('/', {
+  action: function(params, queryParams){
+    BlazeLayout.render("searchLayout", { nav: "nav", content: "search" })
+  }
+});
+
+searchSection.route('/:_name', {
+  action: function(params, queryParams){
+    BlazeLayout.render("searchLayout", { nav: "nav", content: "search" })
   }
 });

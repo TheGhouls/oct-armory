@@ -31,6 +31,8 @@ Template.search.helpers({
       return res;
     } else {
       console.log('not found res: ', res.length);
+      res.empty = true;
+      console.log(res.empty);
       return [];
     }
   },

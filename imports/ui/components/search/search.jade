@@ -4,12 +4,16 @@ template(name='search')
     form.center-block(role='search')
       div.form-group
         input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
-  if (searchLoading)
-    div.text-center
-      {{> loader}}
-    h4 {{_ "search.loading"}}
-  else if (getSearchRes)
-    div.text-center
-      {{> planBox bp=getSearchRes }}
-  else
-    h2.text-center {{_ "search.not_found"}}
+  +momentum plugin='fade'
+    if (getSearchRes.length)
+      if (searchLoading)
+        div.text-center
+          {{> loader}}
+        h4 {{_ "search.loading"}}
+      else if (getSearchRes)
+        div.text-center
+          {{> planBox bp=getSearchRes }}
+      else
+        p
+    else if getSearchRes.empty
+      h2.text-center {{_ "search.not_found"}}
