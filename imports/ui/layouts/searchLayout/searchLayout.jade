@@ -1,8 +1,9 @@
 template(name='searchLayout')
-  .content-search
-    | {{> Template.dynamic template=nav }}
-    header
-      | {{> sAlert}}
-    main
-      | {{> Template.dynamic template=content }}
-      #push
+  +momentum plugin='fade'
+    a(href="/")
+      .cross X esc
+    .content-search
+      header
+        | {{> sAlert}}
+      main
+        | {{> Template.dynamic template=content }}

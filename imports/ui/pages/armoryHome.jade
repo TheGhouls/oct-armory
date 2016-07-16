@@ -1,3 +1,7 @@
 template(name='armoryHome')
   div.container
-    {{> search }}
+    .search
+      h1.title {{_ "search.title"}}
+      form.center-block(role='search')
+        div.form-group
+          input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')

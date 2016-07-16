@@ -7,6 +7,9 @@ import './armoryHome.jade';
 /* Home: Event Handlers */
 /*****************************************************************************/
 Template.armoryHome.events({
+	'click .search': (e) => {
+    FlowRouter.go('/search');
+  }
 
 });
 

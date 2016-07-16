@@ -1,5 +1,10 @@
 import './nav.jade';
 
+Template.nav.events({
+    'click .nav-search': (e) => {
+      FlowRouter.go('/search');
+    }
+});
 Template.nav.onCreated(function(){
   export const userId = Meteor.userId();
 });
