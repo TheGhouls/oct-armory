@@ -1,4 +1,5 @@
 import { Plans } from '../plansCollections.es6.js';
+//import 'meteor:simple:rest';
 
 Meteor.publish('plans', function() {
   return Plans.find({
@@ -26,5 +27,10 @@ Meteor.publish('myPlans', function(){
 Meteor.publish('showPlan', function(name){
   return Plans.find({
     name: name
-  }, {limit: 1, sort: {create: 1}});
+  },
+  {gh_tar_url: 1 },
+  {limit: 1, sort: {create: 1}});
+},{
+  url: "get-plan/:0",
+  httpMethod: "get"
 });

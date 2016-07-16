@@ -122,6 +122,8 @@ retry@1.0.8
 routepolicy@1.0.11
 service-configuration@1.0.10
 session@1.1.6
+simple:json-routes@2.1.0
+simple:rest@1.1.1
 spacebars@1.0.12
 spacebars-compiler@1.0.12
 standard-minifier-css@1.0.7_1
