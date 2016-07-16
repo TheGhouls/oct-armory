@@ -28,6 +28,7 @@ Template.armoryHome.helpers({
 /* Home: Lifecycle Hooks */
 /*****************************************************************************/
 Template.armoryHome.onCreated(function armoryHomeOnCreated() {
+
 	// this.autorun(() => {
 	// 	let gh= new GhHelper();
 
@@ -37,6 +38,7 @@ Template.armoryHome.onCreated(function armoryHomeOnCreated() {
 });
 
 Template.armoryHome.onRendered(function () {
+
 	//console.log("onRendered armoryHome");
 	// this.autorun(() => {
 	// 		let gh = new GhHelper();
@@ -51,4 +53,5 @@ Template.armoryHome.onRendered(function () {
 });
 
 Template.armoryHome.onDestroyed(function () {
+
 });

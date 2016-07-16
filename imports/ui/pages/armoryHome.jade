@@ -1,7 +1,8 @@
 template(name='armoryHome')
-  div.container
-    .search
-      h1.title {{_ "search.title"}}
-      form.center-block(role='search')
-        div.form-group
-          input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
+  +momentum plugin='fade'
+    div.container
+      .search
+        h1.title {{_ "search.title"}}
+        form.center-block(role='search')
+          div.form-group
+            input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
