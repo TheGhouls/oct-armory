@@ -5,5 +5,6 @@ template(name='searchLayout')
     .content-search
       header
         | {{> sAlert}}
-      main
-        | {{> Template.dynamic template=content }}
+      +momentum plugin='fade'
+        main
+          | {{> Template.dynamic template=content }}

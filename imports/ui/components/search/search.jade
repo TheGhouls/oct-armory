@@ -1,19 +1,20 @@
 template(name='search')
-  .search
-    h1.title {{_ "search.title"}}
-    form.center-block(role='search')
-      div.form-group
-        input.form-control(type='text', placeholder = getSearchPlaceholder, id='search_input')
   +momentum plugin='fade'
-    if (getSearchRes.length)
-      if (searchLoading)
-        div.text-center
-          {{> loader}}
-        h4 {{_ "search.loading"}}
-      else if (getSearchRes)
-        div.text-center
-          {{> planBox bp=getSearchRes }}
-      else
-        p
-    else if getSearchRes.empty
-      h2.text-center {{_ "search.not_found"}}
+    .search
+      h1.title {{_ "search.title"}}
+      form.center-block(role='search')
+        div.form-group
+          input.form-control(type='text', tabindex="-1" ,name='search-input', placeholder=getSearchPlaceholder, id='search_input', autofocus)
+    +momentum plugin='fade'
+      if (getSearchRes.length)
+        if (searchLoading)
+          div.text-center
+            {{> loader}}
+          h4 {{_ "search.loading"}}
+        else if (getSearchRes)
+          div.text-center
+            {{> planBox bp=getSearchRes }}
+        else
+          p
+      else if getSearchRes.empty
+        h2.text-center {{_ "search.not_found"}}

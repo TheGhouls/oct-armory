@@ -1,10 +1,16 @@
+
+
+GH_CLIENT = Meteor.settings.public.githubClient;
+GH_SECRET = Meteor.settings.public.githubSecret;
+console.log("GH_CLIENT", Meteor.settings.public);
+
 ServiceConfiguration.configurations.upsert(
   {service: "github"},
 
   {
   	$set: {
-  		clientId: "4823fb242e1a91f2df11",
-  		secret: "33d3bdc955e819f5f1900a9398bcb8a004f83787"
+  		clientId: GH_CLIENT,
+  		secret: GH_SECRET
   	}
   }
 );

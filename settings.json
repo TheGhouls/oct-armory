@@ -1,16 +1,18 @@
 {
   "public": {
     "analyticsSettings": {
-      // Add your analytics tracking id's here
       "Google Analytics" : {"trackingId": "Your tracking ID"}
     },
-    "githubApiKey": "client_id=75d49ee4c41e3460be5a&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710"
+    "githubApiKey": "client_id=75d49ee4c41e3460be5a&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710",
+    "githubClient": "4823fb242e1a91f2df11",
+    "githhubSecret": "33d3bdc955e819f5f1900a9398bcb8a004f83787"
   },
   "private": {
     "galaxy.meteor.com": {
-    "env": {
-      "MONGO_URL": "...",
-      "MONGO_OPLOG_URL": "...",
+      "env": {
+        "MONGO_URL": "",
+        "MONGO_OPLOG_URL": ""
+      }
     }
   }
 }

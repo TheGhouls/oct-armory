@@ -47,13 +47,15 @@ Template.search.helpers({
 
 });
 
-// Template.search.onCreated({
+Template.search.onCreated(function (){
+  $('#search_input').focus();
+});
 
-// });
-
-// Template.search.onRendered({
-
-// });
+Template.search.onRendered(function (){
+  $('#search_input').focus();
+  // document.getElementById('#search_input').focus();
+  // document.getElementById('#search_input').select();
+});
 
 // Template.search.onDestroyed({
 
