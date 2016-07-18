@@ -17,8 +17,19 @@ let LogFile = new LoggerFile(log, {
 
 LogFile.enable();
 
-let clientDSN = 'http://da50322d59604cf1847b41a18c8ee73a:39eaeb40b1614ab2ac1756bb5e75ee68@sentry.theghouls.io/2';
+/*
+	This is a practice for use raven logs.
 
+	example :
+			try {
+			   throw "Test raven"; 
+			}
+			catch (error) {
+				// call raven exception here
+				Raven.captureException(error);
+			}
+*/
+let clientDSN = 'http://da50322d59604cf1847b41a18c8ee73a:39eaeb40b1614ab2ac1756bb5e75ee68@sentry.theghouls.io/2';
 let serverDSN = 'http://da50322d59604cf1847b41a18c8ee73a@sentry.theghouls.io/2';
 
 Meteor.methods({
@@ -37,27 +48,28 @@ function initialize_client() {
   Meteor.call('getclientdsn', function(error, client_dsn) {
     if (error) throw error;
     RavenLogger.initialize({
-      client: client_dsn,
+      client: client_dsn
 	});
- };
+	RavenLogger.log('Testing error message');
+ });
 }
 
 function initialize_server() {
   Meteor.call('getserverdsn', function(error, server_dsn) {
     if (error) throw error;
     RavenLogger.initialize({
-      client: server_dsn,
+      server: server_dsn,
 		}, {
   			patchGlobal: function() {
     		console.log('toto');
     		process.exit(1);
   			}
 	});
- };
+ });
 }
 
 if (Meteor.isClient) {
-	
+console.log('hello biatch');
   Meteor.startup(function() {
     initialize_client();
   });
