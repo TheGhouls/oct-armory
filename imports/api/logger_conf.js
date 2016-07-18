@@ -18,7 +18,7 @@ let LogFile = new LoggerFile(log, {
 LogFile.enable();
 
 /*
-	This is a practice for use raven logs.
+	This is a practice for use raven logs with oct armory.
 
 	example :
 			try {
@@ -28,7 +28,9 @@ LogFile.enable();
 				// call raven exception here
 				Raven.captureException(error);
 			}
+	This is a simple way for catch errors.
 */
+
 let clientDSN = 'http://da50322d59604cf1847b41a18c8ee73a:39eaeb40b1614ab2ac1756bb5e75ee68@sentry.theghouls.io/2';
 let serverDSN = 'http://da50322d59604cf1847b41a18c8ee73a@sentry.theghouls.io/2';
 
@@ -61,7 +63,7 @@ function initialize_server() {
       server: server_dsn,
 		}, {
   			patchGlobal: function() {
-    		console.log('toto');
+    		console.log('test initialize');
     		process.exit(1);
   			}
 	});
@@ -69,7 +71,7 @@ function initialize_server() {
 }
 
 if (Meteor.isClient) {
-console.log('hello biatch');
+console.log('Test client');
   Meteor.startup(function() {
     initialize_client();
   });
