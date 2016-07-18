@@ -4,3 +4,5 @@ Template.planBox.events({
 
 });
 
+Template.planBox.helpers({
+});
