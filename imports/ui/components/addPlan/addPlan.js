@@ -6,7 +6,7 @@ import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
 import './addPlan.jade';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
-import { log } from '../../../api/logger_conf.js';
+import { log, logRaven } from '../../../api/logger_conf.js';
 
 
 /*****************************************************************************/

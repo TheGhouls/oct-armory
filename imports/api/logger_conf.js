@@ -1,7 +1,9 @@
 import {Logger} from 'meteor/ostrio:logger';
 import {LoggerFile} from 'meteor/ostrio:loggerfile';
+import {RavenLogger} from 'meteor/deepwell:raven';
 
 export const log = new Logger();
+export const logRaven = RavenLogger;
 
 let LogFile = new LoggerFile(log, {
   fileNameFormat: function(time) {
@@ -22,7 +24,7 @@ LogFile.enable();
 
 	example :
 			try {
-			   throw "Test raven"; 
+			   throw "Test raven";
 			}
 			catch (error) {
 				// call raven exception here
@@ -31,50 +33,11 @@ LogFile.enable();
 	This is a simple way for catch errors.
 */
 
-let clientDSN = 'http://da50322d59604cf1847b41a18c8ee73a:39eaeb40b1614ab2ac1756bb5e75ee68@sentry.theghouls.io/2';
-let serverDSN = 'http://da50322d59604cf1847b41a18c8ee73a@sentry.theghouls.io/2';
+RavenLogger.initialize({
+      client: Meteor.settings.public.clientDSN,
+      server: Meteor.settings.public.serverDSN
+  }, {
+      trackUser: true
+    });
+RavenLogger.log('Testing aurel error message');
 
-Meteor.methods({
-  getserverdsn: function() {
-    return serverDSN;
-  }
-});
-
-Meteor.methods({
-  getclientdsn: function() {
-    return clientDSN;
-  }
-});
-
-function initialize_client() {
-  Meteor.call('getclientdsn', function(error, client_dsn) {
-    if (error) throw error;
-    RavenLogger.initialize({
-      client: client_dsn
-	});
-	RavenLogger.log('Testing error message');
- });
-}
-
-function initialize_server() {
-  Meteor.call('getserverdsn', function(error, server_dsn) {
-    if (error) throw error;
-    RavenLogger.initialize({
-      server: server_dsn,
-		}, {
-  			patchGlobal: function() {
-    		console.log('test initialize');
-    		process.exit(1);
-  			}
-	});
- });
-}
-
-if (Meteor.isClient) {
-console.log('Test client');
-  Meteor.startup(function() {
-    initialize_client();
-  });
-}
-
-initialize_server();

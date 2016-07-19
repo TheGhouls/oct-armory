@@ -4,7 +4,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { YAML } from 'meteor/udondan:yml';
 import { Match } from 'meteor/check';
 import { Plans } from '../plans/plansCollections.es6.js';
-import { log } from '../logger_conf.js';
+import { log, logRaven } from '../logger_conf.js';
 import { ArmoryInfoSchema } from './ArmoryInfoSchema.js';
 
 GH_AUTH = Meteor.settings.public.githubApiKey;
@@ -106,6 +106,7 @@ export const getReposArmory = new ValidatedMethod({
     if(Meteor.isServer){
       if(res.length == 0) {
         console.log("no Armory repositories found");
+        //logRaven.log(new Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found: "+res.length+" plan found for user: "+user_gh_id));
         throw new Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found: "+res.length+" plan found for user: "+user_gh_id);
       } else {
         return res;
@@ -151,7 +152,8 @@ function getRepoHelper (user_gh_id, userRepos) {
               res.push(repo);
             } else {
               let err = new Meteor.Error('gh.getReposArmory.notvalidarmory', "armory.yml is not valid: missing info");
-              log.error('armory.yml is not valid: missing info ', err.message, this.userId)
+              log.error('armory.yml is not valid: missing info ', err.message, this.userId);
+              logRaven.log('armory.yml is not valid: missing info '+err.message+this.userId);
               console.log('armory.yml is not valid: missing info');
             }
           } catch (e) {

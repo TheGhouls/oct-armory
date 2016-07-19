@@ -5,7 +5,9 @@
     },
     "githubApiKey": "client_id=75d49ee4c41e3460be5a&client_secret=0119f2cccacf11d39cf9452ffd830021dfafe710",
     "githubClient": "4823fb242e1a91f2df11",
-    "githhubSecret": "33d3bdc955e819f5f1900a9398bcb8a004f83787"
+    "githhubSecret": "33d3bdc955e819f5f1900a9398bcb8a004f83787",
+    "clientDSN": "http://da50322d59604cf1847b41a18c8ee73a@sentry.theghouls.io/2",
+    "serverDSN": "http://da50322d59604cf1847b41a18c8ee73a:39eaeb40b1614ab2ac1756bb5e75ee68@sentry.theghouls.io/2"
   },
   "private": {
     "galaxy.meteor.com": {
