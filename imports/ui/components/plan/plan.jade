@@ -1,12 +1,34 @@
 template(name='plan')
-  if (isLoaded)
-    if (getPlan)
+  if isLoaded
+    if getPlan
       h2.text-center {{_ "plan.infos"}}
       h4 Owner: {{getPlan.owner}}
       h4 Name: {{getPlan.name}}
       h4 {{_ "plan.repo_url"}}
         a(href= getPlan.gh_repo_url) {{getPlan.gh_repo_url}}
-      p {{getReadMe}}
+      h4 Description: {{getPlan.short_description}}
+      h4 Read Me: {{getPlan.gh_readme}}
+      h4 Zip DL Url:
+        a(href= getPlan.gh_zip_url) {{getPlan.gh_zip_url}}
+      h4 Stared: {{getPlan.gh_stargazers_count}}
+      h4 Watched: {{getPlan.gh_watchers_count}}
+      h4 Create at: {{getPlan.create}}
+      h4 Tag:
+          each index in getPlan.armory_info.tags
+            span #{index},
+
+      if currentUser
+        if canStar getPlan.gh_repo_id this
+          button(class="btn btn-primary star_bp disabled")
+            | Be Awesome
+        else
+          button(class="btn btn-primary star_bp", repository_id=getPlan.gh_repo_id)
+            | Be Awesome
+      else
+        button(class="btn btn-primary star_bp disabled")
+          | Be Awesome
+      //- span(class='badge')
+      //-       = starCounter
     else
       h4 {{_ "plan.none"}}
   else

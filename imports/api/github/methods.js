@@ -39,25 +39,25 @@ export const getRepo = new ValidatedMethod({
   }
 });
 
-export const getRepoReadme = new ValidatedMethod({
-  name: 'gh.getRepoReadme',
+// export const getRepoReadme = new ValidatedMethod({
+//   name: 'gh.getRepoReadme',
 
-  validate: new SimpleSchema({
-    user_gh_id: { type: String},
-    repo_id: { type: String}
-  }).validator(),
+//   validate: new SimpleSchema({
+//     user_gh_id: { type: String},
+//     repo_id: { type: String}
+//   }).validator(),
 
-  run({user_gh_id, repo_id }){
-    const gh_api_request = gitHubUrl+user_gh_id+"/"+repo_id+"/readme";
-    try{
-      const res = HTTP.call('GET', gh_api_request);
-      return res;
-    } catch(e) {
-      throw new Meteor.Error('gh.getRepoReadme.httperror', "cant process http call error is: "+e);
-      return e; // returning after throw ?
-    }
-  }
-});
+//   run({user_gh_id, repo_id }){
+//     const gh_api_request = gitHubUrl+user_gh_id+"/"+repo_id+"/readme";
+//     try{
+//       const res = HTTP.call('GET', gh_api_request);
+//       return res;
+//     } catch(e) {
+//       throw new Meteor.Error('gh.getRepoReadme.httperror', "cant process http call error is: "+e);
+//       return e; // returning after throw ?
+//     }
+//   }
+// });
 
 export const getRepoDlStat = new ValidatedMethod({
   name: 'gh.getRepoDlStat',
@@ -113,6 +113,66 @@ export const getReposArmory = new ValidatedMethod({
       }
     }
 
+  }
+});
+
+// export const getStarWatchRepo = new ValidateMethod({
+//   name: 'gh.getStarWatchRepo',
+//   validate: new SimpleSchema({
+//     repo_id: { type: String }
+//   }).validator(),
+
+//   run({ repo_id }) {
+//     let repo_owner = Meteor.plans.find({ _id: this.id })
+//     if(repo_owner == null)
+//       return;
+
+//     const gh_api_request = gitHubUrl + "/user/starred/" + repo_owner + "/" + repo_id
+//   }
+// });
+
+export const isStarred = new ValidatedMethod({
+  name: 'isStarred',
+
+  validate: new SimpleSchema({
+    repo_id: { type: String }
+  }).validator(),
+  run({ repo_id }) {
+    let starred_repo_url = 'https://api.github.com/user/starred?access_token=fd498b006a4d52620881c47065c3fb097e707c2c';
+
+    HTTP.get(starred_repo_url, { headers: { 'Accept': 'application/vnd.github.v3+json' } },
+      function(err, result) {
+        if(!err) {
+          for(var i = 0; i < result.data.length; i++) {
+            if(result.data[i].id == repo_id){
+              return(true);
+            }
+          }
+          return(false);
+        }
+        return('shit1');
+      }
+    );
+  }
+});
+
+export const getNumbersOfStars = new ValidatedMethod({
+  name: 'getNumbersOfStars',
+
+  validate: new SimpleSchema({
+    repo_url: { type: String }
+  }).validator(),
+  run({ repo_url }) {
+    let url_repo = 'https://api.github.com/repos/' + repo_url;
+
+    HTTP.get(url_repo, { headers: { 'Accept': 'application/vnd.github.v3+json' } },
+      function(err, result) {
+        if (!err)
+          return result;
+        else
+          console.log("error while retrieving star count from Git");
+      }
+    );
   }
 });
 

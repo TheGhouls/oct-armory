@@ -7,7 +7,7 @@ export const getUserRepo = new ValidatedMethod({
   name: 'gh.getUserRepo',
 
   validate: new SimpleSchema({
-    user_gh_id: { type: String}
+    user_gh_id: { type: String }
   }).validator(),
   run({ user_gh_id }){
     const gh_api_request = "https://api.github.com/search/repositories?q=+user:" + user_gh_id;

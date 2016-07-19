@@ -1,6 +1,5 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { GhHelper } from '../../../api/github/GhHelper.es6.js';
 import { getRepoReadme, getReposArmory, getRepo} from '../../../api/github/methods.js'
 import { addPlan } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
