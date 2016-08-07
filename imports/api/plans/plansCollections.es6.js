@@ -16,6 +16,18 @@ Schemas.Plan = new SimpleSchema({
 		index: true
 	},
 
+	owner_name: {
+		type: String,
+		label: "Owner",
+		autoValue: function () {
+		      if (this.isInsert) {
+		        return Meteor.user().username;
+			}
+		},
+		optional: true,
+		index: true
+	},
+
 	create: {
 		type: Date,
 		    autoValue: function() {
