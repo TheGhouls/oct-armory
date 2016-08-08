@@ -1,21 +1,39 @@
 template(name='plan')
   if (isLoaded)
     if (getPlan)
-      h2.text-center {{_ "plan.infos"}}
-      h4 Owner: {{getPlan.owner}}
-      h4 Name: {{getPlan.name}}
-      h4 {{_ "plan.repo_url"}}
-        a(href= getPlan.gh_repo_url) {{getPlan.gh_repo_url}}
-      h4 Description: {{getPlan.short_description}}
-      h4 Read Me: {{getPlan.gh_readme}}
-      h4 Zip DL Url:
-        a(href= getPlan.gh_zip_url) {{getPlan.gh_zip_url}}
-      h4 Stared: {{getPlan.gh_stargazers_count}}
-      h4 Watched: {{getPlan.gh_watchers_count}}
-      h4 Create at: {{getPlan.create}}
-      h4 Tag:
-          each index in getPlan.armory_info.tags
-            span #{index},
+      .contener
+        .row
+          .col-md-8.bp-name
+            h1.text-center {{getPlan.name}}
+          .col-md-4.offset-md-8.bp-owner
+            h5 Owner: {{getPlan.owner_name}}
+            h5 Create at: {{getPlan.create}}
+            h5 Tag:
+                each index in getPlan.armory_info.tags
+                  span #{index},
+        .row
+          .col-md-4.bp-short-description
+            h4 {{getPlan.short_description}}
+        .row
+          .col-md-3
+            i.fa.fa-star.star-count-ico
+            span.star-count  Stars {{getPlan.gh_stargazers_count}}
+            i.fa.fa-eye.bp-ico
+            span.star-count  Watched {{getPlan.gh_watchers_count}}
+          .col-md-6.offset-md-8
+            i.fa.fa-github-alt.bp-ico
+            input#focusedInput.form-control.bp-repo-url(type='text', readonly="readonly", value= getPlan.gh_repo_url)
+        .row
+          .col-md-12
+            a(href= getPlan.gh_zip_url)
+              i.fa.fa-cloud-download.bp-ico
+              span.bp-main-class Zip Download Url:
+        hr#bp-hr-border
+        .row
+          .col-md-12
+            h4 Read Me:
+            .bp-readme
+              {{{getPlan.gh_readme}}}
     else
       h4 {{_ "plan.none"}}
   else

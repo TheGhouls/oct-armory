@@ -18,10 +18,11 @@ Schemas.Plan = new SimpleSchema({
 
 	owner_name: {
 		type: String,
-		label: "Owner",
+		label: "Owner Name",
 		autoValue: function () {
 		      if (this.isInsert) {
-		        return Meteor.user().username;
+		      	console.log(Meteor.user());
+		        return String(Meteor.user().services.github.username);
 			}
 		},
 		optional: true,
