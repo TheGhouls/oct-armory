@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { getRepoReadme, getReposArmory, getRepo, isStarred, getNumbersOfStars } from '../../../api/github/methods.js';
-import { addPlan } from '../../../api/plans/plansMethods.es6.js';
+import { addPlan, checkForUpdate } from '../../../api/plans/plansMethods.es6.js';
 import { Session } from 'meteor/session';
 import { Plans } from '../../../api/plans/plansCollections.es6.js';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
@@ -31,13 +31,18 @@ Template.plan.events({
 Template.plan.helpers({
 	getPlan () {
     let plan = null;
-    // const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id
-    // HTTP.call( 'GET', 'http://url.to/call', { "options": "to set" }, function( error, response ) {
-    //   // Handle the error or response here.
-    // });
+    //checking if this bp need update
+    Meteor.call('checkForUpdate', plan.id, function (error, result) {
+      if(error)
+        console.log("update error", error);
+
+      if(result)
+        console.log("udate result", result);
+    });
     if (!Session.get('plan')) {
       let converter = new Showdown.converter();
       plan = Plans.findOne({ name: FlowRouter.getParam('_name') });
+      // Convert markdown to html
       plan.gh_readme = converter.makeHtml(String(plan.gh_readme));
       Session.set('plan', plan);
     } else {

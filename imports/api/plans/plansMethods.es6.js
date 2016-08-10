@@ -1,5 +1,55 @@
 import { Plans } from './plansCollections.es6.js';
 
+export const checkForUpdate = new ValidatedMethod({
+  name: 'checkForUpdate',
+
+  validate: new SimpleSchema({
+
+  }).validator(),
+
+  run({battle_plan_id}){
+    //unblocking client from waiting result
+    this.unblock();
+
+    const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id
+
+    function isRepoInRedis(repoNameOrId) {
+      if ("check_if_valid_in_redis"){
+        return true;
+      }
+      return false;
+    }
+
+    if(!isRepoInRedis())
+      try{
+        let tmp_repo_state = HTTP.call( 'GET', gh_api_request, { "options": "to set" });
+      } catch(e){
+        log(tmp_repo_state.error);
+      }
+      if(tmp_repo_state.error){
+        log(tmp_repo_state.error);
+      } else {
+        plan = findOne({
+          _id: battle_plan_id
+        });
+
+        tmp_plan = isRepoChanged(tmp_repo_state, plan);
+      }
+
+    });
+    function isRepoChanged(repo, plan){
+      if (repo.title !== plan.title) {
+        //update Bp title
+      }
+      if (repo.readme !== plan.readme){
+        //update Read Me
+      }
+      if (repo.short_description !== plan.short_description) {
+        //update shor description
+      }
+    }
+  }//end run()
+})
 
 export const addPlan = new ValidatedMethod({
   name: 'addPlan',
