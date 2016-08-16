@@ -1,5 +1,11 @@
 import { Plans } from './plansCollections.es6.js';
+import { getRedis, setRedis } from '../redis/methods.js';
 
+/**
+ * [Check if repo is already in Redis and update Plan in Mongo if Plan need update]
+ * @param Plan Mongo ID
+ * @return {[void]} [Update repo if needed]
+ */
 export const checkForUpdate = new ValidatedMethod({
   name: 'checkForUpdate',
 
@@ -10,43 +16,58 @@ export const checkForUpdate = new ValidatedMethod({
   run({battle_plan_id}){
     //unblocking client from waiting result
     this.unblock();
+    GH_AUTH = Meteor.settings.public.githubApiKey;
+    GH_API_URL = 'https://api.github.com/repos/';
 
-    const gh_api_request = "https://api.github.com/repos/"+user_gh_id+"/"+repo_id
 
-    function isRepoInRedis(repoNameOrId) {
+    function isRepoInRedis(repoId) {
       if ("check_if_valid_in_redis"){
         return true;
       }
       return false;
     }
 
-    if(!isRepoInRedis())
+    if(!isRepoInRedis(battle_plan_id)){
       try{
-        let tmp_repo_state = HTTP.call( 'GET', gh_api_request, { "options": "to set" });
+        battle_plan = Plans.findOne({_id: battle_plan_id});
+        let repo_url = battle_plan.gh_repo_url.split("https://github.com/");
+        repo_url = repo_url[1];
+        const gh_api_request_armoryYAML = GH_API_URL + user_gh_id + "/" + repo.name + "/contents/.armory.yaml?" + GH_AUTH;
+        const gh_api_request_repo = GH_API_URL + repo_url + "?" + GH_AUTH;
+        const gh_api_request_readme = GH_API_URL + repo_url + "/readme" + GH_AUTH;
       } catch(e){
-        log(tmp_repo_state.error);
+        console.log("cant find the battle_plan to update in db", e);
       }
-      if(tmp_repo_state.error){
-        log(tmp_repo_state.error);
-      } else {
-        plan = findOne({
-          _id: battle_plan_id
-        });
-
-        tmp_plan = isRepoChanged(tmp_repo_state, plan);
+      try{
+        const repoToCheck = HTTP.get(gh_api_request_repo, { headers: { "User-Agent": "Meteor/1.3" } });
+        const readMeToCheck = HTTP.get(gh_api_request_readme, { headers: { "User-Agent": "Meteor/1.3" } });
+        const armoryToCheck = HTTP.get(gh_api_request_armoryYAML, { headers: { "User-Agent": "Meteor/1.3" } });
+      } catch(e){
+        console.log("cant acces to repo on github api ", e);
       }
+      try{
+        //update in redis
+      }catch(e){
+        log(e.error)
+      }
+    }else{
+      return "{succes: 'Plan is in cache'}";
+    }
 
-    });
+
+
     function isRepoChanged(repo, plan){
+      let res = null;
       if (repo.title !== plan.title) {
-        //update Bp title
+        res = plan.update({_id: plan.id}, {title: repo.title});
       }
       if (repo.readme !== plan.readme){
-        //update Read Me
+        res = plan.update({_id: plan.id}, {readme: repo.readme});
       }
       if (repo.short_description !== plan.short_description) {
-        //update shor description
+        res = plan.update({_id: plan.id}, {short_description: repo.short_description});
       }
+      return res;
     }
   }//end run()
 })
@@ -87,6 +108,19 @@ export const addPlan = new ValidatedMethod({
           throw new Meteor.Error('plans.addPlan', "can't write the DB error is: " + e.message);
          }
       }
+  }
+});
+
+export const updatePlan = new ValidatedMethod({
+  name: 'updatePlan',
+
+  validate: new SimpleSchema({
+    repo_gh_id: { type: String},
+    new_data: { type: Object, blackbox: true}
+  }).validator(),
+
+  run({repo_gh_id, new_data}){
+
   }
 });
 

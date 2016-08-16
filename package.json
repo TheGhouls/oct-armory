@@ -6,7 +6,9 @@
   },
   "dependencies": {
     "fiber": "^1.0.4",
+    "hiredis": "^0.5.0",
     "meteor-node-stubs": "~0.2.0",
+    "redis": "^2.6.2",
     "zmq": "^2.15.3"
   }
 }
