@@ -164,7 +164,15 @@ export const updatePlan = new ValidatedMethod({
     return battle_plan_id;
   }
 });
-
+/**
+ * [decode and check armory_info.yml and decode
+ * readme and extend object before using it
+ * for update db]
+ * @param  {Object} jsonRepo   [the js object to use with mongo $set]
+ * @param  {Object} armoryYaml [the response from gh api for armory_infi.yaml]
+ * @param  {Object} readme     [the response from gh api for readme.md]
+ * @return {Object}            [Updated object with base64 decoded readme and armoty_info]
+ */
 let prepareBpJson = (jsonRepo, armoryYaml, readme) => {
   let buf = new Buffer(armoryYaml.data.content, 'Base64')
   let readme_decode = new Buffer(readme.data.content, 'Base64');
