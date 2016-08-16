@@ -41,7 +41,7 @@ Template.plan.helpers({
               //checking if this bp need update
               if(planSub.ready()){
                 console.log("checking if this bp need update", plan._id);
-                Meteor.call('checkForUpdate', String(plan._id), function (error, result) {
+                Meteor.call('checkForUpdate', {battle_plan_id: plan._id}, function (error, result) {
                   if(error)
                     console.log("update error", error);
 
