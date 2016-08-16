@@ -33,7 +33,9 @@ export const checkForUpdate = new ValidatedMethod({
           let res = Meteor.call('updatePlan', {battle_plan_id: battle_plan_id});
           console.log(res);
         }catch(e){
-          console.log("DB update error", e);
+          log.error('plans.checkForUpdate DB update error ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+          logRaven.log('plans.checkForUpdate DB update error '+e+" | "+this.userId+" | "+Meteor.user().name);
+          console.log("checkForUpdate DB update error", e);
         }
         try{
           //Meteor.call('setRedis', String(battle_plan_id), battle_plan.gh_id);
@@ -71,6 +73,9 @@ export const addPlan = new ValidatedMethod({
 
   run({ repo_gh_id, user_gh_id, repo }){
     if (!Meteor.userId()) {
+      log.error('plans.addPlan not-authorized ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+      logRaven.log('plans.addPlan not-authorized '+e+" | "+this.userId+" | "+Meteor.user().name);
+
       throw new Meteor.Error('not-authorized');
     }
       let x = _.where(repo, { name: repo_gh_id });
@@ -93,6 +98,8 @@ export const addPlan = new ValidatedMethod({
             });
           return res;
         } catch (e) {
+          log.error('plans.addPlan cant write the DB error is: ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+          logRaven.log('plans.addPlan cant write the DB error is: '+e+" | "+this.userId+" | "+Meteor.user().name);
           throw new Meteor.Error('plans.addPlan', "can't write the DB error is: " + e.message);
          }
       }
@@ -113,9 +120,9 @@ export const updatePlan = new ValidatedMethod({
       try{
         battle_plan = Plans.findOne({_id: battle_plan_id});
       } catch(e){
-        console.log("cant find the battle_plan to update in db", e);
+        log.error('plans.updatePlan cant find the battle_plan to update in db ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+        logRaven.log('plans.updatePlan cant find the battle_plan to update in db '+e+" | "+this.userId+" | "+Meteor.user().name);
       }
-
       let repoToCheck = null;
       let readMeToCheck = null;
       let armoryToCheck = null;
@@ -129,14 +136,10 @@ export const updatePlan = new ValidatedMethod({
         readMeToCheck = HTTP.get(gh_api_request_readme, { headers: { "User-Agent": "Meteor/1.3" } });
         armoryToCheck = HTTP.get(gh_api_request_armoryYAML, { headers: { "User-Agent": "Meteor/1.3" } });
       } catch(e){
+        log.error('plans.updatePlan cant acces to repo on github api ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+        logRaven.log('plans.updatePlan cant acces to repo on github api '+e+" | "+this.userId+" | "+Meteor.user().name);
         console.log("cant acces to repo on github api ", e);
       }
-      console.log("update mongo");
-          console.log("readMeToCheck status ", readMeToCheck.headers.status);
-          console.log("armoryToCheck status ", armoryToCheck.headers.status);
-          console.log("repoToCheck content ", JSON.parse(repoToCheck.content).name );
-          console.log("readMeToCheck content ", readMeToCheck.data.name);
-          console.log("armoryToCheck content ", armoryToCheck.content.name);
       try {
         let jsonRepo = {
             name: repoToCheck.data.name,
@@ -153,10 +156,12 @@ export const updatePlan = new ValidatedMethod({
             };
         jsonRepo = prepareBpJson(jsonRepo, armoryToCheck, readMeToCheck);
         res = Plans.update({_id: String(battle_plan_id)}, {$set: jsonRepo});
-        log.error('armory.yml dump jsonRepo obj ', this.userId, JSON.stringify(jsonRepo));
+        //log.error('armory.yml dump jsonRepo obj ', this.userId, JSON.stringify(jsonRepo));
         console.log(res);
         return res;
       } catch (e) {
+        log.error('plans.updatePlan cant update the DB error is: ', e, e+" | "+this.userId+" | "+Meteor.user().name);
+        logRaven.log('plans.updatePlan cant update the DB error is: '+e+" | "+this.userId+" | "+Meteor.user().name);
         throw new Meteor.Error('plans.updatePlan', "can't update the DB error is: " + e.message);
        }
     }
