@@ -22,7 +22,8 @@ export const checkForUpdate = new ValidatedMethod({
     //unblocking client from waiting result
     this.unblock();
       function isRepoInRedis(repoId) {
-        //let isInRedis = Meteor.call('getRedis', String(repoId));
+        let isInRedis = Meteor.call('getRedis', {redis_key: String(repoId)});
+        console.log("isInRedis: ", isInRedis);
         if (true == false){
           return true;
         }
@@ -38,7 +39,8 @@ export const checkForUpdate = new ValidatedMethod({
           console.log("checkForUpdate DB update error", e);
         }
         try{
-          //Meteor.call('setRedis', String(battle_plan_id), battle_plan.gh_id);
+          let setInRedis = Meteor.call('setRedis', {redis_key: String(battle_plan_id), redis_val: String(battle_plan.gh_id)});
+          console.log("setInRedis: ", isInRedis);
           //update in redis
         }catch(e){
           console.log(e.error);
@@ -80,7 +82,7 @@ export const addPlan = new ValidatedMethod({
     }
       let x = _.where(repo, { name: repo_gh_id });
       let tmp;
-      //console.log('x is: ', tmp = x[0].archive_url.replace('{archive_format}{ /ref }', 'zipball'));
+      //console.log('x is: ', x[0]);
       if (Meteor.isServer){
         try {
           res = Plans.insert({
@@ -123,9 +125,6 @@ export const updatePlan = new ValidatedMethod({
         log.error('plans.updatePlan cant find the battle_plan to update in db ', e, e+" | "+this.userId+" | "+Meteor.user().name);
         logRaven.log('plans.updatePlan cant find the battle_plan to update in db '+e+" | "+this.userId+" | "+Meteor.user().name);
       }
-      let repoToCheck = null;
-      let readMeToCheck = null;
-      let armoryToCheck = null;
       let repo_url = battle_plan.gh_repo_url.split("https://github.com/");
       repo_url = repo_url[1];
       const gh_api_request_armoryYAML = GH_API_URL + Meteor.user().services.github.username + "/" + battle_plan.name + "/contents/.armory.yaml?" + GH_AUTH;
@@ -143,7 +142,7 @@ export const updatePlan = new ValidatedMethod({
       try {
         let jsonRepo = {
             name: repoToCheck.data.name,
-            short_description: repoToCheck.data.description || "Pleas add a description to your GItHub repository",
+            short_description: repoToCheck.data.short_description || "Pleas add a description to your GItHub repository",
             armory_info: armoryToCheck.data.content,
             gh_repo_url: repoToCheck.data.html_url,
             gh_clone_url: repoToCheck.data.clone_url,
@@ -156,8 +155,6 @@ export const updatePlan = new ValidatedMethod({
             };
         jsonRepo = prepareBpJson(jsonRepo, armoryToCheck, readMeToCheck);
         res = Plans.update({_id: String(battle_plan_id)}, {$set: jsonRepo});
-        //log.error('armory.yml dump jsonRepo obj ', this.userId, JSON.stringify(jsonRepo));
-        console.log(res);
         return res;
       } catch (e) {
         log.error('plans.updatePlan cant update the DB error is: ', e, e+" | "+this.userId+" | "+Meteor.user().name);
@@ -165,10 +162,10 @@ export const updatePlan = new ValidatedMethod({
         throw new Meteor.Error('plans.updatePlan', "can't update the DB error is: " + e.message);
        }
     }
-    console.log("UPDATE MONGO", battle_plan_id)
     return battle_plan_id;
   }
 });
+
 /**
  * [decode and check armory_info.yml and decode
  * readme and extend object before using it
@@ -200,6 +197,7 @@ let prepareBpJson = (jsonRepo, armoryYaml, readme) => {
   }
   return jsonRepo;
 }
+
 //PLAN RULES// // Must be CHanged I guess //
 Plans.allow({
   insert: function () { return true; },

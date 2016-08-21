@@ -20,9 +20,29 @@ Template.plan.events({
     Session.set('error', id.currentTarget.attributes.id.value);
   },
 
-  'click .star_bp': (e, template) => {
+  'click .star-repo': (e, template) => {
+    let plan = Plans.findOne({ name: FlowRouter.getParam('_name') });
     e.preventDefault();
-
+    console.log("click start repo", Session.get('star'));
+    if(Session.get('star') === false){
+      Meteor.call('starRepo', {gh_repo_name: plan.name}, function (error, result) {
+        if(!error){
+          $(".star-repo").show();
+          Session.set('star', result);
+        }else{
+          console.log("starRepo error: ", error);
+        }
+      });
+    } else {
+      Meteor.call('unStarRepo', {gh_repo_name: plan.name}, function (error, result) {
+        if(!error){
+          $(".star-repo").show();
+          Session.set('star', result);
+        }else{
+          console.log("unStarRepo error: ", error);
+        }
+      });
+    }
   }
 });
 /*****************************************************************************/
@@ -59,6 +79,19 @@ Template.plan.helpers({
     return plan;
 	},
 
+  isStared () {
+    let plan = Plans.findOne({ name: FlowRouter.getParam('_name') });
+    Meteor.call('checkRepoStars', {gh_repo_name: plan.name}, function (error, result) {
+      if(!error){
+        $(".star-repo").show();
+        Session.set('star', result);
+      }else{
+        console.log(error);
+      }
+    });
+    return Session.get('star');
+  },
+
   getReadMe () {
     console.log("In getreadme");
     const plan = Session.get('plan');
@@ -86,16 +119,6 @@ Template.plan.helpers({
       else
         console.log(err);
     });
-  },
-
-  canStar(repo_id, template) {
-    Meteor.call('isStarred', { repo_id: repo_id }, function(err, result) {
-      if(result) {
-        template.starCounter.set(getStarCount());
-        template.canStar.set(result);
-      }
-      console.log('Shit2');
-    });
   }
 });
 
@@ -104,6 +127,7 @@ Template.plan.onRendered(() => {
 });
 
 Template.plan.onCreated(() => {
+  $(".star-repo").hide();
   this.starCounter = new ReactiveVar();
   this.starCounter.set(0);
   this.canStar = new ReactiveVar();

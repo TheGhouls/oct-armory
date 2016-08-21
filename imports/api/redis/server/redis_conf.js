@@ -12,5 +12,5 @@ client.on("error", function(err) {
 });
 
 client.on("connect", function() {
-  console.log("connected");
+  console.log("connected to REDIS");
 });

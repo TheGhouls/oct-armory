@@ -5,8 +5,8 @@ export const setRedis = new ValidatedMethod({
   name: 'setRedis',
 
   validate: new SimpleSchema({
-    redis_key: { type: String},
-    redis_val: { type: String}
+    redis_key: { type: String },
+    redis_val: { type: String }
   }).validator(),
 
   run({redis_key, redis_val}){
@@ -18,7 +18,7 @@ export const getRedis = new ValidatedMethod({
   name: 'getRedis',
 
   validate: new SimpleSchema({
-    redis_key: { type: String}
+    redis_key: { type: String }
   }).validator(),
 
   run({redis_key, redis_val}){
