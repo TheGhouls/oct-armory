@@ -68,7 +68,7 @@ Template.plan.helpers({
                     console.log("update error", error);
 
                   if(result)
-                    console.succes("update result", result);
+                    console.info("update result", result);
                 });
               }
 

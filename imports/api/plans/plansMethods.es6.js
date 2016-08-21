@@ -21,46 +21,40 @@ export const checkForUpdate = new ValidatedMethod({
   run({battle_plan_id}){
     //unblocking client from waiting result
     this.unblock();
+    if(Meteor.isServer){
+
       function isRepoInRedis(repoId) {
         let isInRedis = Meteor.call('getRedis', {redis_key: String(repoId)});
         console.log("isInRedis: ", isInRedis);
-        if (true == false){
+        if (isInRedis === repoId){
           return true;
         }
         return false;
       }
+
       if(!isRepoInRedis(battle_plan_id)){
         try{
           let res = Meteor.call('updatePlan', {battle_plan_id: battle_plan_id});
-          console.log(res);
+          console.log("isRepoInRedis update response ", res);
         }catch(e){
           log.error('plans.checkForUpdate DB update error ', e, e+" | "+this.userId+" | "+Meteor.user().name);
           logRaven.log('plans.checkForUpdate DB update error '+e+" | "+this.userId+" | "+Meteor.user().name);
           console.log("checkForUpdate DB update error", e);
         }
         try{
-          let setInRedis = Meteor.call('setRedis', {redis_key: String(battle_plan_id), redis_val: String(battle_plan.gh_id)});
-          console.log("setInRedis: ", isInRedis);
+          let setInRedis = Meteor.call('setRedis', {redis_key: String(battle_plan_id), redis_val: String(battle_plan_id)});
+          let setExpire = Meteor.call('setRedisExpire', {redis_key: String(battle_plan_id), key_expire: "600"} );
+          console.log("setInRedis: ", setInRedis);
+          console.log("setExpire: ", setExpire);
           //update in redis
         }catch(e){
-          console.log(e.error);
+          console.log(e);
         }
+        return true;
       }else{
-        return {succes: 'Plan is in cache'};
+        return true;
       }
-      function isRepoChanged(repo, plan){
-        let res = null;
-        if (repo.title !== plan.title) {
-          res = plan.update({_id: plan.id}, {title: repo.title});
-        }
-        if (repo.readme !== plan.readme){
-          res = plan.update({_id: plan.id}, {readme: repo.readme});
-        }
-        if (repo.short_description !== plan.short_description) {
-          res = plan.update({_id: plan.id}, {short_description: repo.short_description});
-        }
-        return res;
-      }
+    }// end if(Meteor.isServer)
   }//end run()
 })
 

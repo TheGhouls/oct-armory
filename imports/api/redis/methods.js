@@ -21,7 +21,20 @@ export const getRedis = new ValidatedMethod({
     redis_key: { type: String }
   }).validator(),
 
-  run({redis_key, redis_val}){
-    return client.getSync(redis_key, redis_val);
+  run({redis_key}){
+    return client.getSync(redis_key);
+  }
+});
+
+export const setRedisExpire = new ValidatedMethod({
+  name: 'setRedisExpire',
+
+  validate: new SimpleSchema({
+    redis_key: { type: String },
+    key_expire: { type: String }
+  }).validator(),
+
+  run({redis_key, key_expire}){
+    return client.setExpire(redis_key, key_expire);
   }
 });
