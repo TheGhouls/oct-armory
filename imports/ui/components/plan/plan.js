@@ -28,6 +28,7 @@ Template.plan.events({
       Meteor.call('starRepo', {gh_repo_name: plan.name}, function (error, result) {
         if(!error){
           $(".star-repo").show();
+          console.log("starRepo Succes: ", result);
           Session.set('star', result);
         }else{
           console.log("starRepo error: ", error);
@@ -37,6 +38,7 @@ Template.plan.events({
       Meteor.call('unStarRepo', {gh_repo_name: plan.name}, function (error, result) {
         if(!error){
           $(".star-repo").show();
+          console.log("unStarRepo Succes: ", result);
           Session.set('star', result);
         }else{
           console.log("unStarRepo error: ", error);

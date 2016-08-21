@@ -157,12 +157,13 @@ export const starRepo = new ValidatedMethod({
       let gh_checkStars_url = 'https://api.github.com/user/starred/'+gh_user_name+'/'+gh_repo_name+'?access_token='+gh_user_token;
       try{
         let starThisRepo = HTTP.call('PUT', gh_checkStars_url, { headers: { "User-Agent": "Meteor/1.3", "Content-Length": "0" } });
+        if(starThisRepo.statusCode === 204){
+          //succes
+          console.log(starThisRepo);
+          return true;
+        }
       } catch(e){
         console.log("starRepo error: ", e);
-      }
-      if(starThisRepo.status === 204){
-        //succes
-        return true;
       }
       return false;
     }
@@ -181,15 +182,17 @@ export const unStarRepo = new ValidatedMethod({
       let gh_user_token = Meteor.user().services.github.accessToken;
       let gh_user_name = Meteor.user().services.github.username;
       let gh_checkStars_url = 'https://api.github.com/user/starred/'+gh_user_name+'/'+gh_repo_name+'?access_token='+gh_user_token;
+      console.log(gh_checkStars_url);
       try{
         let unStarThisRepo = HTTP.call('DELETE', gh_checkStars_url, { headers: { "User-Agent": "Meteor/1.3" } });
+        if(unStarThisRepo.statusCode === 204){
+          //succes un star repo so set the return to false
+          return false;
+        }
       } catch(e){
         console.log("unStarRepo error: ", e);
       }
-      if(unStarThisRepo.status === 204){
-        //succes un star repo so set the return to false
-        return false;
-      }
+
       return true;
     }
   }
