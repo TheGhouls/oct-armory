@@ -17,10 +17,10 @@
 //   defaultContentRegion: 'main',
 //   defaultLayoutRegions: {},
 // });
-
+Accounts.ui.config({ requestPermissions: { github: ['repo', 'user' ] } });
 
 Meteor.loginWithGithub({
-  requestPermissions: ['user', 'public_repo']
+  requestPermissions: ['repo', 'user' ]
 }, function (err) {
   if (err)
     if(err.message === "Login service configuration not yet loaded") {
