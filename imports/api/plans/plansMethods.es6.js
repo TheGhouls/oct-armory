@@ -136,7 +136,7 @@ export const updatePlan = new ValidatedMethod({
       try {
         let jsonRepo = {
             name: repoToCheck.data.name,
-            short_description: repoToCheck.data.short_description || "Pleas add a description to your GItHub repository",
+            short_description: repoToCheck.data.short_description.lenght > 0 ? repoToCheck.data.short_description : "Pleas add a description to your GItHub repository",
             armory_info: armoryToCheck.data.content,
             gh_repo_url: repoToCheck.data.html_url,
             gh_clone_url: repoToCheck.data.clone_url,

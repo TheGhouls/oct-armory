@@ -129,7 +129,7 @@ Template.addPlan.onRendered(function () {
                       sAlert.error(TAPi18n.__("add_plan.errors.unexpected_error_plan_finding", err.message));
                     }
                   } else {
-                    sAlert.success(TAPi18n.__("add_plan.success.success_add: {res}", RES=res));
+                    sAlert.success(TAPi18n.__("add_plan.success.success_add: {res}", RES=res), FlowRouter.go('/user/plans'));
                   }
                 });
           }

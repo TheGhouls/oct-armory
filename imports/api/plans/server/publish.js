@@ -24,6 +24,7 @@ Meteor.publish('myPlans', function(){
   }, {limit: 25, sort: {create: 1}});
 });
 
+// REST end point for OCT CLI
 Meteor.publish('showPlan', function(name){
   return Plans.find({
     name: name

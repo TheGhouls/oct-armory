@@ -39,16 +39,6 @@ FlowRouter.route('/', {
 // PLAN SECTION ROUTE  //
 ////////////////////////
 
-let userSection = FlowRouter.group({
-  prefix:"/user"
-});
-
-userSection.route("/plans/", {
-  action: function(params, queryParams) {
-    BlazeLayout.render("mainLayout", { nav: "nav", content: "myPlans" });
-  }
-});
-
 let planSection = FlowRouter.group({
 	prefix:"/plan"
 });
@@ -71,11 +61,11 @@ planSection.route('/add/:_id', {
   }
 });
 
-FlowRouter.route('/search:idm', {
-  action: function(params, queryParams) {
-    BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
-  }
-});
+// FlowRouter.route('/search:idm', {
+//   action: function(params, queryParams) {
+//     BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
+//   }
+// });
 
 /////////////////////////
 //      SASS ROUTE    //
@@ -94,7 +84,7 @@ saasSection.route('/test', {
 });
 
 /////////////////////////
-//      SEARCH ROUTE    //
+//    SEARCH ROUTE    //
 ///////////////////////
 
 
@@ -111,5 +101,39 @@ searchSection.route('/', {
 searchSection.route('/:_name', {
   action: function(params, queryParams){
     BlazeLayout.render("searchLayout", { nav: "nav", content: "search" })
+  }
+});
+
+/////////////////////////
+//    USER ROUTE      //
+///////////////////////
+
+let userSection = FlowRouter.group({
+  prefix:"/user"
+});
+
+userSection.route("/plans/", {
+  action: function(params, queryParams) {
+    BlazeLayout.render("mainLayout", { nav: "nav", content: "myPlans" });
+  }
+});
+
+userSection.route("/plans/:_name", {
+  action: function(params, queryParams) {
+    BlazeLayout.render("mainLayout", { nav: "nav", content: "myPlans" });
+  }
+});
+
+/////////////////////////
+//    TAGS ROUTE      //
+///////////////////////
+
+let tagsSection = FlowRouter.group({
+  prefix: "/tags"
+});
+
+tagsSection.route('/:_tags', {
+  action: function(params, queryParams){
+    BlazeLayout.render("tagsLayout", { nav: "nav", content: "search" })
   }
 });
