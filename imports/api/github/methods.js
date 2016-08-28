@@ -101,7 +101,7 @@ export const getReposArmory = new ValidatedMethod({
       userRepos = false;
       return userRepos;
     }
-
+    this.unblock();
     let res = getRepoHelper(user_gh_id, userRepos);
     if(Meteor.isServer){
       if(res.length == 0) {
