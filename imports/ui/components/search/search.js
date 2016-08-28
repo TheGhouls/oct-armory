@@ -9,7 +9,7 @@ let options = {
   localSearch: false
 };
 
-const fields = ['name', 'short_description', 'readme'];
+const fields = ['name', 'short_description', 'readme', 'armory_info.tags'];
 let PlansSearch = new SearchSource('plans', fields, options);
 
 Template.search.events({

@@ -47,6 +47,7 @@ Plans._ensureIndex({
         name: 'text',
         short_description: 'text',
         gh_readme: 'text',
+        'armory_info.tags': 'text',
 
     }, {
         name: search_index_name
