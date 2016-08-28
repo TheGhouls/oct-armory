@@ -44,7 +44,7 @@ ostrio:logger
 ostrio:loggerfile
 meteorhacks:kadira
 kadira:debug
-meteortoys:allthings
+#meteortoys:allthings
 nvd3:nvd3
 ostrio:meteor-root
 percolate:momentum
@@ -53,3 +53,4 @@ deepwell:raven
 fortawesome:fontawesome
 markdown@1.0.10
 shell-server
+session

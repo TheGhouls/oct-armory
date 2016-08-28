@@ -7,4 +7,5 @@ import { getRedis, setRedis } from '../../api/redis/methods.js';
 import '../../api/users/server/publish.js';
 import '../../api/plans/server/publish.js';
 import '../../api/saas/server/publish.js';
+import '../../api/tags/server/publish.js';
 import { log } from '../../api/logger_conf.js';

@@ -3,7 +3,7 @@ template(name='planBox')
     +momentum plugin='fade'
       each (bp)
         .col-md-3
-          a(href="/plan/show/#{name}")
+          a(href="/user/#{owner_name}/#{name}")
             div.panel.panel-default.span3
               div.panel-body
                 h4= name

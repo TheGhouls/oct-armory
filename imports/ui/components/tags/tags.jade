@@ -1,0 +1,6 @@
+template(name="tags")
+  if (getTags)
+    div.text-center
+      {{ > planBox bp=getTags }}
+  else
+    h2.text-center {{_ "search.not_found"}}

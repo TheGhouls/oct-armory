@@ -9,17 +9,26 @@ let options = {
   localSearch: false
 };
 
-let fields = ['name', 'short_description', 'readme'];
+const fields = ['name', 'short_description', 'readme'];
 let PlansSearch = new SearchSource('plans', fields, options);
 
 Template.search.events({
   'keyup #search_input': _.debounce((e) => {
-    var text = $(e.target).val().trim();
-    if(text.length >= 3){
+    if (e.keyCode == 13) {
+      e.preventDefault();
+    }
+    let text = $(e.target).val().trim();
+    if(text.length >= 2){
       PlansSearch.search(text);
     }
 
-  }, 300)
+  }, 300),
+  'keypress #search_input':(e) =>{
+    if (e.keyCode == 13) {
+      e.preventDefault();
+    }
+  }
+
 });
 
 Template.search.helpers({
@@ -30,9 +39,8 @@ Template.search.helpers({
     if(res.length >= 1){
       return res;
     } else {
-      console.log('not found res: ', res.length);
+      //console.log('not found res: ', res.length);
       res.empty = true;
-      console.log(res.empty);
       return [];
     }
   },
@@ -53,10 +61,9 @@ Template.search.onCreated(function (){
 
 Template.search.onRendered(function (){
   $('#search_input').focus();
-  // document.getElementById('#search_input').focus();
-  // document.getElementById('#search_input').select();
+  $(document).keyup(function(e) {
+    if (e.keyCode === 13){
+      e.preventDefault();
+    }
+  });
 });
-
-// Template.search.onDestroyed({
-
-// });

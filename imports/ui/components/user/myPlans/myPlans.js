@@ -4,7 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Plans } from '../../../../api/plans/plansCollections.es6.js';
 import './myPlans.jade';
 
-Template.myPlans.onCreated(function onCreatedmyPlans(){
+Template.myPlans.onCreated(function (){
   // Redirect the user if not logged in
   if(!Meteor.userId()) {
     return FlowRouter.go('/');
@@ -33,6 +33,8 @@ Template.myPlans.events({
     }
 
     Plans.remove(taskId);
+    CachedLocalColection.remove({});
+    console.log('cached collection', CachedLocalColection.find({}).fetch());
     sAlert.success(task.name + ' was successfuly deleted !');
   },
 });

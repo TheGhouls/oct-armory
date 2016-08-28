@@ -14,6 +14,7 @@ import { log, logRaven } from '../../../api/logger_conf.js';
 /*****************************************************************************/
 Template.addPlan.events({
   'click .addBp': (e) => {
+    CachedLocalColection.remove({});
     FlowRouter.go('/plan/add/' + e.currentTarget.attributes.id.value);
   }
 });
@@ -28,7 +29,6 @@ Template.addPlan.helpers({
   },
 
   getReadme () {
-    console.log("getReadme");
     getRepoReadme.call({
       repo_id: '12345',
       user_gh_id: 'This is a todo item.'
@@ -48,7 +48,7 @@ Template.addPlan.helpers({
 
   getUserArmoryRepos () {
     Session.set('loaded', false);
-    console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
+    //console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
     if(Session.get('getReposArmory') || CachedLocalColection.find().count() > 0) {
       if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire > new Date().getTime()) {
         if(Session.get('getReposArmory') !== 'undefined'){
@@ -97,12 +97,12 @@ Template.addPlan.helpers({
 /*****************************************************************************/
 /* Plan: Lifecycle Hooks */
 /*****************************************************************************/
-Template.addPlan.onCreated(function armoryAddPlanOnCreated() {
+Template.addPlan.onCreated(function () {
   console.log("onCreated plan");
   const Plans = this.subscribe('plans');
   this.subscribe('userData');
   this.subscribe('getUserData');
-  Tracker.autorun(() => {
+  this.autorun(() => {
     const isReady = Plans.ready();
     console.log(`Plans is ${isReady ? 'ready' : 'not ready'}`);
   });

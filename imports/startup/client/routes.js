@@ -15,6 +15,7 @@ import '../../ui/components/addPlan/addPlan.js';
 import '../../ui/components/notFound/notFound.js';
 import '../../ui/components/saas/saas.js';
 import '../../ui/components/user/myPlans/myPlans.js';
+import '../../ui/components/tags/tags.js';
 
 // import '../../ui/pages/app-not-found.js';
 
@@ -43,12 +44,6 @@ let planSection = FlowRouter.group({
 	prefix:"/plan"
 });
 
-planSection.route('/show/:_name', {
-  action: function(params, queryParams) {
-    BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
-  }
-});
-
 planSection.route('/add/', {
   action: function(params, queryParams) {
     BlazeLayout.render("mainLayout", { nav: "nav", content: "addPlan" });
@@ -61,11 +56,6 @@ planSection.route('/add/:_id', {
   }
 });
 
-// FlowRouter.route('/search:idm', {
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
-//   }
-// });
 
 /////////////////////////
 //      SASS ROUTE    //
@@ -118,9 +108,9 @@ userSection.route("/plans/", {
   }
 });
 
-userSection.route("/plans/:_name", {
+userSection.route("/:_username/:_name", {
   action: function(params, queryParams) {
-    BlazeLayout.render("mainLayout", { nav: "nav", content: "myPlans" });
+    BlazeLayout.render("mainLayout", { nav: "nav", content: "plan" });
   }
 });
 
@@ -134,6 +124,8 @@ let tagsSection = FlowRouter.group({
 
 tagsSection.route('/:_tags', {
   action: function(params, queryParams){
-    BlazeLayout.render("tagsLayout", { nav: "nav", content: "search" })
+    console.log("tags route params: ", params );
+    console.log("tags route query params: ", queryParams);
+    BlazeLayout.render("searchLayout", { nav: "nav", content: "tags" })
   }
 });

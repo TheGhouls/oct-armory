@@ -10,7 +10,8 @@ template(name='plan')
             h5 Create at: {{getPlan.create}}
             h5 Tag:
                 each index in getPlan.armory_info.tags
-                  span #{index},
+                  a(href="/tags/#{index}")
+                    span #{index},
         .row
           .col-md-4.bp-short-description
             h4 {{getPlan.short_description}}
@@ -41,14 +42,5 @@ template(name='plan')
     else
       h4 {{_ "plan.none"}}
   else
-    .sk-spinner.sk-spinner-cube-grid
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
-        .sk-cube
+    {{> loader}}
 
