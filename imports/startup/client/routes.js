@@ -124,8 +124,6 @@ let tagsSection = FlowRouter.group({
 
 tagsSection.route('/:_tags', {
   action: function(params, queryParams){
-    console.log("tags route params: ", params );
-    console.log("tags route query params: ", queryParams);
     BlazeLayout.render("searchLayout", { nav: "nav", content: "tags" })
   }
 });

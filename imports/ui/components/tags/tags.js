@@ -12,8 +12,8 @@ Template.tags.events({
 Template.tags.helpers({
   getTags() {
     let res = Tags.find({}).fetch();
-    let reactiveRes = new ReactiveVar(res);
-    return reactiveRes.get();
+    this.reactiveRes = new ReactiveVar(res);
+    return this.reactiveRes.get();
   }
 });
 
