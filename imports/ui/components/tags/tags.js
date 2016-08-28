@@ -4,9 +4,7 @@ import '../planBox/planBox.js';
 import { Plans as Tags } from '../../../api/plans/plansCollections.es6.js';
 import { ReactiveVar } from 'meteor/reactive-var'
 Template.tags.events({
-  'click': function () {
-    // ...
-  }
+
 });
 
 Template.tags.helpers({
