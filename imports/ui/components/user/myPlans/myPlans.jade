@@ -11,6 +11,6 @@ template(name='myPlans')
           tr
             td= name
             td= short_description
-            button(class='delete') &times;
+            button(class='delete' name=name) &times;
   else
     p(class='center') No plans found

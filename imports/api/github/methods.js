@@ -101,9 +101,10 @@ export const getReposArmory = new ValidatedMethod({
       userRepos = false;
       return userRepos;
     }
-    this.unblock();
     let res = getRepoHelper(user_gh_id, userRepos);
+
     if(Meteor.isServer){
+      console.log("getRepoHelper res: ", res.length);
       if(res.length == 0) {
         console.log("no Armory repositories found");
         //logRaven.log(new Meteor.Error('gh.getReposArmory.norepofound', "no Armory repositories found: "+res.length+" plan found for user: "+user_gh_id));
@@ -130,7 +131,6 @@ export const checkRepoStars = new ValidatedMethod({
       let gh_checkStars_url = 'https://api.github.com/user/starred/'+gh_user_name+'/'+gh_repo_name+'?access_token='+gh_user_token;
       try{
         let checkIfUserStarThisRepo = HTTP.get(gh_checkStars_url, { headers: { "User-Agent": "Meteor/1.3" } });
-        console.log(checkIfUserStarThisRepo.statusCode);
         if(checkIfUserStarThisRepo.statusCode == 204){
           //user already like this repo
           return true
@@ -211,11 +211,11 @@ function getRepoHelper (user_gh_id, userRepos) {
       let is_in_db = Plans.find({gh_repo_id: String(repo.id), owner: Meteor.user()._id}, {
        limit: 1
       }).count();
-
       //if repo is not already in db
       if (is_in_db <= 0) {
-        console.log('is in db', is_in_db, Meteor.user()._id);
+        console.log('is in db = ', is_in_db, Meteor.user().name);
         let gh_api_request = gitHubUrl + user_gh_id + "/" + repo.name + "/contents/.armory.yaml?" + GH_AUTH;
+        console.log(gh_api_request);
         try{
           let tmp_res = HTTP.call('GET', gh_api_request, { headers: { "User-Agent": "Meteor/1.3" } });
           let readme = HTTP.call('GET', gitHubUrl + user_gh_id + "/" + repo.name + "/readme?" + GH_AUTH, { headers: { "User-Agent": "Meteor/1.3" } });
@@ -244,7 +244,7 @@ function getRepoHelper (user_gh_id, userRepos) {
             console.log(e);
           }
         } catch(e) {
-          //console.log("not an Armory repo: ", e.error);
+          //console.log("not an Armory repo: ", e.message);
         }
       }
     });

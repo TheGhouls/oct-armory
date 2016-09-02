@@ -7,14 +7,15 @@ import { Session } from 'meteor/session';
 import './addPlan.jade';
 import { sAlert } from 'meteor/juliancwirko:s-alert';
 import { log, logRaven } from '../../../api/logger_conf.js';
-
+import { ReactiveVar } from 'meteor/reactive-var';
 
 /*****************************************************************************/
 /* Plan: Event Handlers */
 /*****************************************************************************/
 Template.addPlan.events({
   'click .addBp': (e) => {
-    CachedLocalColection.remove({});
+    console.log(e.currentTarget.attributes.id.value);
+    //FlowRouter.reload();
     FlowRouter.go('/plan/add/' + e.currentTarget.attributes.id.value);
   }
 });
@@ -47,17 +48,18 @@ Template.addPlan.helpers({
   },
 
   getUserArmoryRepos () {
+    const that = Template.instance();
     Session.set('loaded', false);
     //console.log("getUserArmoryRepos chached_count: ", Session.get('getReposArmory') || 'undef');
-    if(Session.get('getReposArmory') || CachedLocalColection.find().count() > 0) {
+    if(that.repoRes.get() || CachedLocalColection.find().count() > 0) {
       if(CachedLocalColection.find().count() >= 1 && CachedLocalColection.find().fetch()[0].expire > new Date().getTime()) {
-        if(Session.get('getReposArmory') !== 'undefined'){
+        if(that.repoRes.get() !== 'undefined'){
           Session.set('loaded', true);
           Session.set('getReposArmory', CachedLocalColection.find().fetch()[0].getReposArmory);
         }
       }
       Session.set('loaded', true);
-      return Session.get('getReposArmory');
+      return that.repoRes.get();
     } else {
       try{
         getReposArmory.call({
@@ -77,11 +79,13 @@ Template.addPlan.helpers({
             }
           } else {
             console.log('succes getReposArmory ', res);
-            Session.set('loaded', true);
-            CachedLocalColection.remove({});
-            CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
-              console.log('cached collection', CachedLocalColection.find().fetch());
-            });
+            //Session.set('loaded', true);
+            //CachedLocalColection.remove({});
+            //CachedLocalColection.insert({getReposArmory: res, expire: new Date().getTime() + 10000}, (err, res) => {
+              //console.log('cached collection', CachedLocalColection.find().fetch());
+            //});
+            that.repoRes.set(res);
+            console.log(that.repoRes.get());
             Session.set('getReposArmory', res);
           }
         });
@@ -90,7 +94,7 @@ Template.addPlan.helpers({
       }
 
     }
-    return Session.get('getReposArmory');
+    return that.repoRes.get();
   },
 });
 
@@ -98,19 +102,17 @@ Template.addPlan.helpers({
 /* Plan: Lifecycle Hooks */
 /*****************************************************************************/
 Template.addPlan.onCreated(function () {
-  console.log("onCreated plan");
+  let current = FlowRouter.current();
+  console.log("current route ", current);
+  console.log("onCreated adpPlan");
+  this.repoRes = new ReactiveVar(0);
   const Plans = this.subscribe('plans');
   this.subscribe('userData');
-  this.subscribe('getUserData');
+  let userData = this.subscribe('getUserData');
   this.autorun(() => {
     const isReady = Plans.ready();
     console.log(`Plans is ${isReady ? 'ready' : 'not ready'}`);
   });
-
-
-});
-
-Template.addPlan.onRendered(function () {
   this.autorun(() => {
     if (Meteor.user()) {
       let param = FlowRouter.getParam("_id");
@@ -134,10 +136,11 @@ Template.addPlan.onRendered(function () {
                 });
           }
 
-          if (!Session.get('getReposArmory')) {
+          if (!this.repoRes.get()) {
+            console.log(Meteor.user(), userData);
             getRepo.call({
                 repo_gh_id: param,
-                user_gh_id: Meteor.user().services.github.username
+                user_gh_id: userData.ready()?Meteor.user().services.github.username : ""
               }, (err, res) => {
                 if (err) {
                   if (err.error === 404) {
@@ -153,12 +156,17 @@ Template.addPlan.onRendered(function () {
                 }
               });
           } else{
-            addPlanClosure(param, Session.get('getReposArmory'));
+            addPlanClosure(param, this.repoRes.get());
           }
 
         }
     }
   });
+
+});
+
+Template.addPlan.onRendered(function () {
+
 });
 
 Template.addPlan.onDestroyed(function () {

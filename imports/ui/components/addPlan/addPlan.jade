@@ -14,7 +14,7 @@ template(name='addPlan')
           each getUserArmoryRepos
             tr
               td
-                button(id=name).addBp add
+                button(id=name name=name).addBp add
               td= armory_info.name
               td= armory_info.tags
 
