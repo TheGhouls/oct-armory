@@ -130,6 +130,5 @@ Template.plan.onCreated(function () {
     if(plan)
       plan.gh_readme = converter.makeHtml(String(plan.gh_readme));
     Session.set('plan', plan);
-    console.log("outside autorun", Session.get('context_path'));
   }
 });
