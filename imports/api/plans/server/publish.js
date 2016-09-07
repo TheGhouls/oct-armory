@@ -25,14 +25,15 @@ Meteor.publish('myPlans', function(){
 });
 
 // REST end point for OCT CLI
-Meteor.publish('showPlan', function(name){
+Meteor.publish('showPlan', function(ownerName, name){
   return Plans.find({
-    name: name
+    name: name,
+    owner_name: ownerName
   },
   {gh_tar_url: 1 },
   {limit: 1, sort: {create: 1}});
 },{
-  url: "get-plan/:0",
+  url: "get-plan/:0/:1",
   httpMethod: "get"
 });
 
