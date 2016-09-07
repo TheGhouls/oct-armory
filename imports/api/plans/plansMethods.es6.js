@@ -25,7 +25,7 @@ export const checkForUpdate = new ValidatedMethod({
 
       function isRepoInRedis(repoId) {
         let isInRedis = Meteor.call('getRedis', {redis_key: String(repoId)});
-        console.log("isInRedis: ", isInRedis);
+        console.log("isInRedis call value: ", isInRedis);
         if (isInRedis === repoId){
           return true;
         }
@@ -48,7 +48,7 @@ export const checkForUpdate = new ValidatedMethod({
           console.log("setExpire: ", setExpire);
           //update in redis
         }catch(e){
-          console.log(e);
+          console.log("checkForUpdate/isRepoInRedis erro:", e);
         }
         return true;
       }else{
@@ -134,9 +134,10 @@ export const updatePlan = new ValidatedMethod({
         console.log("cant acces to repo on github api ", e);
       }
       try {
+        //console.log("repoToCheck.data.short_description: ", repoToCheck.data)
         let jsonRepo = {
             name: repoToCheck.data.name,
-            short_description: repoToCheck.data.short_description.lenght > 0 ? repoToCheck.data.short_description : "Pleas add a description to your GItHub repository",
+            short_description: repoToCheck.data.description || "Pleas add a description to your GItHub repository",
             armory_info: armoryToCheck.data.content,
             gh_repo_url: repoToCheck.data.html_url,
             gh_clone_url: repoToCheck.data.clone_url,

@@ -10,7 +10,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Showdown } from 'meteor/markdown';
 import './plan.jade';
 import './plan.less';
-
+//const Plans = new Mongo.Collection('plans');
 //const planSub = Meteor.subscribe('plans');
 /*****************************************************************************/
 /* Plan: Event Handlers */
@@ -56,7 +56,7 @@ Template.plan.helpers({
       if(planSub.ready()){
         if (!Session.get('plan')) {
           let converter = new Showdown.converter();
-          plan = Plans.findOne({ name: FlowRouter.getParam('_name') });
+          plan = Plans.findOne({ name: context.params._name });
           // Convert markdown to html
           plan.gh_readme = converter.makeHtml(String(plan.gh_readme));
           //checking if this bp need update
@@ -111,13 +111,25 @@ Template.plan.helpers({
   }
 });
 
-Template.plan.onRendered(() => {
+Template.plan.onRendered(function () {
   Session.set('loaded', true);
+
 });
 
 Template.plan.onCreated(function () {
   $(".star-repo").hide();
   this.autorun(() => {
-    planSub = this.subscribe('plans');
+    planSub = this.subscribe('plan');
+    FlowRouter.watchPathChange();
+    context = FlowRouter.current();
+    Session.set("context_path", context.path);
   });
+  if(Session.get('context_path')){
+    let converter = new Showdown.converter();
+    plan = Plans.findOne({ name: context.params._name });
+    if(plan)
+      plan.gh_readme = converter.makeHtml(String(plan.gh_readme));
+    Session.set('plan', plan);
+    console.log("outside autorun", Session.get('context_path'));
+  }
 });

@@ -10,5 +10,8 @@
     "meteor-node-stubs": "~0.2.0",
     "redis": "^2.6.2",
     "zmq": "^2.15.3"
+  },
+  "devDependencies": {
+    "phantomjs": "^1.9.8"
   }
 }

@@ -213,9 +213,9 @@ function getRepoHelper (user_gh_id, userRepos) {
       }).count();
       //if repo is not already in db
       if (is_in_db <= 0) {
-        console.log('is in db = ', is_in_db, Meteor.user().name);
+        //console.log('is in db = ', is_in_db, Meteor.user().name);
         let gh_api_request = gitHubUrl + user_gh_id + "/" + repo.name + "/contents/.armory.yaml?" + GH_AUTH;
-        console.log(gh_api_request);
+        //console.log(gh_api_request);
         try{
           let tmp_res = HTTP.call('GET', gh_api_request, { headers: { "User-Agent": "Meteor/1.3" } });
           let readme = HTTP.call('GET', gitHubUrl + user_gh_id + "/" + repo.name + "/readme?" + GH_AUTH, { headers: { "User-Agent": "Meteor/1.3" } });

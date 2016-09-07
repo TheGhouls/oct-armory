@@ -137,7 +137,7 @@ Template.addPlan.onCreated(function () {
           }
 
           if (!this.repoRes.get()) {
-            console.log(Meteor.user(), userData);
+            //console.log(Meteor.user(), userData);
             getRepo.call({
                 repo_gh_id: param,
                 user_gh_id: userData.ready()?Meteor.user().services.github.username : ""

@@ -18,7 +18,7 @@ export const getZmqSub = new ValidatedMethod({
       function handle_message(topic, message) {
           //console.log("pull on message " + message);
           try{
-            console.log("topic and message : ",topic.toString(), message.toString());
+            //console.log("topic and message : ",topic.toString(), message.toString());
             Saas.insert({'owner': Meteor.userId, 'topic': topic.toString(), 'message': message.toString()});
           } catch(e){
             console.log("saas db error " + e);
@@ -30,13 +30,13 @@ export const getZmqSub = new ValidatedMethod({
       try{
         const sock = ZMQ.socket('sub');
         try{
-          sock.connect('tcp://192.168.99.100:5002');
+          sock.connect('tcp://armory.theghouls.io:5002');
         } catch(e){
           throw new Meteor.Error('getZmqSub', "cant connect getZmqSub: "+e);
           console.log(e);
         }
         sock.subscribe('oct-docker');
-        //console.log('Subscriber connected');
+        console.log('Subscriber connected');
         sock.on('message', bound_handle_message);
         return true;
       } catch(e) {

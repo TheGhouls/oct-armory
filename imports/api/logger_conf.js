@@ -39,5 +39,4 @@ RavenLogger.initialize({
   }, {
       trackUser: true
     });
-RavenLogger.log('Testing aurel error message');
 

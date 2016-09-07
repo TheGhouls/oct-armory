@@ -4,5 +4,5 @@ module.exports = {
   saveScreenshotsToDisk: true,
 
   phantom_w: 1280,
-  phantom_h: 1024
-}
+  phantom_h: 1024,
+ }

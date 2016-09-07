@@ -21,7 +21,6 @@ Schemas.Plan = new SimpleSchema({
 		label: "Owner Name",
 		autoValue: function () {
 		      if (this.isInsert) {
-		      	console.log(Meteor.user());
 		        return String(Meteor.user().services.github.username);
 			}
 		},
@@ -51,8 +50,7 @@ Schemas.Plan = new SimpleSchema({
 		type: String,
 		label: "short_description",
 		optional: true,
-		index: true,
-    unique: true
+		index: true
 	},
 
 	gh_repo_url: {

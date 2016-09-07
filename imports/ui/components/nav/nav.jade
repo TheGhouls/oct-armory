@@ -19,7 +19,7 @@ template(name='nav')
             div.col-xs-12.col-sm-3
               ul.nav.navbar-nav.pull-right
                 li.dropdown
-                  a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
+                  a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false', id= 'menu-btn')
                     if (currentUser)
                       | {{_ "nav.account"}}
                     else

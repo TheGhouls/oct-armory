@@ -8,13 +8,4 @@ describe('find a Battle Plan', function(){
     expect( getValueOfSearch ).to.equal( 'armory-sample-project-v1.1' );
 
   });
-
-  // afterEach( function(){
-  //   server.execute( function(){
-  //     let plan = Plans.findOne({name: 'Armory Magento', owner: 'aurelben' });
-  //     if (plan) {
-  //       Plans.remove( plan._id);
-  //     }
-  //   });
-  // });
 });
